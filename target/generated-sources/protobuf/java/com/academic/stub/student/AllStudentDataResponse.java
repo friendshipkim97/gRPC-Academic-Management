@@ -139,29 +139,29 @@ private static final long serialVersionUID = 0L;
         getMajorBytes();
 
     /**
-     * <code>repeated string courses = 4;</code>
-     * @return A list containing the courses.
+     * <code>repeated string courseNumber = 4;</code>
+     * @return A list containing the courseNumber.
      */
     java.util.List<java.lang.String>
-        getCoursesList();
+        getCourseNumberList();
     /**
-     * <code>repeated string courses = 4;</code>
-     * @return The count of courses.
+     * <code>repeated string courseNumber = 4;</code>
+     * @return The count of courseNumber.
      */
-    int getCoursesCount();
+    int getCourseNumberCount();
     /**
-     * <code>repeated string courses = 4;</code>
+     * <code>repeated string courseNumber = 4;</code>
      * @param index The index of the element to return.
-     * @return The courses at the given index.
+     * @return The courseNumber at the given index.
      */
-    java.lang.String getCourses(int index);
+    java.lang.String getCourseNumber(int index);
     /**
-     * <code>repeated string courses = 4;</code>
+     * <code>repeated string courseNumber = 4;</code>
      * @param index The index of the value to return.
-     * @return The bytes of the courses at the given index.
+     * @return The bytes of the courseNumber at the given index.
      */
     com.google.protobuf.ByteString
-        getCoursesBytes(int index);
+        getCourseNumberBytes(int index);
   }
   /**
    * Protobuf type {@code com.academic.stub.student.AllStudentDataResponse.Student}
@@ -179,7 +179,7 @@ private static final long serialVersionUID = 0L;
       studentNumber_ = "";
       studentName_ = "";
       major_ = "";
-      courses_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      courseNumber_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     }
 
     @java.lang.Override
@@ -234,10 +234,10 @@ private static final long serialVersionUID = 0L;
             case 34: {
               java.lang.String s = input.readStringRequireUtf8();
               if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-                courses_ = new com.google.protobuf.LazyStringArrayList();
+                courseNumber_ = new com.google.protobuf.LazyStringArrayList();
                 mutable_bitField0_ |= 0x00000001;
               }
-              courses_.add(s);
+              courseNumber_.add(s);
               break;
             }
             default: {
@@ -256,7 +256,7 @@ private static final long serialVersionUID = 0L;
             e).setUnfinishedMessage(this);
       } finally {
         if (((mutable_bitField0_ & 0x00000001) != 0)) {
-          courses_ = courses_.getUnmodifiableView();
+          courseNumber_ = courseNumber_.getUnmodifiableView();
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -389,39 +389,39 @@ private static final long serialVersionUID = 0L;
       }
     }
 
-    public static final int COURSES_FIELD_NUMBER = 4;
-    private com.google.protobuf.LazyStringList courses_;
+    public static final int COURSENUMBER_FIELD_NUMBER = 4;
+    private com.google.protobuf.LazyStringList courseNumber_;
     /**
-     * <code>repeated string courses = 4;</code>
-     * @return A list containing the courses.
+     * <code>repeated string courseNumber = 4;</code>
+     * @return A list containing the courseNumber.
      */
     public com.google.protobuf.ProtocolStringList
-        getCoursesList() {
-      return courses_;
+        getCourseNumberList() {
+      return courseNumber_;
     }
     /**
-     * <code>repeated string courses = 4;</code>
-     * @return The count of courses.
+     * <code>repeated string courseNumber = 4;</code>
+     * @return The count of courseNumber.
      */
-    public int getCoursesCount() {
-      return courses_.size();
+    public int getCourseNumberCount() {
+      return courseNumber_.size();
     }
     /**
-     * <code>repeated string courses = 4;</code>
+     * <code>repeated string courseNumber = 4;</code>
      * @param index The index of the element to return.
-     * @return The courses at the given index.
+     * @return The courseNumber at the given index.
      */
-    public java.lang.String getCourses(int index) {
-      return courses_.get(index);
+    public java.lang.String getCourseNumber(int index) {
+      return courseNumber_.get(index);
     }
     /**
-     * <code>repeated string courses = 4;</code>
+     * <code>repeated string courseNumber = 4;</code>
      * @param index The index of the value to return.
-     * @return The bytes of the courses at the given index.
+     * @return The bytes of the courseNumber at the given index.
      */
     public com.google.protobuf.ByteString
-        getCoursesBytes(int index) {
-      return courses_.getByteString(index);
+        getCourseNumberBytes(int index) {
+      return courseNumber_.getByteString(index);
     }
 
     private byte memoizedIsInitialized = -1;
@@ -447,8 +447,8 @@ private static final long serialVersionUID = 0L;
       if (!getMajorBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, major_);
       }
-      for (int i = 0; i < courses_.size(); i++) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, courses_.getRaw(i));
+      for (int i = 0; i < courseNumber_.size(); i++) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, courseNumber_.getRaw(i));
       }
       unknownFields.writeTo(output);
     }
@@ -470,11 +470,11 @@ private static final long serialVersionUID = 0L;
       }
       {
         int dataSize = 0;
-        for (int i = 0; i < courses_.size(); i++) {
-          dataSize += computeStringSizeNoTag(courses_.getRaw(i));
+        for (int i = 0; i < courseNumber_.size(); i++) {
+          dataSize += computeStringSizeNoTag(courseNumber_.getRaw(i));
         }
         size += dataSize;
-        size += 1 * getCoursesList().size();
+        size += 1 * getCourseNumberList().size();
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -497,8 +497,8 @@ private static final long serialVersionUID = 0L;
           .equals(other.getStudentName())) return false;
       if (!getMajor()
           .equals(other.getMajor())) return false;
-      if (!getCoursesList()
-          .equals(other.getCoursesList())) return false;
+      if (!getCourseNumberList()
+          .equals(other.getCourseNumberList())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -516,9 +516,9 @@ private static final long serialVersionUID = 0L;
       hash = (53 * hash) + getStudentName().hashCode();
       hash = (37 * hash) + MAJOR_FIELD_NUMBER;
       hash = (53 * hash) + getMajor().hashCode();
-      if (getCoursesCount() > 0) {
-        hash = (37 * hash) + COURSES_FIELD_NUMBER;
-        hash = (53 * hash) + getCoursesList().hashCode();
+      if (getCourseNumberCount() > 0) {
+        hash = (37 * hash) + COURSENUMBER_FIELD_NUMBER;
+        hash = (53 * hash) + getCourseNumberList().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -659,7 +659,7 @@ private static final long serialVersionUID = 0L;
 
         major_ = "";
 
-        courses_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        courseNumber_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
@@ -692,10 +692,10 @@ private static final long serialVersionUID = 0L;
         result.studentName_ = studentName_;
         result.major_ = major_;
         if (((bitField0_ & 0x00000001) != 0)) {
-          courses_ = courses_.getUnmodifiableView();
+          courseNumber_ = courseNumber_.getUnmodifiableView();
           bitField0_ = (bitField0_ & ~0x00000001);
         }
-        result.courses_ = courses_;
+        result.courseNumber_ = courseNumber_;
         onBuilt();
         return result;
       }
@@ -756,13 +756,13 @@ private static final long serialVersionUID = 0L;
           major_ = other.major_;
           onChanged();
         }
-        if (!other.courses_.isEmpty()) {
-          if (courses_.isEmpty()) {
-            courses_ = other.courses_;
+        if (!other.courseNumber_.isEmpty()) {
+          if (courseNumber_.isEmpty()) {
+            courseNumber_ = other.courseNumber_;
             bitField0_ = (bitField0_ & ~0x00000001);
           } else {
-            ensureCoursesIsMutable();
-            courses_.addAll(other.courses_);
+            ensureCourseNumberIsMutable();
+            courseNumber_.addAll(other.courseNumber_);
           }
           onChanged();
         }
@@ -1024,112 +1024,112 @@ private static final long serialVersionUID = 0L;
         return this;
       }
 
-      private com.google.protobuf.LazyStringList courses_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      private void ensureCoursesIsMutable() {
+      private com.google.protobuf.LazyStringList courseNumber_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureCourseNumberIsMutable() {
         if (!((bitField0_ & 0x00000001) != 0)) {
-          courses_ = new com.google.protobuf.LazyStringArrayList(courses_);
+          courseNumber_ = new com.google.protobuf.LazyStringArrayList(courseNumber_);
           bitField0_ |= 0x00000001;
          }
       }
       /**
-       * <code>repeated string courses = 4;</code>
-       * @return A list containing the courses.
+       * <code>repeated string courseNumber = 4;</code>
+       * @return A list containing the courseNumber.
        */
       public com.google.protobuf.ProtocolStringList
-          getCoursesList() {
-        return courses_.getUnmodifiableView();
+          getCourseNumberList() {
+        return courseNumber_.getUnmodifiableView();
       }
       /**
-       * <code>repeated string courses = 4;</code>
-       * @return The count of courses.
+       * <code>repeated string courseNumber = 4;</code>
+       * @return The count of courseNumber.
        */
-      public int getCoursesCount() {
-        return courses_.size();
+      public int getCourseNumberCount() {
+        return courseNumber_.size();
       }
       /**
-       * <code>repeated string courses = 4;</code>
+       * <code>repeated string courseNumber = 4;</code>
        * @param index The index of the element to return.
-       * @return The courses at the given index.
+       * @return The courseNumber at the given index.
        */
-      public java.lang.String getCourses(int index) {
-        return courses_.get(index);
+      public java.lang.String getCourseNumber(int index) {
+        return courseNumber_.get(index);
       }
       /**
-       * <code>repeated string courses = 4;</code>
+       * <code>repeated string courseNumber = 4;</code>
        * @param index The index of the value to return.
-       * @return The bytes of the courses at the given index.
+       * @return The bytes of the courseNumber at the given index.
        */
       public com.google.protobuf.ByteString
-          getCoursesBytes(int index) {
-        return courses_.getByteString(index);
+          getCourseNumberBytes(int index) {
+        return courseNumber_.getByteString(index);
       }
       /**
-       * <code>repeated string courses = 4;</code>
+       * <code>repeated string courseNumber = 4;</code>
        * @param index The index to set the value at.
-       * @param value The courses to set.
+       * @param value The courseNumber to set.
        * @return This builder for chaining.
        */
-      public Builder setCourses(
+      public Builder setCourseNumber(
           int index, java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  ensureCoursesIsMutable();
-        courses_.set(index, value);
+  ensureCourseNumberIsMutable();
+        courseNumber_.set(index, value);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string courses = 4;</code>
-       * @param value The courses to add.
+       * <code>repeated string courseNumber = 4;</code>
+       * @param value The courseNumber to add.
        * @return This builder for chaining.
        */
-      public Builder addCourses(
+      public Builder addCourseNumber(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  ensureCoursesIsMutable();
-        courses_.add(value);
+  ensureCourseNumberIsMutable();
+        courseNumber_.add(value);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string courses = 4;</code>
-       * @param values The courses to add.
+       * <code>repeated string courseNumber = 4;</code>
+       * @param values The courseNumber to add.
        * @return This builder for chaining.
        */
-      public Builder addAllCourses(
+      public Builder addAllCourseNumber(
           java.lang.Iterable<java.lang.String> values) {
-        ensureCoursesIsMutable();
+        ensureCourseNumberIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, courses_);
+            values, courseNumber_);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string courses = 4;</code>
+       * <code>repeated string courseNumber = 4;</code>
        * @return This builder for chaining.
        */
-      public Builder clearCourses() {
-        courses_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      public Builder clearCourseNumber() {
+        courseNumber_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string courses = 4;</code>
-       * @param value The bytes of the courses to add.
+       * <code>repeated string courseNumber = 4;</code>
+       * @param value The bytes of the courseNumber to add.
        * @return This builder for chaining.
        */
-      public Builder addCoursesBytes(
+      public Builder addCourseNumberBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
-        ensureCoursesIsMutable();
-        courses_.add(value);
+        ensureCourseNumberIsMutable();
+        courseNumber_.add(value);
         onChanged();
         return this;
       }

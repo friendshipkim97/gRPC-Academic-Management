@@ -14,14 +14,18 @@ import java.util.logging.Logger;
 class StudentServerImpl extends StudentServerGrpc.StudentServerImplBase {
 
 
-    private static StudentRepositoryGrpc.StudentRepositoryBlockingStub blockingStub;
+    private StudentRepositoryGrpc.StudentRepositoryBlockingStub blockingStub;
     private static final Logger logger = Logger.getLogger(StudentServerImpl.class.getName());
+
+    public StudentServerImpl(StudentRepositoryGrpc.StudentRepositoryBlockingStub blockingStub) {
+        this.blockingStub = blockingStub;
+    }
 
     @Override
     public void getAllStudentData(AllStudentDataRequest req, StreamObserver<AllStudentDataResponse> responseObserver) {
         AllStudentDataResponse response;
         try {
-            response = blockingStub.getAllStudentData(req);
+            response = this.blockingStub.getAllStudentData(req);
             responseObserver.onNext(response);
             responseObserver.onCompleted();
         } catch (StatusRuntimeException e) {

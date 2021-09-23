@@ -12,6 +12,7 @@ com\academic\stub\student\StudentRepositoryGrpc$StudentRepositoryBlockingStub.cl
 com\academic\stub\student\AllStudentDataResponse$Student$1.class
 com\academic\stub\student\StudentRepositoryGrpc$StudentRepositoryStub.class
 com\academic\stub\student\AllStudentDataRequest$Builder.class
+Course.class
 com\academic\stub\student\StudentRepositoryGrpc$StudentRepositoryBaseDescriptorSupplier.class
 repository\CourseRepository.class
 com\academic\stub\student\StudentRepositoryGrpc$StudentRepositoryMethodDescriptorSupplier.class
@@ -23,7 +24,6 @@ com\academic\stub\student\AllStudentDataResponse$StudentOrBuilder.class
 com\academic\stub\student\StudentServerGrpc$StudentServerBaseDescriptorSupplier.class
 com\academic\stub\student\StudentRepositoryGrpc.class
 com\academic\stub\student\StudentRepositoryGrpc$StudentRepositoryFutureStub.class
-server\StudentServer.class
 com\academic\stub\student\StudentOuterClass.class
 com\academic\stub\student\StudentRepositoryGrpc$3.class
 com\academic\stub\student\StudentServerGrpc$MethodHandlers.class
@@ -31,14 +31,12 @@ com\academic\stub\student\StudentServerGrpc$StudentServerMethodDescriptorSupplie
 com\academic\stub\student\StudentServerGrpc$3.class
 server\CourseServer.class
 com\academic\stub\student\StudentServerGrpc$StudentServerStub.class
-client\Client.class
 com\academic\stub\student\StudentServerGrpc$StudentServerFutureStub.class
 data\Data.class
 com\academic\stub\student\AllStudentDataResponse$Student.class
 com\academic\stub\student\AllStudentDataRequest$1.class
 com\academic\stub\student\AllStudentDataRequestOrBuilder.class
 com\academic\stub\student\AllStudentDataResponse$Student$Builder.class
-repository\StudentRepository.class
 com\academic\stub\student\StudentServerGrpc$2.class
 com\academic\stub\student\StudentServerGrpc$StudentServerBlockingStub.class
 com\academic\stub\student\AllStudentDataResponse.class

@@ -20,7 +20,7 @@ message AllStudentDataResponse {
     string studentNumber = 1;
     string studentName = 2;
     string major = 3;
-    repeated string courses = 4;
+    repeated string courseNumber = 4;
   }
   repeated Student students = 1;
 }

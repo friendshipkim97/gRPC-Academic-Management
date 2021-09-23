@@ -40,19 +40,19 @@ public final class StudentOuterClass {
     java.lang.String[] descriptorData = {
       "\n\rstudent.proto\022\031com.academic.stub.stude" +
       "nt\"%\n\025AllStudentDataRequest\022\014\n\004name\030\001 \001(" +
-      "\t\"\274\001\n\026AllStudentDataResponse\022K\n\010students" +
+      "\t\"\301\001\n\026AllStudentDataResponse\022K\n\010students" +
       "\030\001 \003(\01329.com.academic.stub.student.AllSt" +
-      "udentDataResponse.Student\032U\n\007Student\022\025\n\r" +
+      "udentDataResponse.Student\032Z\n\007Student\022\025\n\r" +
       "studentNumber\030\001 \001(\t\022\023\n\013studentName\030\002 \001(\t" +
-      "\022\r\n\005major\030\003 \001(\t\022\017\n\007courses\030\004 \003(\t2\213\001\n\rStu" +
-      "dentServer\022z\n\021GetAllStudentData\0220.com.ac" +
-      "ademic.stub.student.AllStudentDataReques" +
-      "t\0321.com.academic.stub.student.AllStudent" +
-      "DataResponse\"\0002\217\001\n\021StudentRepository\022z\n\021" +
-      "GetAllStudentData\0220.com.academic.stub.st" +
-      "udent.AllStudentDataRequest\0321.com.academ" +
-      "ic.stub.student.AllStudentDataResponse\"\000" +
-      "B\002P\001b\006proto3"
+      "\022\r\n\005major\030\003 \001(\t\022\024\n\014courseNumber\030\004 \003(\t2\213\001" +
+      "\n\rStudentServer\022z\n\021GetAllStudentData\0220.c" +
+      "om.academic.stub.student.AllStudentDataR" +
+      "equest\0321.com.academic.stub.student.AllSt" +
+      "udentDataResponse\"\0002\217\001\n\021StudentRepositor" +
+      "y\022z\n\021GetAllStudentData\0220.com.academic.st" +
+      "ub.student.AllStudentDataRequest\0321.com.a" +
+      "cademic.stub.student.AllStudentDataRespo" +
+      "nse\"\000B\002P\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -75,7 +75,7 @@ public final class StudentOuterClass {
     internal_static_com_academic_stub_student_AllStudentDataResponse_Student_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_academic_stub_student_AllStudentDataResponse_Student_descriptor,
-        new java.lang.String[] { "StudentNumber", "StudentName", "Major", "Courses", });
+        new java.lang.String[] { "StudentNumber", "StudentName", "Major", "CourseNumber", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

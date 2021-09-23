@@ -11,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 public class Student {
 
     @Id
@@ -24,4 +25,10 @@ public class Student {
 
     @OneToMany(mappedBy = "student")
     private List<StudentCourse> studentCourses = new ArrayList<>();
+
+    // 연관관계 메서드
+    public void addStudentCourse(StudentCourse studentCourse) {
+        this.studentCourses.add(studentCourse);
+        studentCourse.setStudent(this);
+    }
 }
