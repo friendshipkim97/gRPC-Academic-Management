@@ -42,4 +42,16 @@ public class Course {
         this.studentCourses.add(studentCourse);
         studentCourse.setCourse(this);
     }
+
+    // 생성 메서드
+    public Course createCourse(String courseNumber, String professorLastName, String courseName, Course... courses) {
+        Course createdCourse = new Course();
+        createdCourse.setCourseNumber(courseNumber);
+        createdCourse.setProfessorLastName(professorLastName);
+        createdCourse.setCourseName(courseName);
+        for (Course course : courses) {
+            createdCourse.addChildCourse(course);
+        }
+        return createdCourse;
+    }
 }

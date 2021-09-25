@@ -31,4 +31,16 @@ public class Student {
         this.studentCourses.add(studentCourse);
         studentCourse.setStudent(this);
     }
+
+    // 생성 메서드
+    public Student createStudent(String studentNumber, String studentName, String major, StudentCourse... studentCourses) {
+        Student student = new Student();
+        student.setStudentNumber(studentNumber);
+        student.setStudentName(studentName);
+        student.setMajor(major);
+        for (StudentCourse studentCourse : studentCourses) {
+            student.addStudentCourse(studentCourse);
+        }
+        return student;
+    }
 }

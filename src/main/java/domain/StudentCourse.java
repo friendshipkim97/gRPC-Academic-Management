@@ -23,4 +23,11 @@ public class StudentCourse {
     @JoinColumn(name = "course_id")
     private Course course;
 
+    // 생성 메서드
+    public StudentCourse createStudentCourse(Course course) {
+        StudentCourse studentCourse = new StudentCourse();
+        studentCourse.setCourse(course);
+        return studentCourse;
+    }
+
 }

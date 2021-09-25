@@ -7,14 +7,12 @@ package com.academic.stub.student;
 // With this line, I am saying that create multiple classes rather than a single class
 option java_multiple_files = true;
 
-
-// This is the request message
-message AllStudentDataRequest {
-  string name = 1;
+// Null
+message Empty {
 }
 
 // This is the response message
-message AllStudentDataResponse {
+message AllStudentsDataResponse {
 
   message Student {
     string studentNumber = 1;
@@ -26,9 +24,9 @@ message AllStudentDataResponse {
 }
 
 service StudentServer {
-  rpc GetAllStudentData (AllStudentDataRequest) returns (AllStudentDataResponse) {}
+  rpc GetAllStudentsData (Empty) returns (AllStudentsDataResponse) {}
 }
 
 service StudentRepository {
-  rpc GetAllStudentData (AllStudentDataRequest) returns (AllStudentDataResponse) {}
+  rpc GetAllStudentsData (Empty) returns (AllStudentsDataResponse) {}
 }

@@ -1,31 +1,31 @@
 package server;
 
-
+import com.academic.stub.course.AllCoursesDataResponse;
+import com.academic.stub.course.CourseRepositoryGrpc;
+import com.academic.stub.course.CourseServerGrpc;
 import com.academic.stub.student.AllStudentsDataResponse;
-import com.academic.stub.student.Empty;
+import com.academic.stub.course.Empty;
 import com.academic.stub.student.StudentRepositoryGrpc;
-import com.academic.stub.student.StudentServerGrpc;
 import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-class StudentServerImpl extends StudentServerGrpc.StudentServerImplBase {
+public class CourseServerImpl extends CourseServerGrpc.CourseServerImplBase {
 
-
-    private StudentRepositoryGrpc.StudentRepositoryBlockingStub blockingStub;
+    private CourseRepositoryGrpc.CourseRepositoryBlockingStub blockingStub;
     private static final Logger logger = Logger.getLogger(StudentServerImpl.class.getName());
 
-    public StudentServerImpl(StudentRepositoryGrpc.StudentRepositoryBlockingStub blockingStub) {
+    public CourseServerImpl(CourseRepositoryGrpc.CourseRepositoryBlockingStub blockingStub) {
         this.blockingStub = blockingStub;
     }
 
     @Override
-    public void getAllStudentsData(Empty empty, StreamObserver<AllStudentsDataResponse> responseObserver) {
-        AllStudentsDataResponse response;
+    public void getAllCoursesData(Empty empty, StreamObserver<AllCoursesDataResponse> responseObserver) {
+        AllCoursesDataResponse response;
         try {
-            response = this.blockingStub.getAllStudentsData(empty);
+            response = this.blockingStub.getAllCoursesData(empty);
             responseObserver.onNext(response);
             responseObserver.onCompleted();
         } catch (StatusRuntimeException e) {
@@ -33,5 +33,4 @@ class StudentServerImpl extends StudentServerGrpc.StudentServerImplBase {
             return;
         }
     }
-
 }

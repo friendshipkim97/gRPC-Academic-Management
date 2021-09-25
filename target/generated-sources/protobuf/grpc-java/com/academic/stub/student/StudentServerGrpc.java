@@ -14,35 +14,35 @@ public final class StudentServerGrpc {
   public static final String SERVICE_NAME = "com.academic.stub.student.StudentServer";
 
   // Static method descriptors that strictly reflect the proto.
-  private static volatile io.grpc.MethodDescriptor<com.academic.stub.student.AllStudentDataRequest,
-      com.academic.stub.student.AllStudentDataResponse> getGetAllStudentDataMethod;
+  private static volatile io.grpc.MethodDescriptor<com.academic.stub.student.Empty,
+      com.academic.stub.student.AllStudentsDataResponse> getGetAllStudentsDataMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "GetAllStudentData",
-      requestType = com.academic.stub.student.AllStudentDataRequest.class,
-      responseType = com.academic.stub.student.AllStudentDataResponse.class,
+      fullMethodName = SERVICE_NAME + '/' + "GetAllStudentsData",
+      requestType = com.academic.stub.student.Empty.class,
+      responseType = com.academic.stub.student.AllStudentsDataResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.academic.stub.student.AllStudentDataRequest,
-      com.academic.stub.student.AllStudentDataResponse> getGetAllStudentDataMethod() {
-    io.grpc.MethodDescriptor<com.academic.stub.student.AllStudentDataRequest, com.academic.stub.student.AllStudentDataResponse> getGetAllStudentDataMethod;
-    if ((getGetAllStudentDataMethod = StudentServerGrpc.getGetAllStudentDataMethod) == null) {
+  public static io.grpc.MethodDescriptor<com.academic.stub.student.Empty,
+      com.academic.stub.student.AllStudentsDataResponse> getGetAllStudentsDataMethod() {
+    io.grpc.MethodDescriptor<com.academic.stub.student.Empty, com.academic.stub.student.AllStudentsDataResponse> getGetAllStudentsDataMethod;
+    if ((getGetAllStudentsDataMethod = StudentServerGrpc.getGetAllStudentsDataMethod) == null) {
       synchronized (StudentServerGrpc.class) {
-        if ((getGetAllStudentDataMethod = StudentServerGrpc.getGetAllStudentDataMethod) == null) {
-          StudentServerGrpc.getGetAllStudentDataMethod = getGetAllStudentDataMethod =
-              io.grpc.MethodDescriptor.<com.academic.stub.student.AllStudentDataRequest, com.academic.stub.student.AllStudentDataResponse>newBuilder()
+        if ((getGetAllStudentsDataMethod = StudentServerGrpc.getGetAllStudentsDataMethod) == null) {
+          StudentServerGrpc.getGetAllStudentsDataMethod = getGetAllStudentsDataMethod =
+              io.grpc.MethodDescriptor.<com.academic.stub.student.Empty, com.academic.stub.student.AllStudentsDataResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "GetAllStudentData"))
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "GetAllStudentsData"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.academic.stub.student.AllStudentDataRequest.getDefaultInstance()))
+                  com.academic.stub.student.Empty.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.academic.stub.student.AllStudentDataResponse.getDefaultInstance()))
-              .setSchemaDescriptor(new StudentServerMethodDescriptorSupplier("GetAllStudentData"))
+                  com.academic.stub.student.AllStudentsDataResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new StudentServerMethodDescriptorSupplier("GetAllStudentsData"))
               .build();
         }
       }
     }
-    return getGetAllStudentDataMethod;
+    return getGetAllStudentsDataMethod;
   }
 
   /**
@@ -95,20 +95,20 @@ public final class StudentServerGrpc {
 
     /**
      */
-    public void getAllStudentData(com.academic.stub.student.AllStudentDataRequest request,
-        io.grpc.stub.StreamObserver<com.academic.stub.student.AllStudentDataResponse> responseObserver) {
-      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetAllStudentDataMethod(), responseObserver);
+    public void getAllStudentsData(com.academic.stub.student.Empty request,
+        io.grpc.stub.StreamObserver<com.academic.stub.student.AllStudentsDataResponse> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetAllStudentsDataMethod(), responseObserver);
     }
 
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
-            getGetAllStudentDataMethod(),
+            getGetAllStudentsDataMethod(),
             io.grpc.stub.ServerCalls.asyncUnaryCall(
               new MethodHandlers<
-                com.academic.stub.student.AllStudentDataRequest,
-                com.academic.stub.student.AllStudentDataResponse>(
-                  this, METHODID_GET_ALL_STUDENT_DATA)))
+                com.academic.stub.student.Empty,
+                com.academic.stub.student.AllStudentsDataResponse>(
+                  this, METHODID_GET_ALL_STUDENTS_DATA)))
           .build();
     }
   }
@@ -129,10 +129,10 @@ public final class StudentServerGrpc {
 
     /**
      */
-    public void getAllStudentData(com.academic.stub.student.AllStudentDataRequest request,
-        io.grpc.stub.StreamObserver<com.academic.stub.student.AllStudentDataResponse> responseObserver) {
+    public void getAllStudentsData(com.academic.stub.student.Empty request,
+        io.grpc.stub.StreamObserver<com.academic.stub.student.AllStudentsDataResponse> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
-          getChannel().newCall(getGetAllStudentDataMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getGetAllStudentsDataMethod(), getCallOptions()), request, responseObserver);
     }
   }
 
@@ -152,9 +152,9 @@ public final class StudentServerGrpc {
 
     /**
      */
-    public com.academic.stub.student.AllStudentDataResponse getAllStudentData(com.academic.stub.student.AllStudentDataRequest request) {
+    public com.academic.stub.student.AllStudentsDataResponse getAllStudentsData(com.academic.stub.student.Empty request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
-          getChannel(), getGetAllStudentDataMethod(), getCallOptions(), request);
+          getChannel(), getGetAllStudentsDataMethod(), getCallOptions(), request);
     }
   }
 
@@ -174,14 +174,14 @@ public final class StudentServerGrpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.academic.stub.student.AllStudentDataResponse> getAllStudentData(
-        com.academic.stub.student.AllStudentDataRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.academic.stub.student.AllStudentsDataResponse> getAllStudentsData(
+        com.academic.stub.student.Empty request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
-          getChannel().newCall(getGetAllStudentDataMethod(), getCallOptions()), request);
+          getChannel().newCall(getGetAllStudentsDataMethod(), getCallOptions()), request);
     }
   }
 
-  private static final int METHODID_GET_ALL_STUDENT_DATA = 0;
+  private static final int METHODID_GET_ALL_STUDENTS_DATA = 0;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -200,9 +200,9 @@ public final class StudentServerGrpc {
     @java.lang.SuppressWarnings("unchecked")
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
-        case METHODID_GET_ALL_STUDENT_DATA:
-          serviceImpl.getAllStudentData((com.academic.stub.student.AllStudentDataRequest) request,
-              (io.grpc.stub.StreamObserver<com.academic.stub.student.AllStudentDataResponse>) responseObserver);
+        case METHODID_GET_ALL_STUDENTS_DATA:
+          serviceImpl.getAllStudentsData((com.academic.stub.student.Empty) request,
+              (io.grpc.stub.StreamObserver<com.academic.stub.student.AllStudentsDataResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -265,7 +265,7 @@ public final class StudentServerGrpc {
         if (result == null) {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new StudentServerFileDescriptorSupplier())
-              .addMethod(getGetAllStudentDataMethod())
+              .addMethod(getGetAllStudentsDataMethod())
               .build();
         }
       }

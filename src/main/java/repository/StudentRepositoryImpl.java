@@ -1,7 +1,7 @@
 package repository;
 
-import com.academic.stub.student.AllStudentDataRequest;
-import com.academic.stub.student.AllStudentDataResponse;
+import com.academic.stub.student.AllStudentsDataResponse;
+import com.academic.stub.student.Empty;
 import com.academic.stub.student.StudentRepositoryGrpc;
 import domain.Course;
 import domain.Student;
@@ -30,12 +30,11 @@ public class StudentRepositoryImpl extends StudentRepositoryGrpc.StudentReposito
     }
 
     @Override
-    public void getAllStudentData(AllStudentDataRequest req, StreamObserver<AllStudentDataResponse> responseObserver) {
-        AllStudentDataResponse response;
+    public void getAllStudentsData(Empty empty, StreamObserver<AllStudentsDataResponse> responseObserver) {
+        AllStudentsDataResponse response;
         try {
 
-            initStudents();
-            ArrayList<AllStudentDataResponse.Student> studentResults = new ArrayList<>();
+            ArrayList<AllStudentsDataResponse.Student> studentResults = new ArrayList<>();
             List<Student> result = findAll();
 
             System.out.println("사이즈"+result.size());
@@ -45,19 +44,17 @@ public class StudentRepositoryImpl extends StudentRepositoryGrpc.StudentReposito
                 for (StudentCourse studentCourse : studentCourses) {
                     courseNumbers.add(studentCourse.getCourse().getCourseNumber());
                 }
-
-                AllStudentDataResponse.Student studentResult = AllStudentDataResponse
+                AllStudentsDataResponse.Student studentResult = AllStudentsDataResponse
                         .Student
                         .newBuilder()
                         .setStudentName(student.getStudentName())
                         .setStudentNumber(student.getStudentNumber())
-                        .setMajor(student.getMajor()).build();
-                        //.addAllCourseNumber(courseNumbers).build();
-
+                        .setMajor(student.getMajor())
+                        .addAllCourseNumber(courseNumbers).build();
                 studentResults.add(studentResult);
             }
 
-            response = AllStudentDataResponse.newBuilder()
+            response = AllStudentsDataResponse.newBuilder()
                     .addAllStudents(studentResults).build();
 
             responseObserver.onNext(response);
@@ -66,24 +63,6 @@ public class StudentRepositoryImpl extends StudentRepositoryGrpc.StudentReposito
             logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
             return;
         }
-    }
-
-    private void initStudents() {
-        EntityTransaction tx = em.getTransaction();
-        Student student = new Student();
-        student.setStudentNumber("11111");
-        student.setStudentName("kimjungwoo");
-        student.setMajor("cs");
-        Course course = new Course();
-        StudentCourse studentCourse = new StudentCourse();
-        studentCourse.setStudent(student);
-        studentCourse.setCourse(course);
-        student.addStudentCourse(studentCourse);
-
-        tx.begin();
-        em.persist(course);
-        em.persist(student);
-        tx.commit();
     }
 
     public List<Student> findAll(){

@@ -1,5 +1,6 @@
 package server;
 
+import com.academic.stub.course.CourseRepositoryGrpc;
 import com.academic.stub.student.StudentRepositoryGrpc;
 import io.grpc.*;
 
@@ -11,10 +12,10 @@ import java.util.logging.Logger;
 class MainServer {
 
     private static final Logger logger = Logger.getLogger(MainServer.class.getName());
-    private static StudentRepositoryGrpc.StudentRepositoryBlockingStub blockingStub;
+    private static StudentRepositoryGrpc.StudentRepositoryBlockingStub studentRepositoryBlockingStub;
+    private static CourseRepositoryGrpc.CourseRepositoryBlockingStub courseRepositoryBlockingStub;
     private io.grpc.Server server;
 
-    // The good old main method is defined here :)
     public static void main(String[] args) throws IOException, InterruptedException {
         MainServer mainServer = new MainServer();
         mainServer.init();
@@ -28,12 +29,14 @@ class MainServer {
         ManagedChannel channel = ManagedChannelBuilder.forTarget(target)
                 .usePlaintext()
                 .build();
-        blockingStub = StudentRepositoryGrpc.newBlockingStub(channel);
+        studentRepositoryBlockingStub = StudentRepositoryGrpc.newBlockingStub(channel);
+        courseRepositoryBlockingStub = CourseRepositoryGrpc.newBlockingStub(channel);
     }
 
     private void start() throws IOException {
         Server server = ServerBuilder.forPort(50050)
-                .addService(new StudentServerImpl(blockingStub))
+                .addService(new StudentServerImpl(studentRepositoryBlockingStub))
+                .addService(new CourseServerImpl(courseRepositoryBlockingStub))
                 .build();
         try {
             server.start();

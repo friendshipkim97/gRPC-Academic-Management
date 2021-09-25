@@ -15,20 +15,20 @@ public final class StudentOuterClass {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_academic_stub_student_AllStudentDataRequest_descriptor;
+    internal_static_com_academic_stub_student_Empty_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_com_academic_stub_student_AllStudentDataRequest_fieldAccessorTable;
+      internal_static_com_academic_stub_student_Empty_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_academic_stub_student_AllStudentDataResponse_descriptor;
+    internal_static_com_academic_stub_student_AllStudentsDataResponse_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_com_academic_stub_student_AllStudentDataResponse_fieldAccessorTable;
+      internal_static_com_academic_stub_student_AllStudentsDataResponse_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_academic_stub_student_AllStudentDataResponse_Student_descriptor;
+    internal_static_com_academic_stub_student_AllStudentsDataResponse_Student_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_com_academic_stub_student_AllStudentDataResponse_Student_fieldAccessorTable;
+      internal_static_com_academic_stub_student_AllStudentsDataResponse_Student_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -39,42 +39,40 @@ public final class StudentOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n\rstudent.proto\022\031com.academic.stub.stude" +
-      "nt\"%\n\025AllStudentDataRequest\022\014\n\004name\030\001 \001(" +
-      "\t\"\301\001\n\026AllStudentDataResponse\022K\n\010students" +
-      "\030\001 \003(\01329.com.academic.stub.student.AllSt" +
-      "udentDataResponse.Student\032Z\n\007Student\022\025\n\r" +
-      "studentNumber\030\001 \001(\t\022\023\n\013studentName\030\002 \001(\t" +
-      "\022\r\n\005major\030\003 \001(\t\022\024\n\014courseNumber\030\004 \003(\t2\213\001" +
-      "\n\rStudentServer\022z\n\021GetAllStudentData\0220.c" +
-      "om.academic.stub.student.AllStudentDataR" +
-      "equest\0321.com.academic.stub.student.AllSt" +
-      "udentDataResponse\"\0002\217\001\n\021StudentRepositor" +
-      "y\022z\n\021GetAllStudentData\0220.com.academic.st" +
-      "ub.student.AllStudentDataRequest\0321.com.a" +
-      "cademic.stub.student.AllStudentDataRespo" +
-      "nse\"\000B\002P\001b\006proto3"
+      "nt\"\007\n\005Empty\"\303\001\n\027AllStudentsDataResponse\022" +
+      "L\n\010students\030\001 \003(\0132:.com.academic.stub.st" +
+      "udent.AllStudentsDataResponse.Student\032Z\n" +
+      "\007Student\022\025\n\rstudentNumber\030\001 \001(\t\022\023\n\013stude" +
+      "ntName\030\002 \001(\t\022\r\n\005major\030\003 \001(\t\022\024\n\014courseNum" +
+      "ber\030\004 \003(\t2}\n\rStudentServer\022l\n\022GetAllStud" +
+      "entsData\022 .com.academic.stub.student.Emp" +
+      "ty\0322.com.academic.stub.student.AllStuden" +
+      "tsDataResponse\"\0002\201\001\n\021StudentRepository\022l" +
+      "\n\022GetAllStudentsData\022 .com.academic.stub" +
+      ".student.Empty\0322.com.academic.stub.stude" +
+      "nt.AllStudentsDataResponse\"\000B\002P\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         });
-    internal_static_com_academic_stub_student_AllStudentDataRequest_descriptor =
+    internal_static_com_academic_stub_student_Empty_descriptor =
       getDescriptor().getMessageTypes().get(0);
-    internal_static_com_academic_stub_student_AllStudentDataRequest_fieldAccessorTable = new
+    internal_static_com_academic_stub_student_Empty_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_com_academic_stub_student_AllStudentDataRequest_descriptor,
-        new java.lang.String[] { "Name", });
-    internal_static_com_academic_stub_student_AllStudentDataResponse_descriptor =
+        internal_static_com_academic_stub_student_Empty_descriptor,
+        new java.lang.String[] { });
+    internal_static_com_academic_stub_student_AllStudentsDataResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
-    internal_static_com_academic_stub_student_AllStudentDataResponse_fieldAccessorTable = new
+    internal_static_com_academic_stub_student_AllStudentsDataResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_com_academic_stub_student_AllStudentDataResponse_descriptor,
+        internal_static_com_academic_stub_student_AllStudentsDataResponse_descriptor,
         new java.lang.String[] { "Students", });
-    internal_static_com_academic_stub_student_AllStudentDataResponse_Student_descriptor =
-      internal_static_com_academic_stub_student_AllStudentDataResponse_descriptor.getNestedTypes().get(0);
-    internal_static_com_academic_stub_student_AllStudentDataResponse_Student_fieldAccessorTable = new
+    internal_static_com_academic_stub_student_AllStudentsDataResponse_Student_descriptor =
+      internal_static_com_academic_stub_student_AllStudentsDataResponse_descriptor.getNestedTypes().get(0);
+    internal_static_com_academic_stub_student_AllStudentsDataResponse_Student_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_com_academic_stub_student_AllStudentDataResponse_Student_descriptor,
+        internal_static_com_academic_stub_student_AllStudentsDataResponse_Student_descriptor,
         new java.lang.String[] { "StudentNumber", "StudentName", "Major", "CourseNumber", });
   }
 
