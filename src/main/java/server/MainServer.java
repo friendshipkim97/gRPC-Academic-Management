@@ -1,65 +1,35 @@
 package server;
 
-import com.academic.stub.course.CourseRepositoryGrpc;
-import com.academic.stub.student.StudentRepositoryGrpc;
-import io.grpc.*;
+import io.grpc.Server;
+import io.grpc.ServerBuilder;
+import repository.MainRepository;
+import service.CourseServiceImpl;
+import service.StudentServiceImpl;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 class MainServer {
 
     private static final Logger logger = Logger.getLogger(MainServer.class.getName());
-    private static StudentRepositoryGrpc.StudentRepositoryBlockingStub studentRepositoryBlockingStub;
-    private static CourseRepositoryGrpc.CourseRepositoryBlockingStub courseRepositoryBlockingStub;
-    private io.grpc.Server server;
 
-    public static void main(String[] args) throws IOException, InterruptedException {
-        MainServer mainServer = new MainServer();
-        mainServer.init();
-        mainServer.start();
-        mainServer.blockUntilShutdown();
-    }
+    public static void main(String[] args) {
 
-    private void init() {
-        String target = "localhost:50051";
+        new MainRepository();
 
-        ManagedChannel channel = ManagedChannelBuilder.forTarget(target)
-                .usePlaintext()
-                .build();
-        studentRepositoryBlockingStub = StudentRepositoryGrpc.newBlockingStub(channel);
-        courseRepositoryBlockingStub = CourseRepositoryGrpc.newBlockingStub(channel);
-    }
-
-    private void start() throws IOException {
         Server server = ServerBuilder.forPort(50050)
-                .addService(new StudentServerImpl(studentRepositoryBlockingStub))
-                .addService(new CourseServerImpl(courseRepositoryBlockingStub))
+                .addService(new StudentServiceImpl())
+                .addService(new CourseServiceImpl())
                 .build();
         try {
             server.start();
-            logger.log(Level.INFO, "RESULT SERVER STARTED ON PORT 8080");
-            // This awaitTermination method will help to remain the server, otherwise the server will shutdown quickly
+            logger.log(Level.INFO, "STUDENT REPOSITORY STARTED ON PORT 50050");
             server.awaitTermination();
         } catch (IOException e) {
-            logger.log(Level.SEVERE, "RESULT SERVER DID NOT START");
+            logger.log(Level.SEVERE, "STUDENT REPOSITORY DID NOT START");
         } catch (InterruptedException e) {
-            logger.log(Level.SEVERE, "SERVER SHUT DOWN ON INTERRUPTED");
-        }
-
-    }
-
-    private void blockUntilShutdown() throws InterruptedException {
-        if (server != null) {
-            server.awaitTermination();
-        }
-    }
-
-    private void stop() throws InterruptedException {
-        if (server != null) {
-            server.shutdown().awaitTermination(30, TimeUnit.SECONDS);
+            logger.log(Level.SEVERE, "STUDENT REPOSITORY SHUT DOWN ON INTERRUPTED");
         }
     }
 

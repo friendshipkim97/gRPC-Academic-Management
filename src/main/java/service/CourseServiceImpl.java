@@ -1,40 +1,35 @@
-package repository;
+package service;
 
-import com.academic.stub.course.AllCoursesDataResponse;
-import com.academic.stub.course.CourseRepositoryGrpc;
-import com.academic.stub.course.Empty;
-import domain.Course;
+import com.academic.stub.academic.AllCoursesDataResponse;
+import com.academic.stub.academic.CourseServiceGrpc;
+import com.academic.stub.academic.Empty;
+import entity.Course;
 import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
+import repository.CourseRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class CourseRepositoryImpl extends CourseRepositoryGrpc.CourseRepositoryImplBase {
-    private static final Logger logger = Logger.getLogger(CourseRepositoryImpl.class.getName());
-    private EntityManager em;
-    private EntityManagerFactory emf;
+public class CourseServiceImpl extends CourseServiceGrpc.CourseServiceImplBase {
 
-    public CourseRepositoryImpl(EntityManager em, EntityManagerFactory emf) {
-        this.em = em;
-        this.emf = emf;
+    private static final Logger logger = Logger.getLogger(StudentServiceImpl.class.getName());
+    private CourseRepository courseRepository;
+
+    public CourseServiceImpl() {
+        courseRepository = new CourseRepository();
     }
 
     @Override
-        public void getAllCoursesData(Empty empty, StreamObserver<AllCoursesDataResponse> responseObserver) {
+    public void getAllCoursesData(Empty empty, StreamObserver<AllCoursesDataResponse> responseObserver) {
         AllCoursesDataResponse response;
         try {
 
             ArrayList<AllCoursesDataResponse.Course> courseResults = new ArrayList<>();
-            List<Course> result = findAll();
+            List<Course> result = courseRepository.findAll();
 
-            System.out.println("사이즈"+result.size());
             for (Course course : result) {
                 ArrayList<String> advancedCourseNumbers = new ArrayList<>();
                 List<Course> advancedCourses = course.getChild();
@@ -60,16 +55,5 @@ public class CourseRepositoryImpl extends CourseRepositoryGrpc.CourseRepositoryI
             logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
             return;
         }
-    }
-
-    public List<Course> findAll(){
-        EntityTransaction tx = em.getTransaction();
-        tx.begin();
-        List<Course> resultList = em.createQuery("select c from Course c", Course.class).getResultList();
-        tx.commit();
-        if (resultList == null) {
-            throw new NoSuchElementException("NO DATA FOUND");
-        }
-        return resultList;
     }
 }
