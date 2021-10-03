@@ -22,7 +22,7 @@ public class Course {
     private String courseName;
 
     @OneToMany(mappedBy = "course")
-    private List<StudentCourse> studentCourses = new ArrayList<>();
+    private List<StudentCourse> studentCourseEntities = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
@@ -39,17 +39,17 @@ public class Course {
 
     // 연관관계 메서드
     public void addStudentCourse(StudentCourse studentCourse) {
-        this.studentCourses.add(studentCourse);
+        this.studentCourseEntities.add(studentCourse);
         studentCourse.setCourse(this);
     }
 
     // 생성 메서드
-    public Course createCourse(String courseNumber, String professorLastName, String courseName, Course... courses) {
+    public Course createCourse(String courseNumber, String professorLastName, String courseName, Course... cours) {
         Course createdCourse = new Course();
         createdCourse.setCourseNumber(courseNumber);
         createdCourse.setProfessorLastName(professorLastName);
         createdCourse.setCourseName(courseName);
-        for (Course course : courses) {
+        for (Course course : cours) {
             createdCourse.addChildCourse(course);
         }
         return createdCourse;

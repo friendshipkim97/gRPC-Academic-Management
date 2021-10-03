@@ -1,8 +1,7 @@
 package service;
 
-import com.academic.stub.academic.AllCoursesDataResponse;
-import com.academic.stub.academic.CourseServiceGrpc;
-import com.academic.stub.academic.Empty;
+import com.academic.stub.academic.*;
+
 import entity.Course;
 import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
@@ -23,7 +22,7 @@ public class CourseServiceImpl extends CourseServiceGrpc.CourseServiceImplBase {
     }
 
     @Override
-    public void getAllCoursesData(Empty empty, StreamObserver<AllCoursesDataResponse> responseObserver) {
+    public void getAllCoursesData(EmptyRequest empty, StreamObserver<AllCoursesDataResponse> responseObserver) {
         AllCoursesDataResponse response;
         try {
 

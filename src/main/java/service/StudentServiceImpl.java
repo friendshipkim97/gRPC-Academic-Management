@@ -1,8 +1,6 @@
 package service;
 
-import com.academic.stub.academic.AllStudentsDataResponse;
-import com.academic.stub.academic.Empty;
-import com.academic.stub.academic.StudentServiceGrpc;
+import com.academic.stub.academic.*;
 import entity.Student;
 import entity.StudentCourse;
 import io.grpc.StatusRuntimeException;
@@ -14,6 +12,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static entity.Student.createStudent;
+
 public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBase{
 
     private static final Logger logger = Logger.getLogger(StudentServiceImpl.class.getName());
@@ -24,7 +24,7 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
     }
 
     @Override
-    public void getAllStudentsData(Empty empty, StreamObserver<AllStudentsDataResponse> responseObserver) {
+    public void getAllStudentsData(EmptyRequest empty, StreamObserver<AllStudentsDataResponse> responseObserver) {
         AllStudentsDataResponse response;
         try {
 
@@ -33,7 +33,7 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
 
             for (Student student : result) {
                 ArrayList<String> courseNumbers = new ArrayList<>();
-                List<StudentCourse> studentCourses = student.getStudentCourses();
+                List<StudentCourse> studentCourses = student.getStudentCourse();
                 for (StudentCourse studentCourse : studentCourses) {
                     courseNumbers.add(studentCourse.getCourse().getCourseNumber());
                 }
@@ -58,4 +58,36 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
         }
     }
 
+    @Override
+    public void addStudentData(AddStudentRequest request, StreamObserver<IsCompletedResponse> responseObserver) {
+        try {
+            Student student = createStudent(request.getStudentNumber(), request.getStudentName(), request.getMajor());
+            IsCompletedResponse isCompleted = IsCompletedResponse.newBuilder()
+                    .setIsCompleted(studentRepository.save(student)).build();
+
+            responseObserver.onNext(isCompleted);
+            responseObserver.onCompleted();
+        } catch (StatusRuntimeException e) {
+            logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
+            return;
+        }
+    }
+
+    @Override
+    public void deleteStudentData(DeleteStudentRequest request, StreamObserver<IsCompletedResponse> responseObserver) {
+        try {
+            System.out.println("service");
+            System.out.println(request.getStudentId());
+            IsCompletedResponse isCompleted = IsCompletedResponse.newBuilder()
+                    .setIsCompleted(studentRepository.delete(request.getStudentId())).build();
+
+            responseObserver.onNext(isCompleted);
+            responseObserver.onCompleted();
+        } catch (StatusRuntimeException e) {
+            logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
+            return;
+        }
+    }
 }
+
+

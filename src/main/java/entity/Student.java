@@ -23,21 +23,21 @@ public class Student {
     private String major;
 
     @OneToMany(mappedBy = "student")
-    private List<StudentCourse> studentCourses = new ArrayList<>();
+    private List<StudentCourse> studentCourse = new ArrayList<>();
 
     // 연관관계 메서드
     public void addStudentCourse(StudentCourse studentCourse) {
-        this.studentCourses.add(studentCourse);
+        this.studentCourse.add(studentCourse);
         studentCourse.setStudent(this);
     }
 
     // 생성 메서드
-    public Student createStudent(String studentNumber, String studentName, String major, StudentCourse... studentCourses) {
+    public static Student createStudent(String studentNumber, String studentName, String major, StudentCourse... studentCoursEntities) {
         Student student = new Student();
         student.setStudentNumber(studentNumber);
         student.setStudentName(studentName);
         student.setMajor(major);
-        for (StudentCourse studentCourse : studentCourses) {
+        for (StudentCourse studentCourse : studentCoursEntities) {
             student.addStudentCourse(studentCourse);
         }
         return student;

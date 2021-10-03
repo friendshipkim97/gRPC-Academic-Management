@@ -4,7 +4,6 @@ import entity.Course;
 import entity.Student;
 import entity.StudentCourse;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -22,7 +21,7 @@ public class MainRepository {
     public MainRepository() {
         this.emf = Persistence.createEntityManagerFactory("academic");
         this.em = emf.createEntityManager();
-        initDB();
+        //initDB();
     }
 
     /**
