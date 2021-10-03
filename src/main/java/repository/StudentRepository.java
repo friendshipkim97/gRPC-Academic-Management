@@ -1,14 +1,12 @@
 package repository;
 
-import com.mysql.cj.log.Log;
 import entity.Student;
+import exception.NullDataException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class StudentRepository{
@@ -22,13 +20,13 @@ public class StudentRepository{
         this.em = emf.createEntityManager();
     }
 
-    public List<Student> findAll(){
+    public List<Student> findAll() throws NullDataException {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         List<Student> resultList = em.createQuery("select s from Student s", Student.class).getResultList();
         tx.commit();
-        if (resultList == null) {
-            throw new NoSuchElementException("NO DATA FOUND");
+        if (resultList.size() == 0) {
+            throw new NullDataException("NO STUDENT DATA FOUND");
         }
         return resultList;
     }
@@ -51,6 +49,8 @@ public class StudentRepository{
         return true;
     }
 
+    // SQLIntegrityConstraintViolationException 위반 예외 추가하기
+    // NullDataException 추가
     public boolean delete(String studentId) {
         EntityTransaction tx = em.getTransaction();
         tx.begin();

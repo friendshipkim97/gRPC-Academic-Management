@@ -3,13 +3,12 @@ package service;
 import com.academic.stub.academic.*;
 import entity.Student;
 import entity.StudentCourse;
-import io.grpc.StatusRuntimeException;
+import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import repository.StudentRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static entity.Student.createStudent;
@@ -52,8 +51,10 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
 
             responseObserver.onNext(response);
             responseObserver.onCompleted();
-        } catch (StatusRuntimeException e) {
-            logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
+        } catch (Exception e) {
+            logger.info(e.getClass().getSimpleName() + " : "+ e.getMessage());
+            Status status = Status.NOT_FOUND.withDescription(e.getMessage());
+            responseObserver.onError(status.asRuntimeException());
             return;
         }
     }
@@ -67,8 +68,10 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
 
             responseObserver.onNext(isCompleted);
             responseObserver.onCompleted();
-        } catch (StatusRuntimeException e) {
-            logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
+        } catch (Exception e) {
+            logger.info(e.getClass().getSimpleName() + " : "+ e.getMessage());
+            Status status = Status.NOT_FOUND.withDescription(e.getMessage());
+            responseObserver.onError(status.asRuntimeException());
             return;
         }
     }
@@ -83,8 +86,10 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
 
             responseObserver.onNext(isCompleted);
             responseObserver.onCompleted();
-        } catch (StatusRuntimeException e) {
-            logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
+        } catch (Exception e) {
+            logger.info(e.getClass().getSimpleName() + " : "+ e.getMessage());
+            Status status = Status.NOT_FOUND.withDescription(e.getMessage());
+            responseObserver.onError(status.asRuntimeException());
             return;
         }
     }
