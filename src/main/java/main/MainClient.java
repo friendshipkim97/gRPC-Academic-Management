@@ -32,36 +32,45 @@ public class MainClient {
 
         MainClient client = new MainClient(channel);
         while (true) {
-            BufferedReader objReader = new BufferedReader(new InputStreamReader(System.in));
-            printMenu();
-            String sChoice = objReader.readLine().trim();
-            switch(sChoice){
-                case "1":
-                    List<AllStudentsDataResponse.Student> studentsResults = client.allStudentsDataResponse();
-                    if (studentsResults != null) client.showAllStudents(studentsResults);
-                    else logger.info("학생 정보가 없습니다.");
-                    break;
-                case "2":
-                    List<AllCoursesDataResponse.Course> results = client.allCoursesDataResponse();
-                    if (results != null) client.showAllCourses(results);
-                    else logger.info("강좌 정보가 없습니다.");
-                    break;
-                case "3":
-                    client.addStudentDataResponse();
-                case "4":
-                    client.deleteStudentDataResponse();
+            try {
+                BufferedReader objReader = new BufferedReader(new InputStreamReader(System.in));
+                printMenu();
+                String sChoice = objReader.readLine().trim();
+                switch (sChoice) {
+                    case "1":
+                        client.allStudentsDataResponse();
+                        break;
+                    case "2":
+                        List<AllCoursesDataResponse.Course> results = client.allCoursesDataResponse();
+                        if (results != null) client.showAllCourses(results);
+                        else logger.info("강좌 정보가 없습니다.");
+                        break;
+                    case "3":
+                        // 메서드 뽑아서 리펙토링하기, objReader넘겨줘도 됨
+                        if (client.addStudentDataResponse()) System.out.println("SUCCESS");
+                        else System.out.println("FAIL");
+                        break;
+                    case "4":
+                        if (client.deleteStudentDataResponse()) System.out.println("SUCCESS");
+                        else System.out.println("FAIL");
+                        break;
                     //
-                case "5":
-                    //
-                case "6":
-                    //
-                default:
-                    System.out.println("올바르지 않은 선택입니다.");
-            }
+                    case "5":
+                        //
+                    case "6":
+                        //
+                    case "8":
+                        return;
+                    default:
+                        System.out.println("올바르지 않은 선택입니다.");
+                }
+
+            } catch (Exception e) {
+                logger.info(e.getClass().getSimpleName() + " : " + e.getMessage());
             }
         }
 
-
+    }
     private static void printMenu() {
         System.out.println();
         System.out.println("***************************************************");
@@ -74,7 +83,10 @@ public class MainClient {
         System.out.println("************(4) : 학생 지우기************************");
         System.out.println("************(5) : 과목 등록하기***********************");
         System.out.println("************(6) : 과목 지우기************************");
-        System.out.println("************(7) : 나가기****************************");
+        System.out.println("************(7) : 수강 신청************************"); // 학생아이디, 과목 아이디 넣어서 수강신청하기
+        // studentId 체크, courseId 체크 과목 없는데 수강신청하면 안됨 체크해야됨 선수 과목 체크.. 총 3가지 체크 (Server에서 할 일)
+        // Exception으로 처리할건지 return으로 체크할건지 하기
+        System.out.println("************(8) : 나가기****************************");
     }
 
     private void showAllStudents(List<AllStudentsDataResponse.Student> results) {
@@ -102,27 +114,11 @@ public class MainClient {
     }
 
     public List<AllStudentsDataResponse.Student> allStudentsDataResponse(){
-
-        AllStudentsDataResponse response;
-        try {
-            response = studentServerBlockingStub.getAllStudentsData(null);
-        } catch (StatusRuntimeException e) {
-            logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
-            return null;
-        }
-        return response.getStudentsList();
+            return studentServerBlockingStub.getAllStudentsData(null).getStudentsList();
     }
 
     public List<AllCoursesDataResponse.Course> allCoursesDataResponse(){
-
-        AllCoursesDataResponse response;
-        try {
-            response = courseServerBlockingStub.getAllCoursesData(null);
-        } catch (StatusRuntimeException e) {
-            logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
-            return null;
-        }
-        return response.getCoursesList();
+            return courseServerBlockingStub.getAllCoursesData(null).getCoursesList();
     }
 
     public boolean addStudentDataResponse() throws IOException {
@@ -141,12 +137,9 @@ public class MainClient {
         BufferedReader objReader = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("***************************************************");
         System.out.println("********************학생 정보 입력하기****************");
-        System.out.println("학생 이름을 입력하세요.");
-        String studentName = objReader.readLine().trim();
-        System.out.println("학번을 입력하세요.");
-        String studentNumber = objReader.readLine().trim();
-        System.out.println("전공을 입력하세요.");
-        String studentMajor = objReader.readLine().trim();
+        System.out.println("학생 이름을 입력하세요.");  String studentName = objReader.readLine().trim();
+        System.out.println("학번을 입력하세요."); String studentNumber = objReader.readLine().trim();
+        System.out.println("전공을 입력하세요."); String studentMajor = objReader.readLine().trim();
 
         AddStudentRequest request = AddStudentRequest.newBuilder()
                 .setStudentName(studentName)
