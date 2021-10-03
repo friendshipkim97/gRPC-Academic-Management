@@ -1,3 +1,5 @@
+// ----------------------settings-----------------------------------------
+
 // If we did not define the syntax, it would take the syntax as proto2 by default
 syntax = "proto3";
 
@@ -7,8 +9,39 @@ package com.academic.stub.academic;
 // With this line, I am saying that create multiple classes rather than a single class
 option java_multiple_files = true;
 
-message Empty {
+
+// ----------------------message-----------------------------------------------------
+
+
+
+// ----------------------request --------------------------------------------------------
+
+message EmptyRequest {
 }
+
+message AddStudentRequest {
+  string studentNumber = 1;
+  string studentName = 2;
+  string major = 3;
+  repeated string courseNumber = 4;
+}
+
+message AddCourseRequest {
+  string courseNumber = 1;
+  string professorLastName = 2;
+  string courseName = 3;
+  repeated string advancedCourseNumber = 4;
+}
+
+message DeleteStudentRequest{
+  string studentId = 1;
+}
+
+message DeleteCourseRequest{
+  string courseId = 1;
+}
+
+// ----------------------response --------------------------------------------------------
 
 message AllStudentsDataResponse {
 
@@ -18,7 +51,7 @@ message AllStudentsDataResponse {
     string major = 3;
     repeated string courseNumber = 4;
   }
-  repeated Student students = 1;
+  repeated Student students = 2;
 }
 
 message AllCoursesDataResponse {
@@ -29,14 +62,23 @@ message AllCoursesDataResponse {
     string courseName = 3;
     repeated string advancedCourseNumber = 4;
   }
-  repeated Course courses = 1;
+  repeated Course courses = 2;
 }
 
+message IsCompletedResponse {
+  bool isCompleted = 1;
+}
+
+// ----------------------service----------------------------------------------------
 
 service StudentService {
-  rpc GetAllStudentsData (Empty) returns (AllStudentsDataResponse) {}
+  rpc GetAllStudentsData (EmptyRequest) returns (AllStudentsDataResponse) {}
+  rpc AddStudentData(AddStudentRequest) returns (IsCompletedResponse) {}
+  rpc DeleteStudentData(DeleteStudentRequest) returns (IsCompletedResponse) {}
 }
 
 service CourseService {
-  rpc GetAllCoursesData (Empty) returns (AllCoursesDataResponse) {}
+  rpc GetAllCoursesData (EmptyRequest) returns (AllCoursesDataResponse) {}
+  rpc AddCourseData(AddCourseRequest) returns (IsCompletedResponse) {}
+  rpc DeleteCourseData(DeleteCourseRequest) returns (IsCompletedResponse) {}
 }
