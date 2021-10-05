@@ -1,16 +1,16 @@
 package main;
 
-import com.academic.stub.academic.*;
+import com.academic.stub.academic.CourseServiceGrpc;
+import com.academic.stub.academic.StudentServiceGrpc;
 import io.grpc.Channel;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-import io.grpc.StatusRuntimeException;
+import view.CourseView;
+import view.StudentView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MainClient {
@@ -31,6 +31,9 @@ public class MainClient {
                 .build();
 
         MainClient client = new MainClient(channel);
+        StudentView studentView = new StudentView(studentServerBlockingStub);
+        CourseView courseView = new CourseView(courseServerBlockingStub);
+
         while (true) {
             try {
                 BufferedReader objReader = new BufferedReader(new InputStreamReader(System.in));
@@ -38,27 +41,23 @@ public class MainClient {
                 String sChoice = objReader.readLine().trim();
                 switch (sChoice) {
                     case "1":
-                        client.allStudentsDataResponse();
+                        studentView.allStudentsDataResponse();
                         break;
                     case "2":
-                        List<AllCoursesDataResponse.Course> results = client.allCoursesDataResponse();
-                        if (results != null) client.showAllCourses(results);
-                        else logger.info("강좌 정보가 없습니다.");
+                        courseView.allCoursesDataResponse();
                         break;
                     case "3":
-                        // 메서드 뽑아서 리펙토링하기, objReader넘겨줘도 됨
-                        if (client.addStudentDataResponse()) System.out.println("SUCCESS");
-                        else System.out.println("FAIL");
+                        studentView.addStudentDataResponse(objReader);
                         break;
                     case "4":
-                        if (client.deleteStudentDataResponse()) System.out.println("SUCCESS");
-                        else System.out.println("FAIL");
+                        studentView.deleteStudentDataResponse(objReader);
                         break;
-                    //
                     case "5":
-                        //
+                        courseView.addCourseDataResponse(objReader);
+                        break;
                     case "6":
-                        //
+                        courseView.deleteCourseDataResponse(objReader);
+                        break;
                     case "8":
                         return;
                     default:
@@ -89,90 +88,4 @@ public class MainClient {
         System.out.println("************(8) : 나가기****************************");
     }
 
-    private void showAllStudents(List<AllStudentsDataResponse.Student> results) {
-        for (AllStudentsDataResponse.Student result : results) {
-                System.out.println();
-                System.out.print("학생 명 : " + result.getStudentName() + "\n" +
-                        "학생 번호 : " + result.getStudentNumber() + "\n" +
-                        "학생 전공 : " + result.getMajor() + "\n");
-                for (int i = 0; i < result.getCourseNumberCount(); i++) {
-                    System.out.println("학생 수강 과목 : " + result.getCourseNumberList().get(i));
-                }
-        }
-    }
-
-    private void showAllCourses(List<AllCoursesDataResponse.Course> results) {
-        for (AllCoursesDataResponse.Course result : results) {
-            System.out.println();
-            System.out.print("강좌 번호 : " + result.getCourseNumber() + "\n" +
-                    "강좌 명 : " + result.getCourseName() + "\n" +
-                    "교수 성 : " + result.getProfessorLastName() + "\n");
-            for (int i = 0; i < result.getAdvancedCourseNumberCount(); i++) {
-                System.out.println("강좌 선이수 과목 : " + result.getAdvancedCourseNumberList().get(i));
-            }
-        }
-    }
-
-    public List<AllStudentsDataResponse.Student> allStudentsDataResponse(){
-            return studentServerBlockingStub.getAllStudentsData(null).getStudentsList();
-    }
-
-    public List<AllCoursesDataResponse.Course> allCoursesDataResponse(){
-            return courseServerBlockingStub.getAllCoursesData(null).getCoursesList();
-    }
-
-    public boolean addStudentDataResponse() throws IOException {
-        AddStudentRequest addStudentRequest = receiveAddStudentData();
-        IsCompletedResponse response;
-        try {
-            response = studentServerBlockingStub.addStudentData(addStudentRequest);
-        } catch (StatusRuntimeException e) {
-            logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
-            return false;
-        }
-        return response.getIsCompleted();
-    }
-
-    private AddStudentRequest receiveAddStudentData() throws IOException {
-        BufferedReader objReader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("***************************************************");
-        System.out.println("********************학생 정보 입력하기****************");
-        System.out.println("학생 이름을 입력하세요.");  String studentName = objReader.readLine().trim();
-        System.out.println("학번을 입력하세요."); String studentNumber = objReader.readLine().trim();
-        System.out.println("전공을 입력하세요."); String studentMajor = objReader.readLine().trim();
-
-        AddStudentRequest request = AddStudentRequest.newBuilder()
-                .setStudentName(studentName)
-                .setStudentNumber(studentNumber)
-                .setMajor(studentMajor)
-                .build();
-
-        return request;
-    }
-
-    public boolean deleteStudentDataResponse() throws IOException {
-        DeleteStudentRequest deleteStudentRequest = receiveDeleteStudentData();
-        IsCompletedResponse response;
-        try {
-            response = studentServerBlockingStub.deleteStudentData(deleteStudentRequest);
-        } catch (StatusRuntimeException e) {
-            logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
-            return false;
-        }
-        return response.getIsCompleted();
-    }
-
-    private DeleteStudentRequest receiveDeleteStudentData() throws IOException {
-        BufferedReader objReader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("***************************************************");
-        System.out.println("********************지울 학생 정보 입력하기****************");
-        System.out.println("학생 번호를 입력하세요.");
-        String studentId = objReader.readLine().trim();
-
-        DeleteStudentRequest request = DeleteStudentRequest.newBuilder()
-                .setStudentId(studentId)
-                .build();
-
-        return request;
-    }
 }
