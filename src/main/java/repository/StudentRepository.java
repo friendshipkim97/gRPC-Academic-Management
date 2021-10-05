@@ -1,13 +1,18 @@
 package repository;
 
+import com.academic.stub.academic.AddStudentRequest;
 import entity.Student;
+import entity.StudentCourse;
 import exception.NullDataException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.xml.transform.Source;
 import java.util.List;
 import java.util.logging.Logger;
+
+import static entity.Student.createStudent;
 
 public class StudentRepository{
 
@@ -34,10 +39,7 @@ public class StudentRepository{
     public boolean save(Student student){
         EntityTransaction tx = em.getTransaction();
         tx.begin();
-        if (student == null) {
-            System.out.println("학생의 정보가 없습니다.");
-            return false;
-        }
+
         if(student.getId() == null){
             System.out.println("학생 정보를 생성합니다.");
             em.persist(student);
@@ -51,21 +53,32 @@ public class StudentRepository{
 
     // SQLIntegrityConstraintViolationException 위반 예외 추가하기
     // NullDataException 추가
-    public boolean delete(String studentId) {
+    public boolean delete(String studentId) throws NullDataException {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
-        if (studentId == null) {
-            System.out.println("아이디가 입력되지 않았습니다.");
-            return false;
-        }
         Long longStudentId = Long.valueOf(studentId);
         Student findStudent = em.find(Student.class, longStudentId);
         if (findStudent == null) {
-            System.out.println("해당 아이디를 가진 학생이 없습니다.");
-            return false;
+            throw new NullDataException("NO STUDENT DATA FOUND BY ID");
         }
         em.remove(findStudent);
         tx.commit();
         return true;
+    }
+
+    public Student createStudent(AddStudentRequest request, StudentCourse[] studentCourseArray) {
+        System.out.println("0번"+studentCourseArray[0]);
+        System.out.println("1번"+studentCourseArray[1]);
+        Student student = Student.createStudent(request.getStudentNumber(), request.getStudentName(), request.getMajor(), studentCourseArray);
+        em.persist(student);
+        return student;
+
+    }
+
+    public Student createStudent(AddStudentRequest request) {
+        Student student = Student.createStudent(request.getStudentNumber(), request.getStudentName(), request.getMajor());
+        em.persist(student);
+        return student;
+
     }
 }

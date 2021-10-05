@@ -44,12 +44,12 @@ public class Course {
     }
 
     // 생성 메서드
-    public Course createCourse(String courseNumber, String professorLastName, String courseName, Course... cours) {
+    public static Course createCourse(String courseNumber, String professorLastName, String courseName, Course... childCourse) {
         Course createdCourse = new Course();
         createdCourse.setCourseNumber(courseNumber);
         createdCourse.setProfessorLastName(professorLastName);
         createdCourse.setCourseName(courseName);
-        for (Course course : cours) {
+        for (Course course : childCourse) {
             createdCourse.addChildCourse(course);
         }
         return createdCourse;

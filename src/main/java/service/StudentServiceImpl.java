@@ -1,10 +1,13 @@
 package service;
 
 import com.academic.stub.academic.*;
+import com.google.protobuf.ProtocolStringList;
+import entity.Course;
 import entity.Student;
 import entity.StudentCourse;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
+import repository.CourseRepository;
 import repository.StudentRepository;
 
 import java.util.ArrayList;
@@ -17,9 +20,11 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
 
     private static final Logger logger = Logger.getLogger(StudentServiceImpl.class.getName());
     private StudentRepository studentRepository;
+    private CourseRepository courseRepository;
 
     public StudentServiceImpl() {
         studentRepository = new StudentRepository();
+        courseRepository = new CourseRepository();
     }
 
     @Override
@@ -60,9 +65,28 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
     }
 
     @Override
-    public void addStudentData(AddStudentRequest request, StreamObserver<IsCompletedResponse> responseObserver) {
+    public void addStudentData(AddStudentRequest request, StreamObserver<IsCompletedResponse> responseObserver){
         try {
-            Student student = createStudent(request.getStudentNumber(), request.getStudentName(), request.getMajor());
+            validationStudent(request);
+            List<Course> coursesResult;
+            List<StudentCourse> studentCoursesResult = new ArrayList<>();
+            StudentCourse[] studentCourseArray;
+            Student student;
+
+            if (request.getCourseNumberList().size() != 0) {
+                System.out.println("로직 들어오는지?");
+                coursesResult = courseRepository.findCoursesByCourseNumber(request.getCourseNumberList());
+                for (Course course : coursesResult) {
+                    StudentCourse studentCourse = courseRepository.createStudentCourse(course);
+                    System.out.println("코스이름2"+studentCourse.getId());
+                    studentCoursesResult.add(studentCourse);
+                }
+                studentCourseArray = studentCoursesResult.toArray(new StudentCourse[request.getCourseNumberCount()]);
+                student = studentRepository.createStudent(request, studentCourseArray);
+            } else{
+                student = studentRepository.createStudent(request);
+            }
+
             IsCompletedResponse isCompleted = IsCompletedResponse.newBuilder()
                     .setIsCompleted(studentRepository.save(student)).build();
 
@@ -70,29 +94,47 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
             responseObserver.onCompleted();
         } catch (Exception e) {
             logger.info(e.getClass().getSimpleName() + " : "+ e.getMessage());
-            Status status = Status.NOT_FOUND.withDescription(e.getMessage());
+            Status status = Status.FAILED_PRECONDITION.withDescription(e.getMessage());
             responseObserver.onError(status.asRuntimeException());
             return;
+        }
+    }
+
+//    private void getCourseByCourseNumber(ProtocolStringList courseNumberList) {
+//            courseRepository.findCoursesByCourseNumber();
+//    }
+
+    private void validationStudent(AddStudentRequest request){
+        if (request.getStudentName().equals("") || request.getStudentNumber().equals("") || request.getMajor().equals("")) {
+            throw new IllegalArgumentException("THE STUDENT INPUT IS INVALID.");
         }
     }
 
     @Override
     public void deleteStudentData(DeleteStudentRequest request, StreamObserver<IsCompletedResponse> responseObserver) {
+
         try {
-            System.out.println("service");
-            System.out.println(request.getStudentId());
+            validationStudentId(request);
+            boolean isCompletedDelete = studentRepository.delete(request.getStudentId());
             IsCompletedResponse isCompleted = IsCompletedResponse.newBuilder()
-                    .setIsCompleted(studentRepository.delete(request.getStudentId())).build();
+                    .setIsCompleted(isCompletedDelete).build();
 
             responseObserver.onNext(isCompleted);
             responseObserver.onCompleted();
         } catch (Exception e) {
             logger.info(e.getClass().getSimpleName() + " : "+ e.getMessage());
-            Status status = Status.NOT_FOUND.withDescription(e.getMessage());
+            Status status = Status.FAILED_PRECONDITION.withDescription(e.getMessage());
             responseObserver.onError(status.asRuntimeException());
             return;
         }
     }
+
+    private void validationStudentId(DeleteStudentRequest request) {
+        if (request.getStudentId().equals("")) {
+            throw new IllegalArgumentException("THE STUDENT ID IS INVALID.");
+        }
+    }
+
 }
 
 

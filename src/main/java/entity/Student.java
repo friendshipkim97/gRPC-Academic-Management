@@ -32,12 +32,13 @@ public class Student {
     }
 
     // 생성 메서드
-    public static Student createStudent(String studentNumber, String studentName, String major, StudentCourse... studentCoursEntities) {
+    public static Student createStudent(String studentNumber, String studentName, String major, StudentCourse... studentCourseEntities) {
         Student student = new Student();
         student.setStudentNumber(studentNumber);
         student.setStudentName(studentName);
         student.setMajor(major);
-        for (StudentCourse studentCourse : studentCoursEntities) {
+        for (StudentCourse studentCourse : studentCourseEntities) {
+            System.out.println(studentCourse.getId());
             student.addStudentCourse(studentCourse);
         }
         return student;

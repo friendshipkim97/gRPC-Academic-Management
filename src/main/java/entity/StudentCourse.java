@@ -24,7 +24,7 @@ public class StudentCourse {
     private Course course;
 
     // 생성 메서드
-    public StudentCourse createStudentCourse(Course course) {
+    public static StudentCourse createStudentCourse(Course course) {
         StudentCourse studentCourse = new StudentCourse();
         studentCourse.setCourse(course);
         return studentCourse;
