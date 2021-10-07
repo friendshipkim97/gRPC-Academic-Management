@@ -21,7 +21,7 @@ public class MainRepository {
     public MainRepository() {
         this.emf = Persistence.createEntityManagerFactory("academic");
         this.em = emf.createEntityManager();
-        initDB();
+        //initDB();
     }
 
     /**

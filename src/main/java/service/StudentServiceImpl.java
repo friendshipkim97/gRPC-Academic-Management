@@ -1,7 +1,6 @@
 package service;
 
 import com.academic.stub.academic.*;
-import com.google.protobuf.ProtocolStringList;
 import entity.Course;
 import entity.Student;
 import entity.StudentCourse;
@@ -13,8 +12,6 @@ import repository.StudentRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
-import static entity.Student.createStudent;
 
 public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBase{
 
@@ -104,11 +101,6 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
 //            courseRepository.findCoursesByCourseNumber();
 //    }
 
-    private void validationStudent(AddStudentRequest request){
-        if (request.getStudentName().equals("") || request.getStudentNumber().equals("") || request.getMajor().equals("")) {
-            throw new IllegalArgumentException("THE STUDENT INPUT IS INVALID.");
-        }
-    }
 
     @Override
     public void deleteStudentData(DeleteStudentRequest request, StreamObserver<IsCompletedResponse> responseObserver) {
@@ -126,6 +118,12 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
             Status status = Status.FAILED_PRECONDITION.withDescription(e.getMessage());
             responseObserver.onError(status.asRuntimeException());
             return;
+        }
+    }
+
+    private void validationStudent(AddStudentRequest request){
+        if (request.getStudentName().equals("") || request.getStudentNumber().equals("") || request.getMajor().equals("")) {
+            throw new IllegalArgumentException("THE STUDENT INPUT IS INVALID.");
         }
     }
 
