@@ -52,12 +52,6 @@ public class CourseView {
         return request;
     }
 
-    public void deleteCourseDataResponse(BufferedReader objReader) throws IOException {
-        boolean isCompleted = this.courseServerBlockingStub.deleteCourseData(receiveDeleteCourseData(objReader)).getIsCompleted();
-        if(isCompleted) System.out.println("DELETE COURSE SUCCESS");
-        else System.out.println("DELETE COURSE FAIL");
-    }
-
     private DeleteCourseRequest receiveDeleteCourseData(BufferedReader objReader) throws IOException {
         System.out.println("***************************************************");
         System.out.println("********************지울 강좌 정보 입력하기****************");
@@ -70,4 +64,11 @@ public class CourseView {
 
         return request;
     }
+
+    public void deleteCourseDataResponse(BufferedReader objReader) throws IOException {
+        boolean isCompleted = this.courseServerBlockingStub.deleteCourseData(receiveDeleteCourseData(objReader)).getIsCompleted();
+        if(isCompleted) System.out.println("DELETE COURSE SUCCESS");
+        else System.out.println("DELETE COURSE FAIL");
+    }
+
 }

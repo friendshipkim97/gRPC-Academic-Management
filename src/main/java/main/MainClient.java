@@ -30,7 +30,7 @@ public class MainClient {
                 .usePlaintext()
                 .build();
 
-        MainClient client = new MainClient(channel);
+        new MainClient(channel);
         StudentView studentView = new StudentView(studentServerBlockingStub);
         CourseView courseView = new CourseView(courseServerBlockingStub);
 
