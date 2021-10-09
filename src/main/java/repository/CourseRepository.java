@@ -20,7 +20,7 @@ public class CourseRepository{
 
     public CourseRepository() {
         this.emf = MainRepository.emf;
-        this.em = emf.createEntityManager();
+        this.em = MainRepository.em;
     }
 
     public List<Course> findAll() throws NullDataException {
@@ -35,8 +35,6 @@ public class CourseRepository{
     }
 
     public List<Course> findCoursesByCourseNumber(ProtocolStringList courseNumberList) {
-        EntityTransaction tx = em.getTransaction();
-        tx.begin();
         List<Course> coursesResult = new ArrayList<>();
         for (String courseNumber : courseNumberList) {
             Course singleResult = em.createQuery("select c from Course c where c.courseNumber = :courseNumber", Course.class)
@@ -53,7 +51,5 @@ public class CourseRepository{
         return studentCourse;
     }
 
-//    public boolean save(Course course) {
-//
-//    }
+
 }

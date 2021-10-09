@@ -11,9 +11,6 @@ option java_multiple_files = true;
 
 
 // ----------------------message-----------------------------------------------------
-
-
-
 // ----------------------request --------------------------------------------------------
 
 message EmptyRequest {
@@ -34,11 +31,11 @@ message AddCourseRequest {
 }
 
 message DeleteStudentRequest{
-  string studentId = 1;
+  string studentNumber = 1;
 }
 
 message DeleteCourseRequest{
-  string courseId = 1;
+  string courseNumber = 1;
 }
 
 // ----------------------response --------------------------------------------------------

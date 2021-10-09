@@ -7,6 +7,7 @@ import entity.StudentCourse;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import repository.CourseRepository;
+import repository.StudentCourseRepository;
 import repository.StudentRepository;
 
 import java.util.ArrayList;
@@ -18,10 +19,12 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
     private static final Logger logger = Logger.getLogger(StudentServiceImpl.class.getName());
     private StudentRepository studentRepository;
     private CourseRepository courseRepository;
+    private StudentCourseRepository studentCourseRepository;
 
     public StudentServiceImpl() {
         studentRepository = new StudentRepository();
         courseRepository = new CourseRepository();
+        studentCourseRepository = new StudentCourseRepository();
     }
 
     @Override
@@ -67,7 +70,6 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
             validationStudent(request);
             List<Course> coursesResult;
             List<StudentCourse> studentCoursesResult = new ArrayList<>();
-            StudentCourse[] studentCourseArray;
             Student student;
 
             if (request.getCourseNumberList().size() != 0) {
@@ -75,14 +77,10 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
                 coursesResult = courseRepository.findCoursesByCourseNumber(request.getCourseNumberList());
                 for (Course course : coursesResult) {
                     StudentCourse studentCourse = courseRepository.createStudentCourse(course);
-                    System.out.println("코스이름2"+studentCourse.getId());
                     studentCoursesResult.add(studentCourse);
-                }
-                studentCourseArray = studentCoursesResult.toArray(new StudentCourse[request.getCourseNumberCount()]);
-                student = studentRepository.createStudent(request, studentCourseArray);
-            } else{
-                student = studentRepository.createStudent(request);
-            }
+                } student = studentRepository.createStudent(request, studentCoursesResult);
+            } else{ student = studentRepository.createStudent(request);}
+
 
             IsCompletedResponse isCompleted = IsCompletedResponse.newBuilder()
                     .setIsCompleted(studentRepository.save(student)).build();
@@ -97,17 +95,12 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
         }
     }
 
-//    private void getCourseByCourseNumber(ProtocolStringList courseNumberList) {
-//            courseRepository.findCoursesByCourseNumber();
-//    }
-
-
     @Override
     public void deleteStudentData(DeleteStudentRequest request, StreamObserver<IsCompletedResponse> responseObserver) {
 
         try {
             validationStudentId(request);
-            boolean isCompletedDelete = studentRepository.delete(request.getStudentId());
+            boolean isCompletedDelete = studentRepository.deleteStudentByStudentNumber(request.getStudentNumber());
             IsCompletedResponse isCompleted = IsCompletedResponse.newBuilder()
                     .setIsCompleted(isCompletedDelete).build();
 
@@ -128,7 +121,7 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
     }
 
     private void validationStudentId(DeleteStudentRequest request) {
-        if (request.getStudentId().equals("")) {
+        if (request.getStudentNumber().equals("")) {
             throw new IllegalArgumentException("THE STUDENT ID IS INVALID.");
         }
     }

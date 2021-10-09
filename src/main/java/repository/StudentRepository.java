@@ -1,6 +1,7 @@
 package repository;
 
 import com.academic.stub.academic.AddStudentRequest;
+import entity.Course;
 import entity.Student;
 import entity.StudentCourse;
 import exception.NullDataException;
@@ -8,11 +9,8 @@ import exception.NullDataException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.xml.transform.Source;
 import java.util.List;
 import java.util.logging.Logger;
-
-import static entity.Student.createStudent;
 
 public class StudentRepository{
 
@@ -22,7 +20,7 @@ public class StudentRepository{
 
     public StudentRepository() {
         this.emf = MainRepository.emf;
-        this.em = emf.createEntityManager();
+        this.em = MainRepository.em;
     }
 
     public List<Student> findAll() throws NullDataException {
@@ -39,38 +37,40 @@ public class StudentRepository{
     public boolean save(Student student){
         EntityTransaction tx = em.getTransaction();
         tx.begin();
-
-        if(student.getId() == null){
-            System.out.println("학생 정보를 생성합니다.");
-            em.persist(student);
-        } else {
-            System.out.println("기존 학생 이므로 학생 정보를 수정합니다.");
-            em.merge(student);
-        }
+        em.persist(student);
         tx.commit();
         return true;
     }
 
     // SQLIntegrityConstraintViolationException 위반 예외 추가하기
     // NullDataException 추가
-    public boolean delete(String studentId) throws NullDataException {
+    public boolean deleteStudentByStudentNumber(String studentNumber) throws NullDataException {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
-        Long longStudentId = Long.valueOf(studentId);
-        Student findStudent = em.find(Student.class, longStudentId);
+
+        Student findStudent = em.createQuery("select s from Student s where s.studentNumber = :studentNumber", Student.class)
+                .setParameter("studentNumber", studentNumber)
+                .getSingleResult();
+
         if (findStudent == null) {
             throw new NullDataException("NO STUDENT DATA FOUND BY ID");
         }
+
+        List<StudentCourse> studentCourses = em.createQuery("select sc from StudentCourse sc where sc.student = :student", StudentCourse.class)
+                .setParameter("student", findStudent)
+                .getResultList();
+
+        for (StudentCourse studentCourse : studentCourses) {
+            em.remove(studentCourse);
+        }
+
         em.remove(findStudent);
         tx.commit();
         return true;
     }
 
-    public Student createStudent(AddStudentRequest request, StudentCourse[] studentCourseArray) {
-
-        System.out.println("0번"+studentCourseArray[0]);
-        System.out.println("1번"+studentCourseArray[1]);
-        Student student = Student.createStudent(request.getStudentNumber(), request.getStudentName(), request.getMajor(), studentCourseArray);
+    public Student createStudent(AddStudentRequest request, List<StudentCourse> studentCourseList) {
+        Student student = Student.createStudent(request.getStudentNumber(), request.getStudentName(), request.getMajor(), studentCourseList);
         em.persist(student);
         return student;
 
