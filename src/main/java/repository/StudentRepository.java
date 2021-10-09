@@ -67,6 +67,7 @@ public class StudentRepository{
     }
 
     public Student createStudent(AddStudentRequest request, StudentCourse[] studentCourseArray) {
+
         System.out.println("0번"+studentCourseArray[0]);
         System.out.println("1번"+studentCourseArray[1]);
         Student student = Student.createStudent(request.getStudentNumber(), request.getStudentName(), request.getMajor(), studentCourseArray);
