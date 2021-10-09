@@ -56,10 +56,10 @@ public class CourseView {
         System.out.println("***************************************************");
         System.out.println("********************지울 강좌 정보 입력하기****************");
         System.out.println("강좌 번호를 입력하세요.");
-        String courseId = objReader.readLine().trim();
+        String courseNumber = objReader.readLine().trim();
 
         DeleteCourseRequest request = DeleteCourseRequest.newBuilder()
-                .setCourseId(courseId)
+                .setCourseNumber(courseNumber)
                 .build();
 
         return request;

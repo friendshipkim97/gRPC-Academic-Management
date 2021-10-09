@@ -75,11 +75,11 @@ public class StudentView {
     private DeleteStudentRequest receiveDeleteStudentData(BufferedReader objReader) throws IOException {
         System.out.println("***************************************************");
         System.out.println("********************지울 학생 정보 입력하기****************");
-        System.out.println("학생 번호를 입력하세요.");
-        String studentId = objReader.readLine().trim();
+        System.out.println("학번을 입력하세요.");
+        String studentNumber = objReader.readLine().trim();
 
         DeleteStudentRequest request = DeleteStudentRequest.newBuilder()
-                .setStudentId(studentId)
+                .setStudentNumber(studentNumber)
                 .build();
 
         return request;
