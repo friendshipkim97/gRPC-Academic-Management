@@ -1,5 +1,6 @@
 package repository;
 
+import entity.Course;
 import entity.StudentCourse;
 
 import javax.persistence.EntityManager;
@@ -19,5 +20,11 @@ public class StudentCourseRepository {
 
     public StudentCourse findStudentCourseByStudentCourseId(Long studentCourseId) {
         return em.find(StudentCourse.class, studentCourseId);
+    }
+
+    public StudentCourse createStudentCourse(Course course) {
+        StudentCourse studentCourse = StudentCourse.createStudentCourse(course);
+        em.persist(studentCourse);
+        return studentCourse;
     }
 }

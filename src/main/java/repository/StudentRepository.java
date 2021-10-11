@@ -1,7 +1,6 @@
 package repository;
 
 import com.academic.stub.academic.AddStudentRequest;
-import entity.Course;
 import entity.Student;
 import entity.StudentCourse;
 import exception.NullDataException;
@@ -48,13 +47,7 @@ public class StudentRepository{
         EntityTransaction tx = em.getTransaction();
         tx.begin();
 
-        Student findStudent = em.createQuery("select s from Student s where s.studentNumber = :studentNumber", Student.class)
-                .setParameter("studentNumber", studentNumber)
-                .getSingleResult();
-
-        if (findStudent == null) {
-            throw new NullDataException("NO STUDENT DATA FOUND BY ID");
-        }
+        Student findStudent = findStudentByStudentNumber(studentNumber);
 
         List<StudentCourse> studentCourses = em.createQuery("select sc from StudentCourse sc where sc.student = :student", StudentCourse.class)
                 .setParameter("student", findStudent)
@@ -67,6 +60,19 @@ public class StudentRepository{
         em.remove(findStudent);
         tx.commit();
         return true;
+    }
+
+    public Student findStudentByStudentNumber(String studentNumber) throws NullDataException {
+        Student findStudent = em.createQuery("select s from Student s where s.studentNumber = :studentNumber", Student.class)
+                .setParameter("studentNumber", studentNumber)
+                .getSingleResult();
+
+        if (findStudent == null) {
+            throw new NullDataException("NO STUDENT DATA FOUND BY STUDENTNUMBER");
+        }
+
+        return findStudent;
+
     }
 
     public Student createStudent(AddStudentRequest request, List<StudentCourse> studentCourseList) {

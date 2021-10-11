@@ -54,4 +54,15 @@ public class Course {
         }
         return createdCourse;
     }
+
+    public static Course createCourse(String courseNumber, String professorLastName, String courseName, List<Course> childCourse) {
+        Course createdCourse = new Course();
+        createdCourse.setCourseNumber(courseNumber);
+        createdCourse.setProfessorLastName(professorLastName);
+        createdCourse.setCourseName(courseName);
+        for (Course course : childCourse) {
+            createdCourse.addChildCourse(course);
+        }
+        return createdCourse;
+    }
 }

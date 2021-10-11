@@ -1,5 +1,6 @@
 package repository;
 
+import com.academic.stub.academic.AddCourseRequest;
 import com.google.protobuf.ProtocolStringList;
 import entity.Course;
 import entity.StudentCourse;
@@ -34,22 +35,68 @@ public class CourseRepository{
         return resultList;
     }
 
-    public List<Course> findCoursesByCourseNumber(ProtocolStringList courseNumberList) {
+    public List<Course> findCoursesByCourseNumber(ProtocolStringList courseNumberList) throws NullDataException {
         List<Course> coursesResult = new ArrayList<>();
         for (String courseNumber : courseNumberList) {
             Course singleResult = em.createQuery("select c from Course c where c.courseNumber = :courseNumber", Course.class)
                     .setParameter("courseNumber", courseNumber)
                     .getSingleResult();
+            if(singleResult == null){
+                throw new NullDataException("NO COURSE DATA FOUND BY COURSENUMBER");
+            }
             coursesResult.add(singleResult);
         }
         return coursesResult;
     }
 
-    public StudentCourse createStudentCourse(Course course) {
-        StudentCourse studentCourse = StudentCourse.createStudentCourse(course);
-        em.persist(studentCourse);
-        return studentCourse;
+    public Course createCourse(AddCourseRequest request, List<Course> courseList) {
+        Course course = Course.createCourse(request.getCourseNumber(), request.getProfessorLastName(), request.getCourseName(), courseList);
+        em.persist(course);
+        return course;
     }
 
+    public Course createCourse(AddCourseRequest request) {
+        Course course = Course.createCourse(request.getCourseNumber(), request.getProfessorLastName(), request.getCourseName());
+        em.persist(course);
+        return course;
+    }
+
+    public boolean save(Course course) {
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        em.persist(course);
+        tx.commit();
+        return true;
+    }
+
+    public boolean deleteCourseByCourseNumber(String courseNumber) throws NullDataException {
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        Course findCourse = findCourseByCourseNumber(courseNumber);
+
+        List<StudentCourse> studentCourses = em.createQuery("select sc from StudentCourse sc where sc.course = :course", StudentCourse.class)
+                .setParameter("course", findCourse)
+                .getResultList();
+
+        for (StudentCourse studentCourse : studentCourses) {
+            em.remove(studentCourse);
+        }
+
+        em.remove(findCourse);
+        tx.commit();
+        return true;
+    }
+
+    public Course findCourseByCourseNumber(String courseNumber) throws NullDataException {
+        Course findCourse = em.createQuery("select c from Course c where c.courseNumber = :courseNumber", Course.class)
+                .setParameter("courseNumber", courseNumber)
+                .getSingleResult();
+
+        if (findCourse == null) {
+            throw new NullDataException("NO COURSE DATA FOUND BY COURSENUMBER");
+        }
+        return findCourse;
+    }
 
 }

@@ -5,6 +5,8 @@ C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\target\generated-sources\
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\src\main\java\service\CourseServiceImpl.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\target\generated-sources\protobuf\java\com\academic\stub\academic\AllStudentsDataResponseOrBuilder.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\target\generated-sources\protobuf\java\com\academic\stub\academic\Academic.java
+C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\src\main\java\exception\NullDataException.java
+C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\src\main\java\repository\StudentCourseRepository.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\src\main\java\service\StudentServiceImpl.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\target\generated-sources\protobuf\java\com\academic\stub\academic\AddStudentRequest.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\target\generated-sources\protobuf\java\com\academic\stub\academic\AddCourseRequestOrBuilder.java

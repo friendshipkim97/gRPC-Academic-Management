@@ -73,10 +73,9 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
             Student student;
 
             if (request.getCourseNumberList().size() != 0) {
-                System.out.println("로직 들어오는지?");
                 coursesResult = courseRepository.findCoursesByCourseNumber(request.getCourseNumberList());
                 for (Course course : coursesResult) {
-                    StudentCourse studentCourse = courseRepository.createStudentCourse(course);
+                    StudentCourse studentCourse = studentCourseRepository.createStudentCourse(course);
                     studentCoursesResult.add(studentCourse);
                 } student = studentRepository.createStudent(request, studentCoursesResult);
             } else{ student = studentRepository.createStudent(request);}
@@ -99,7 +98,7 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
     public void deleteStudentData(DeleteStudentRequest request, StreamObserver<IsCompletedResponse> responseObserver) {
 
         try {
-            validationStudentId(request);
+            validationStudentNumber(request);
             boolean isCompletedDelete = studentRepository.deleteStudentByStudentNumber(request.getStudentNumber());
             IsCompletedResponse isCompleted = IsCompletedResponse.newBuilder()
                     .setIsCompleted(isCompletedDelete).build();
@@ -120,9 +119,9 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
         }
     }
 
-    private void validationStudentId(DeleteStudentRequest request) {
+    private void validationStudentNumber(DeleteStudentRequest request) {
         if (request.getStudentNumber().equals("")) {
-            throw new IllegalArgumentException("THE STUDENT ID IS INVALID.");
+            throw new IllegalArgumentException("THE STUDENT NUMBER IS INVALID.");
         }
     }
 

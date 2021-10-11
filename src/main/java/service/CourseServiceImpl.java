@@ -56,23 +56,49 @@ public class CourseServiceImpl extends CourseServiceGrpc.CourseServiceImplBase {
         }
     }
 
-//    @Override
-//    public void addCourseData(AddCourseRequest request, StreamObserver<IsCompletedResponse> responseObserver) {
-//        try {
-//            validationCourse(request);
-//            Course course = createCourse(request.getCourseNumber(), request.getProfessorLastName(), request.getCourseName());
-//            IsCompletedResponse isCompleted = IsCompletedResponse.newBuilder()
-//                    .setIsCompleted(courseRepository.save(course)).build();
-//
-//            responseObserver.onNext(isCompleted);
-//            responseObserver.onCompleted();
-//        } catch (Exception e) {
-//            logger.info(e.getClass().getSimpleName() + " : "+ e.getMessage());
-//            Status status = Status.FAILED_PRECONDITION.withDescription(e.getMessage());
-//            responseObserver.onError(status.asRuntimeException());
-//            return;
-//        }
-//    }
+    @Override
+    public void addCourseData(AddCourseRequest request, StreamObserver<IsCompletedResponse> responseObserver) {
+        try {
+            validationCourse(request);
+            List<Course> coursesResult;
+            Course course;
+            if(request.getAdvancedCourseNumberList().size() != 0){
+                coursesResult = courseRepository.findCoursesByCourseNumber(request.getAdvancedCourseNumberList());
+                course = courseRepository.createCourse(request, coursesResult);
+            } else{
+                course = courseRepository.createCourse(request);
+            }
+
+            IsCompletedResponse isCompleted = IsCompletedResponse.newBuilder()
+                    .setIsCompleted(courseRepository.save(course)).build();
+
+            responseObserver.onNext(isCompleted);
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            logger.info(e.getClass().getSimpleName() + " : "+ e.getMessage());
+            Status status = Status.FAILED_PRECONDITION.withDescription(e.getMessage());
+            responseObserver.onError(status.asRuntimeException());
+            return;
+        }
+    }
+
+    @Override
+    public void deleteCourseData(DeleteCourseRequest request, StreamObserver<IsCompletedResponse> responseObserver) {
+        try {
+            validationCourseNumber(request);
+            boolean isCompletedDelete = courseRepository.deleteCourseByCourseNumber(request.getCourseNumber());
+            IsCompletedResponse isCompleted = IsCompletedResponse.newBuilder()
+                    .setIsCompleted(isCompletedDelete).build();
+
+            responseObserver.onNext(isCompleted);
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            logger.info(e.getClass().getSimpleName() + " : "+ e.getMessage());
+            Status status = Status.FAILED_PRECONDITION.withDescription(e.getMessage());
+            responseObserver.onError(status.asRuntimeException());
+            return;
+        }
+    }
 
     private void validationCourse(AddCourseRequest request) {
         if (request.getCourseNumber().equals("") || request.getProfessorLastName().equals("") || request.getCourseName().equals("")) {
@@ -80,8 +106,9 @@ public class CourseServiceImpl extends CourseServiceGrpc.CourseServiceImplBase {
         }
     }
 
-    @Override
-    public void deleteCourseData(DeleteCourseRequest request, StreamObserver<IsCompletedResponse> responseObserver) {
-        super.deleteCourseData(request, responseObserver);
+    private void validationCourseNumber(DeleteCourseRequest request) {
+        if (request.getCourseNumber().equals("")) {
+            throw new IllegalArgumentException("THE COURSE NUMBER IS INVALID.");
+        }
     }
 }
