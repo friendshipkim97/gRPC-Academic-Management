@@ -3,6 +3,8 @@ package repository;
 import com.academic.stub.academic.AddStudentRequest;
 import entity.Student;
 import entity.StudentCourse;
+import exception.DuplicateDataException;
+import exception.ExistingDataException;
 import exception.NullDataException;
 
 import javax.persistence.EntityManager;
@@ -23,13 +25,8 @@ public class StudentRepository{
     }
 
     public List<Student> findAll() throws NullDataException {
-        EntityTransaction tx = em.getTransaction();
-        tx.begin();
         List<Student> resultList = em.createQuery("select s from Student s", Student.class).getResultList();
-        tx.commit();
-        if (resultList.size() == 0) {
-            throw new NullDataException("NO STUDENT DATA FOUND");
-        }
+        if (resultList.size() == 0) { throw new NullDataException("NO STUDENT DATA FOUND"); }
         return resultList;
     }
 
@@ -42,36 +39,31 @@ public class StudentRepository{
     }
 
     // SQLIntegrityConstraintViolationException 위반 예외 추가하기
-    // NullDataException 추가
-    public boolean deleteStudentByStudentNumber(String studentNumber) throws NullDataException {
+    public boolean deleteStudentByStudentNumber(String studentNumber) throws NullDataException, DuplicateDataException, ExistingDataException {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
-
-        Student findStudent = findStudentByStudentNumber(studentNumber);
-
+        Student findStudent = findStudentByStudentNumber(studentNumber, false);
         List<StudentCourse> studentCourses = em.createQuery("select sc from StudentCourse sc where sc.student = :student", StudentCourse.class)
                 .setParameter("student", findStudent)
                 .getResultList();
 
-        for (StudentCourse studentCourse : studentCourses) {
-            em.remove(studentCourse);
-        }
-
+        for (StudentCourse studentCourse : studentCourses) { em.remove(studentCourse); }
         em.remove(findStudent);
         tx.commit();
         return true;
     }
 
-    public Student findStudentByStudentNumber(String studentNumber) throws NullDataException {
-        Student findStudent = em.createQuery("select s from Student s where s.studentNumber = :studentNumber", Student.class)
+    public Student findStudentByStudentNumber(String studentNumber, Boolean checkForStudentAdd) throws NullDataException, DuplicateDataException, ExistingDataException {
+
+        List<Student> findStudentList = em.createQuery("select s from Student s where s.studentNumber = :studentNumber", Student.class)
                 .setParameter("studentNumber", studentNumber)
-                .getSingleResult();
+                .getResultList();
 
-        if (findStudent == null) {
-            throw new NullDataException("NO STUDENT DATA FOUND BY STUDENTNUMBER");
-        }
-
-        return findStudent;
+        if (checkForStudentAdd == false && findStudentList.size() == 0) { throw new NullDataException("NO STUDENT DATA FOUND BY STUDENT_NUMBER"); }
+        else if (checkForStudentAdd == false && findStudentList.size() > 1) { throw new DuplicateDataException("THERE ARE SEVERAL STUDENTS WITH THE SAME STUDENT_NUMBER"); }
+        else if (checkForStudentAdd == true && findStudentList.size() >= 1) { throw new ExistingDataException("THIS STUDENT NUMBER ALREADY EXISTS.");}
+        else if(checkForStudentAdd == true && findStudentList.size() == 0) { return null;}
+        return findStudentList.get(0);
 
     }
 
@@ -87,5 +79,13 @@ public class StudentRepository{
         em.persist(student);
         return student;
 
+    }
+
+    public void addStudentCourse(Student findStudent, StudentCourse studentCourse) {
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        findStudent.addStudentCourse(studentCourse);
+        em.persist(findStudent);
+        tx.commit();
     }
 }

@@ -38,7 +38,6 @@ public class Student {
         student.setStudentName(studentName);
         student.setMajor(major);
         for (StudentCourse studentCourse : studentCourseEntities) {
-            System.out.println(studentCourse.getId());
             student.addStudentCourse(studentCourse);
         }
         return student;
@@ -50,9 +49,9 @@ public class Student {
         student.setStudentName(studentName);
         student.setMajor(major);
         for (StudentCourse studentCourse : studentCourseEntities) {
-            System.out.println(studentCourse.getId());
             student.addStudentCourse(studentCourse);
         }
         return student;
     }
+
 }

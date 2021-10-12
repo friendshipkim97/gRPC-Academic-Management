@@ -4,6 +4,7 @@ import com.academic.stub.academic.AddCourseRequest;
 import com.google.protobuf.ProtocolStringList;
 import entity.Course;
 import entity.StudentCourse;
+import exception.DuplicateDataException;
 import exception.NullDataException;
 
 import javax.persistence.EntityManager;
@@ -25,13 +26,8 @@ public class CourseRepository{
     }
 
     public List<Course> findAll() throws NullDataException {
-        EntityTransaction tx = em.getTransaction();
-        tx.begin();
         List<Course> resultList = em.createQuery("select c from Course c", Course.class).getResultList();
-        if (resultList.size() == 0) {
-            throw new NullDataException("NO COURSE DATA FOUND");
-        }
-        tx.commit();
+        if (resultList.size() == 0) { throw new NullDataException("NO COURSE DATA FOUND"); }
         return resultList;
     }
 
@@ -42,7 +38,7 @@ public class CourseRepository{
                     .setParameter("courseNumber", courseNumber)
                     .getSingleResult();
             if(singleResult == null){
-                throw new NullDataException("NO COURSE DATA FOUND BY COURSENUMBER");
+                throw new NullDataException("NO COURSE DATA FOUND BY COURSE_NUMBER");
             }
             coursesResult.add(singleResult);
         }
@@ -79,8 +75,10 @@ public class CourseRepository{
                 .setParameter("course", findCourse)
                 .getResultList();
 
-        for (StudentCourse studentCourse : studentCourses) {
-            em.remove(studentCourse);
+        if (studentCourses.size() != 0) {
+            for (StudentCourse studentCourse : studentCourses) {
+                em.remove(studentCourse);
+            }
         }
 
         em.remove(findCourse);
@@ -89,14 +87,20 @@ public class CourseRepository{
     }
 
     public Course findCourseByCourseNumber(String courseNumber) throws NullDataException {
-        Course findCourse = em.createQuery("select c from Course c where c.courseNumber = :courseNumber", Course.class)
+        List<Course> findCourseList = em.createQuery("select c from Course c where c.courseNumber = :courseNumber", Course.class)
                 .setParameter("courseNumber", courseNumber)
-                .getSingleResult();
+                .getResultList();
 
-        if (findCourse == null) {
-            throw new NullDataException("NO COURSE DATA FOUND BY COURSENUMBER");
-        }
-        return findCourse;
+        if (findCourseList.size() == 0) { throw new NullDataException("NO COURSE DATA FOUND BY COURSE_NUMBER"); }
+        if (findCourseList.size() > 1) { new DuplicateDataException("THERE ARE SEVERAL COURSES WITH THE SAME COURSE_NUMBER");}
+
+        return findCourseList.get(0);
     }
 
+    public void updateCourseRepository(Course courseResult, Course createdCourse) {
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        courseResult.addChildCourse(createdCourse);
+        tx.commit();
+    }
 }

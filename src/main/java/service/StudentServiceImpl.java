@@ -1,7 +1,6 @@
 package service;
 
 import com.academic.stub.academic.*;
-import entity.Course;
 import entity.Student;
 import entity.StudentCourse;
 import io.grpc.Status;
@@ -21,10 +20,11 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
     private CourseRepository courseRepository;
     private StudentCourseRepository studentCourseRepository;
 
-    public StudentServiceImpl() {
-        studentRepository = new StudentRepository();
-        courseRepository = new CourseRepository();
-        studentCourseRepository = new StudentCourseRepository();
+    public StudentServiceImpl(StudentRepository studentRepository, CourseRepository courseRepository,
+                              StudentCourseRepository studentCourseRepository) {
+        this.studentRepository = studentRepository;
+        this.courseRepository = courseRepository;
+        this.studentCourseRepository = studentCourseRepository;
     }
 
     @Override
@@ -68,18 +68,8 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
     public void addStudentData(AddStudentRequest request, StreamObserver<IsCompletedResponse> responseObserver){
         try {
             validationStudent(request);
-            List<Course> coursesResult;
-            List<StudentCourse> studentCoursesResult = new ArrayList<>();
-            Student student;
-
-            if (request.getCourseNumberList().size() != 0) {
-                coursesResult = courseRepository.findCoursesByCourseNumber(request.getCourseNumberList());
-                for (Course course : coursesResult) {
-                    StudentCourse studentCourse = studentCourseRepository.createStudentCourse(course);
-                    studentCoursesResult.add(studentCourse);
-                } student = studentRepository.createStudent(request, studentCoursesResult);
-            } else{ student = studentRepository.createStudent(request);}
-
+            studentRepository.findStudentByStudentNumber(request.getStudentNumber(), true);
+            Student student = studentRepository.createStudent(request);
 
             IsCompletedResponse isCompleted = IsCompletedResponse.newBuilder()
                     .setIsCompleted(studentRepository.save(student)).build();
@@ -99,6 +89,11 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
 
         try {
             validationStudentNumber(request);
+            Student findStudent = studentRepository.findStudentByStudentNumber(request.getStudentNumber(), false);
+            List<StudentCourse> findStudentCourses = studentCourseRepository.findStudentCourseByStudent(findStudent);
+            if (findStudentCourses.size() != 0) {
+                studentCourseRepository.deleteStudentCourse(findStudentCourses);
+            }
             boolean isCompletedDelete = studentRepository.deleteStudentByStudentNumber(request.getStudentNumber());
             IsCompletedResponse isCompleted = IsCompletedResponse.newBuilder()
                     .setIsCompleted(isCompletedDelete).build();
@@ -112,6 +107,10 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
             return;
         }
     }
+
+    /**
+     * validation
+     */
 
     private void validationStudent(AddStudentRequest request){
         if (request.getStudentName().equals("") || request.getStudentNumber().equals("") || request.getMajor().equals("")) {

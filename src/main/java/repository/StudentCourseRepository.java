@@ -1,10 +1,13 @@
 package repository;
 
 import entity.Course;
+import entity.Student;
 import entity.StudentCourse;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class StudentCourseRepository {
@@ -15,16 +18,28 @@ public class StudentCourseRepository {
 
     public StudentCourseRepository() {
         this.emf = MainRepository.emf;
-        this.em = emf.createEntityManager();
-    }
-
-    public StudentCourse findStudentCourseByStudentCourseId(Long studentCourseId) {
-        return em.find(StudentCourse.class, studentCourseId);
+        this.em = MainRepository.em;
     }
 
     public StudentCourse createStudentCourse(Course course) {
         StudentCourse studentCourse = StudentCourse.createStudentCourse(course);
         em.persist(studentCourse);
         return studentCourse;
+    }
+
+    public List<StudentCourse> findStudentCourseByStudent(Student student) {
+        List<StudentCourse> studentList = em.createQuery("select sc from StudentCourse sc where sc.student = :student", StudentCourse.class)
+                .setParameter("student", student)
+                .getResultList();
+        return studentList;
+    }
+
+    public void deleteStudentCourse(List<StudentCourse> findStudentCourses) {
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        for (StudentCourse findStudentCourse : findStudentCourses) {
+            em.remove(findStudentCourse);
+        }
+        tx.commit();
     }
 }

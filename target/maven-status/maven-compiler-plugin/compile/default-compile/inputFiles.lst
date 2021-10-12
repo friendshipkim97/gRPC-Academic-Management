@@ -2,6 +2,7 @@ C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\src\main\java\repository\
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\src\main\java\entity\Course.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\src\main\java\entity\Student.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\target\generated-sources\protobuf\java\com\academic\stub\academic\IsCompletedResponse.java
+C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\target\generated-sources\protobuf\java\com\academic\stub\academic\ApplicationForCourseRequestOrBuilder.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\src\main\java\service\CourseServiceImpl.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\target\generated-sources\protobuf\java\com\academic\stub\academic\AllStudentsDataResponseOrBuilder.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\target\generated-sources\protobuf\java\com\academic\stub\academic\Academic.java
@@ -16,10 +17,13 @@ C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\src\main\java\repository\
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\target\generated-sources\protobuf\java\com\academic\stub\academic\AddStudentRequestOrBuilder.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\target\generated-sources\protobuf\java\com\academic\stub\academic\AllStudentsDataResponse.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\src\main\java\server\MainServer.java
+C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\target\generated-sources\protobuf\java\com\academic\stub\academic\ApplicationForCourseRequest.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\target\generated-sources\protobuf\grpc-java\com\academic\stub\academic\StudentServiceGrpc.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\target\generated-sources\protobuf\java\com\academic\stub\academic\EmptyRequest.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\target\generated-sources\protobuf\java\com\academic\stub\academic\AllCoursesDataResponse.java
+C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\target\generated-sources\protobuf\grpc-java\com\academic\stub\academic\StudentCourseServiceGrpc.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\target\generated-sources\protobuf\java\com\academic\stub\academic\EmptyRequestOrBuilder.java
+C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\src\main\java\service\StudentCourseServiceImpl.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\target\generated-sources\protobuf\java\com\academic\stub\academic\AddCourseRequest.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\target\generated-sources\protobuf\grpc-java\com\academic\stub\academic\CourseServiceGrpc.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\target\generated-sources\protobuf\java\com\academic\stub\academic\AllCoursesDataResponseOrBuilder.java

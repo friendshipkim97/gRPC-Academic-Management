@@ -20,7 +20,6 @@ message AddStudentRequest {
   string studentNumber = 1;
   string studentName = 2;
   string major = 3;
-  repeated string courseNumber = 4;
 }
 
 message AddCourseRequest {
@@ -36,6 +35,11 @@ message DeleteStudentRequest{
 
 message DeleteCourseRequest{
   string courseNumber = 1;
+}
+
+message ApplicationForCourseRequest{
+  string studentNumber = 1;
+  string courseNumber = 2;
 }
 
 // ----------------------response --------------------------------------------------------
@@ -78,4 +82,8 @@ service CourseService {
   rpc GetAllCoursesData (EmptyRequest) returns (AllCoursesDataResponse) {}
   rpc AddCourseData(AddCourseRequest) returns (IsCompletedResponse) {}
   rpc DeleteCourseData(DeleteCourseRequest) returns (IsCompletedResponse) {}
+}
+
+service StudentCourseService{
+  rpc ApplicationForCourse (ApplicationForCourseRequest) returns (IsCompletedResponse) {}
 }
