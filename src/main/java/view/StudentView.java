@@ -47,22 +47,12 @@ public class StudentView {
         System.out.println("학생 이름을 입력하세요.");  String studentName = objReader.readLine().trim();
         System.out.println("학번을 입력하세요."); String studentNumber = objReader.readLine().trim();
         System.out.println("전공을 입력하세요."); String studentMajor = objReader.readLine().trim();
-        List<String> courseNumbers = new ArrayList<>();
-        while (true) {
-            System.out.println("강좌 번호를 입력하세요. 입력을 마치셨으면 x를 입력하세요."); String courseNumber = objReader.readLine().trim();
-            if (courseNumber.equals("x")) {
-                break;
-            }
-            courseNumbers.add(courseNumber);
-        }
 
         AddStudentRequest request = AddStudentRequest.newBuilder()
                 .setStudentName(studentName)
                 .setStudentNumber(studentNumber)
                 .setMajor(studentMajor)
-                .addAllCourseNumber(courseNumbers)
                 .build();
-
         return request;
     }
 

@@ -1,11 +1,13 @@
 package main;
 
 import com.academic.stub.academic.CourseServiceGrpc;
+import com.academic.stub.academic.StudentCourseServiceGrpc;
 import com.academic.stub.academic.StudentServiceGrpc;
 import io.grpc.Channel;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import view.CourseView;
+import view.StudentCourseView;
 import view.StudentView;
 
 import java.io.BufferedReader;
@@ -18,10 +20,12 @@ public class MainClient {
     private static final Logger logger = Logger.getLogger(MainClient.class.getName());
     private static StudentServiceGrpc.StudentServiceBlockingStub studentServerBlockingStub;
     private static CourseServiceGrpc.CourseServiceBlockingStub courseServerBlockingStub;
+    private static StudentCourseServiceGrpc.StudentCourseServiceBlockingStub studentCourseServiceBlockingStub;
 
     public MainClient(Channel channel){
         studentServerBlockingStub = StudentServiceGrpc.newBlockingStub(channel);
         courseServerBlockingStub = CourseServiceGrpc.newBlockingStub(channel);
+        studentCourseServiceBlockingStub = StudentCourseServiceGrpc.newBlockingStub(channel);
     }
 
     public static void main(String[] args) throws IOException {
@@ -33,6 +37,7 @@ public class MainClient {
         new MainClient(channel);
         StudentView studentView = new StudentView(studentServerBlockingStub);
         CourseView courseView = new CourseView(courseServerBlockingStub);
+        StudentCourseView studentCourseView = new StudentCourseView(studentCourseServiceBlockingStub);
 
         while (true) {
             try {
@@ -57,6 +62,9 @@ public class MainClient {
                         break;
                     case "6":
                         courseView.deleteCourseDataResponse(objReader);
+                        break;
+                    case "7":
+                        studentCourseView.applicationForCourse(objReader);
                         break;
                     case "8":
                         return;

@@ -4,6 +4,7 @@ import com.academic.stub.academic.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CourseView {
@@ -42,11 +43,22 @@ public class CourseView {
         System.out.println("강좌 번호를 입력하세요.");  String courseNumber = objReader.readLine().trim();
         System.out.println("교수 성을 입력하세요."); String professorLastName = objReader.readLine().trim();
         System.out.println("강좌 이름을 입력하세요."); String courseName = objReader.readLine().trim();
+        List<String> advancedCourseNumbers = new ArrayList<>();
+
+        while (true) {
+            System.out.println("선이수 강좌 번호를 입력하세요. 입력을 마치셨으면 x를 입력하세요.");
+            String advancedCourseNumber = objReader.readLine().trim();
+            if (advancedCourseNumber.equals("x")) {
+                break;
+            }
+            advancedCourseNumbers.add(advancedCourseNumber);
+        }
 
         AddCourseRequest request = AddCourseRequest.newBuilder()
-                .setCourseName(courseNumber)
+                .setCourseNumber(courseNumber)
                 .setProfessorLastName(professorLastName)
                 .setCourseName(courseName)
+                .addAllAdvancedCourseNumber(advancedCourseNumbers)
                 .build();
 
         return request;
