@@ -14,7 +14,6 @@ import repository.CourseRepository;
 import repository.StudentCourseRepository;
 import repository.StudentRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -85,20 +84,12 @@ public class StudentCourseServiceImpl extends StudentCourseServiceGrpc.StudentCo
     }
 
     private void validationAdvancedCourse(Course findCourse, List<StudentCourse> studentCourses) throws AdvancedCourseException {
-        Course parent = null;
-        int matchCount = 0;
-        int advancedCount = 0;
-        if (findCourse.getParent() != null) { parent = findCourse.getParent(); }
-
-        while (parent != null) {
-            advancedCount++;
+        boolean advancedCourseCheck = false;
+        for (Course course : findCourse.getAdvancedCourseList()) {
             for (StudentCourse studentCourse : studentCourses) {
-                if(studentCourse.getCourse().getId() == parent.getId()){  matchCount++; }
+                if (studentCourse.getCourse().getId() == course.getId()) { advancedCourseCheck = true; }
             }
-            if(parent.getParent() == null){ break; }
-            else{ parent = parent.getParent(); }
-        }
-        if (advancedCount != matchCount) {
+        } if (advancedCourseCheck == false) {
             throw new AdvancedCourseException("YOU DIDN'T TAKE THE ADVANCED COURSE");
         }
     }

@@ -31,35 +31,21 @@ public class MainRepository {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         Course course = new Course();
-        Course course1 = course.createCourse("17654", "Ahn", "Analysis_of_Software_Artifacts");
-        em.persist(course1);
-        Course course2 = course.createCourse("17655", "Lee", "Architectures_of_Software_Systems");
-        em.persist(course2);
-        Course course3 = course.createCourse("17651", "Kim", "Models_of_Software_Systems", course1, course2);
-        em.persist(course3);
-        Course course5 = course.createCourse("12345", "Park", "Java_Programming", course3);
+
+        Course course5 = course.createCourse("12345", "Park", "Java_Programming");
         em.persist(course5);
-        Course course4 = course.createCourse("17652", "Ko", "Methods_of_Software_Development");
+        Course course6 = course.createCourse("23456", "Park", "C++_Programming");
+        em.persist(course6);
+        Course course3 = course.createCourse("17651", "Kim", "Models_of_Software_Systems", course5);
+        em.persist(course3);
+        Course course4 = course.createCourse("17652", "Ko", "Methods_of_Software_Development", course6);
         em.persist(course4);
         Course course7 = course.createCourse("17653", "Kim", "Managing_Software_Development");
         em.persist(course7);
-        Course course6 = course.createCourse("23456", "Park", "C++_Programming", course4);
-        em.persist(course6);
-
-//        Course course5 = course.createCourse("12345", "Park", "Java_Programming");
-//        em.persist(course5);
-//        Course course6 = course.createCourse("23456", "Park", "C++_Programming");
-//        em.persist(course6);
-//        Course course3 = course.createCourse("17651", "Kim", "Models_of_Software_Systems", course5);
-//        em.persist(course3);
-//        Course course4 = course.createCourse("17652", "Ko", "Methods_of_Software_Development", course6);
-//        em.persist(course4);
-//        Course course7 = course.createCourse("17653", "Kim", "Managing_Software_Development");
-//        em.persist(course7);
-//        Course course1 = course.createCourse("17654", "Ahn", "Analysis_of_Software_Artifacts", course3, course5);
-//        em.persist(course1);
-//        Course course2 = course.createCourse("17655", "Lee", "Architectures_of_Software_Systems", course5, course3);
-//        em.persist(course2);
+        Course course1 = course.createCourse("17654", "Ahn", "Analysis_of_Software_Artifacts", course3);
+        em.persist(course1);
+        Course course2 = course.createCourse("17655", "Lee", "Architectures_of_Software_Systems", course5, course3);
+        em.persist(course2);
 
         StudentCourse studentCourse = new StudentCourse();
         Student student = new Student();

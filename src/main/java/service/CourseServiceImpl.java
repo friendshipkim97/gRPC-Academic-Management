@@ -5,7 +5,6 @@ import entity.Course;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import repository.CourseRepository;
-import repository.StudentRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +29,7 @@ public class CourseServiceImpl extends CourseServiceGrpc.CourseServiceImplBase {
 
             for (Course course : result) {
                 ArrayList<String> advancedCourseNumbers = new ArrayList<>();
-                List<Course> advancedCourses = course.getChild();
+                List<Course> advancedCourses = course.getAdvancedCourseList();
                 for (Course advancedCourse : advancedCourses) {
                     advancedCourseNumbers.add(advancedCourse.getCourseNumber());
                 }
@@ -63,13 +62,11 @@ public class CourseServiceImpl extends CourseServiceGrpc.CourseServiceImplBase {
             validationCourse(request);
             List<Course> coursesResult;
 
-            Course createdCourse = courseRepository.createCourse(request);
-
-            if (request.getAdvancedCourseNumberList().size() != 0) {
+            if(request.getAdvancedCourseNumberList().size() != 0) {
                 coursesResult = courseRepository.findCoursesByCourseNumber(request.getAdvancedCourseNumberList());
-                for (Course courseResult : coursesResult) {
-                    courseRepository.updateCourseRepository(courseResult, createdCourse);
-                }
+                courseRepository.addCourseWithAdvancedCourse(request, coursesResult);
+            } else{
+                courseRepository.createCourse(request);
             }
 
             IsCompletedResponse isCompleted = IsCompletedResponse.newBuilder()
@@ -120,4 +117,5 @@ public class CourseServiceImpl extends CourseServiceGrpc.CourseServiceImplBase {
             throw new IllegalArgumentException("THE COURSE NUMBER IS INVALID.");
         }
     }
+
 }

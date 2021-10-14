@@ -5,7 +5,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -24,18 +26,14 @@ public class Course {
     @OneToMany(mappedBy = "course")
     private List<StudentCourse> studentCourseEntities = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id")
-    private Course parent;
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    @JoinTable(name="advanced_course",
+            joinColumns={@JoinColumn(name="course_id")},
+            inverseJoinColumns={@JoinColumn(name="advanced_course_id")})
+    private List<Course> advancedCourseList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "parent")
-    private List<Course> child = new ArrayList<>();
-
-    // 연관관계 메서드
-    public void addChildCourse(Course child){
-        this.child.add(child);
-        child.setParent(this);
-    }
+    @ManyToMany(mappedBy="advancedCourseList")
+    private List<Course> courseList = new ArrayList<>();
 
     // 연관관계 메서드
     public void addStudentCourse(StudentCourse studentCourse) {
@@ -43,25 +41,39 @@ public class Course {
         studentCourse.setCourse(this);
     }
 
+    // 연관관계 메서드
+    public void addAdvancedCourse(Course child){
+        advancedCourseList.add(child);
+        courseList.add(this);
+    }
+
+    // 연관관계 삭제 메서드
+    public void removeAdvancedCourse(Course course) {
+        for (int i=0; i<advancedCourseList.size(); i++) {
+            if(advancedCourseList.get(i).equals(course)){
+                advancedCourseList.remove(i); }
+        }
+    }
+
     // 생성 메서드
-    public static Course createCourse(String courseNumber, String professorLastName, String courseName, Course... childCourse) {
+    public static Course createCourse(String courseNumber, String professorLastName, String courseName, Course... advancedCourses) {
         Course createdCourse = new Course();
         createdCourse.setCourseNumber(courseNumber);
         createdCourse.setProfessorLastName(professorLastName);
         createdCourse.setCourseName(courseName);
-        for (Course course : childCourse) {
-            createdCourse.addChildCourse(course);
+        for (Course course : advancedCourses) {
+            createdCourse.addAdvancedCourse(course);
         }
         return createdCourse;
     }
 
-    public static Course createCourse(String courseNumber, String professorLastName, String courseName, List<Course> childCourse) {
+    public static Course createCourse(String courseNumber, String professorLastName, String courseName, List<Course> advancedCourses) {
         Course createdCourse = new Course();
         createdCourse.setCourseNumber(courseNumber);
         createdCourse.setProfessorLastName(professorLastName);
         createdCourse.setCourseName(courseName);
-        for (Course course : childCourse) {
-            createdCourse.addChildCourse(course);
+        for (Course course : advancedCourses) {
+            createdCourse.addAdvancedCourse(course);
         }
         return createdCourse;
     }

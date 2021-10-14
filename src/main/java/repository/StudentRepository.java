@@ -38,7 +38,6 @@ public class StudentRepository{
         return true;
     }
 
-    // SQLIntegrityConstraintViolationException 위반 예외 추가하기
     public boolean deleteStudentByStudentNumber(String studentNumber) throws NullDataException, DuplicateDataException, ExistingDataException {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
@@ -67,18 +66,10 @@ public class StudentRepository{
 
     }
 
-    public Student createStudent(AddStudentRequest request, List<StudentCourse> studentCourseList) {
-        Student student = Student.createStudent(request.getStudentNumber(), request.getStudentName(), request.getMajor(), studentCourseList);
-        em.persist(student);
-        return student;
-
-    }
-
     public Student createStudent(AddStudentRequest request) {
         Student student = Student.createStudent(request.getStudentNumber(), request.getStudentName(), request.getMajor());
         em.persist(student);
         return student;
-
     }
 
     public void addStudentCourse(Student findStudent, StudentCourse studentCourse) {

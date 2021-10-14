@@ -2,10 +2,7 @@ package server;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
-import repository.CourseRepository;
-import repository.MainRepository;
-import repository.StudentCourseRepository;
-import repository.StudentRepository;
+import repository.*;
 import service.CourseServiceImpl;
 import service.StudentCourseServiceImpl;
 import service.StudentServiceImpl;
@@ -22,9 +19,9 @@ class MainServer {
 
         new MainRepository();
 
-        StudentRepository studentRepository = new StudentRepository();
-        CourseRepository courseRepository = new CourseRepository();
         StudentCourseRepository studentCourseRepository = new StudentCourseRepository();
+        StudentRepository studentRepository = new StudentRepository();
+        CourseRepository courseRepository = new CourseRepository(studentCourseRepository);
 
         Server server = ServerBuilder.forPort(50050)
                 .addService(new StudentServiceImpl(studentRepository, courseRepository, studentCourseRepository))

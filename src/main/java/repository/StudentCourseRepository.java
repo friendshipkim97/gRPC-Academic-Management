@@ -3,6 +3,7 @@ package repository;
 import entity.Course;
 import entity.Student;
 import entity.StudentCourse;
+import exception.NullDataException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -27,7 +28,7 @@ public class StudentCourseRepository {
         return studentCourse;
     }
 
-    public List<StudentCourse> findStudentCourseByStudent(Student student) {
+    public List<StudentCourse> findStudentCourseByStudent(Student student) throws NullDataException {
         List<StudentCourse> studentList = em.createQuery("select sc from StudentCourse sc where sc.student = :student", StudentCourse.class)
                 .setParameter("student", student)
                 .getResultList();
@@ -41,5 +42,12 @@ public class StudentCourseRepository {
             em.remove(findStudentCourse);
         }
         tx.commit();
+    }
+
+    public List<StudentCourse> findStudentCourseByCourse(Course findCourse) {
+        List<StudentCourse> studentCourses = em.createQuery("select sc from StudentCourse sc where sc.course = :course", StudentCourse.class)
+                .setParameter("course", findCourse)
+                .getResultList();
+        return studentCourses;
     }
 }
