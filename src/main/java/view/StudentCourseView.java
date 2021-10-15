@@ -26,12 +26,10 @@ public class StudentCourseView {
         System.out.println("********************학번 입력하기****************");
         System.out.println("학번을 입력하세요.");  String studentNumber = objReader.readLine().trim();
         System.out.println("강좌번호를 입력하세요.");  String courseNumber = objReader.readLine().trim();
-
         ApplicationForCourseRequest applicationForCourseRequest = ApplicationForCourseRequest.newBuilder()
                 .setStudentNumber(studentNumber)
                 .setCourseNumber(courseNumber)
                 .build();
-
         return applicationForCourseRequest;
 
     }

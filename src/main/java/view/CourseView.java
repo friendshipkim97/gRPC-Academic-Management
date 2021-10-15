@@ -48,12 +48,9 @@ public class CourseView {
         while (true) {
             System.out.println("선이수 강좌 번호를 입력하세요. 입력을 마치셨으면 x를 입력하세요.");
             String advancedCourseNumber = objReader.readLine().trim();
-            if (advancedCourseNumber.equals("x")) {
-                break;
-            }
+            if (advancedCourseNumber.equals("x")) { break; }
             advancedCourseNumbers.add(advancedCourseNumber);
         }
-
         AddCourseRequest request = AddCourseRequest.newBuilder()
                 .setCourseNumber(courseNumber)
                 .setProfessorLastName(professorLastName)
@@ -69,11 +66,9 @@ public class CourseView {
         System.out.println("********************지울 강좌 정보 입력하기****************");
         System.out.println("강좌 번호를 입력하세요.");
         String courseNumber = objReader.readLine().trim();
-
         DeleteCourseRequest request = DeleteCourseRequest.newBuilder()
                 .setCourseNumber(courseNumber)
                 .build();
-
         return request;
     }
 

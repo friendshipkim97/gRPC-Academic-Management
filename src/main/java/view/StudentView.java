@@ -47,7 +47,6 @@ public class StudentView {
         System.out.println("학생 이름을 입력하세요.");  String studentName = objReader.readLine().trim();
         System.out.println("학번을 입력하세요."); String studentNumber = objReader.readLine().trim();
         System.out.println("전공을 입력하세요."); String studentMajor = objReader.readLine().trim();
-
         AddStudentRequest request = AddStudentRequest.newBuilder()
                 .setStudentName(studentName)
                 .setStudentNumber(studentNumber)
@@ -67,11 +66,9 @@ public class StudentView {
         System.out.println("********************지울 학생 정보 입력하기****************");
         System.out.println("학번을 입력하세요.");
         String studentNumber = objReader.readLine().trim();
-
         DeleteStudentRequest request = DeleteStudentRequest.newBuilder()
                 .setStudentNumber(studentNumber)
                 .build();
-
         return request;
     }
 }

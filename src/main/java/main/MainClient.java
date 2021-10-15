@@ -45,31 +45,15 @@ public class MainClient {
                 printMenu();
                 String sChoice = objReader.readLine().trim();
                 switch (sChoice) {
-                    case "1":
-                        studentView.allStudentsDataResponse();
-                        break;
-                    case "2":
-                        courseView.allCoursesDataResponse();
-                        break;
-                    case "3":
-                        studentView.addStudentDataResponse(objReader);
-                        break;
-                    case "4":
-                        studentView.deleteStudentDataResponse(objReader);
-                        break;
-                    case "5":
-                        courseView.addCourseDataResponse(objReader);
-                        break;
-                    case "6":
-                        courseView.deleteCourseDataResponse(objReader);
-                        break;
-                    case "7":
-                        studentCourseView.applicationForCourse(objReader);
-                        break;
-                    case "8":
-                        return;
-                    default:
-                        System.out.println("올바르지 않은 선택입니다.");
+                    case "1": studentView.allStudentsDataResponse(); break;
+                    case "2": courseView.allCoursesDataResponse();break;
+                    case "3": studentView.addStudentDataResponse(objReader);break;
+                    case "4": studentView.deleteStudentDataResponse(objReader);break;
+                    case "5": courseView.addCourseDataResponse(objReader);break;
+                    case "6": courseView.deleteCourseDataResponse(objReader);break;
+                    case "7": studentCourseView.applicationForCourse(objReader);break;
+                    case "8": return;
+                    default: System.out.println("올바르지 않은 선택입니다.");
                 }
 
             } catch (Exception e) {
