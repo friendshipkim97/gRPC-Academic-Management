@@ -6,8 +6,4 @@ public class NullDataException extends Exception{
         super(errorMessage);
     }
 
-//    public void retry() {
-//
-//    }
-
 }

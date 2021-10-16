@@ -86,12 +86,8 @@ public class StudentCourseServiceImpl extends StudentCourseServiceGrpc.StudentCo
     private void validationAdvancedCourse(Course findCourse, List<StudentCourse> studentCourses) throws AdvancedCourseException {
         boolean advancedCourseCheck = false;
         for (Course course : findCourse.getAdvancedCourseList()) {
-            for (StudentCourse studentCourse : studentCourses) {
-                if (studentCourse.getCourse().getId() == course.getId()) { advancedCourseCheck = true; }
-            }
-        } if (advancedCourseCheck == false) {
-            throw new AdvancedCourseException("YOU DIDN'T TAKE THE ADVANCED COURSE");
-        }
+            for (StudentCourse studentCourse : studentCourses) { if (studentCourse.getCourse().getId() == course.getId()) { advancedCourseCheck = true; } }
+        } if (advancedCourseCheck == false) { throw new AdvancedCourseException("YOU DIDN'T TAKE THE ADVANCED COURSE"); }
     }
 
 }
