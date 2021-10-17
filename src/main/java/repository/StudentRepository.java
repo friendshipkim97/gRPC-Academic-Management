@@ -1,6 +1,7 @@
 package repository;
 
 import com.academic.stub.academic.AddStudentRequest;
+import constant.Constants;
 import entity.Student;
 import entity.StudentCourse;
 import exception.DuplicateDataException;
@@ -25,8 +26,9 @@ public class StudentRepository{
     }
 
     public List<Student> findAll() throws NullDataException {
-        List<Student> resultList = em.createQuery("select s from Student s", Student.class).getResultList();
-        if (resultList.size() == 0) { throw new NullDataException("NO STUDENT DATA FOUND"); }
+        List<Student> resultList = em.createQuery(Constants.EStudentRepository.eFindAllStudentQuery.getContent(), Student.class).getResultList();
+        if (resultList.size() == Constants.EStudentRepository.eZero.getNumber()) {
+            throw new NullDataException(Constants.EStudentRepository.eNoStudentDataExceptionMessage.getContent()); }
         return resultList;
     }
 
@@ -41,9 +43,9 @@ public class StudentRepository{
     public boolean deleteStudentByStudentNumber(String studentNumber) throws NullDataException, DuplicateDataException, ExistingDataException {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
-        Student findStudent = findStudentByStudentNumber(studentNumber, false);
-        List<StudentCourse> studentCourses = em.createQuery("select sc from StudentCourse sc where sc.student = :student", StudentCourse.class)
-                .setParameter("student", findStudent)
+        Student findStudent = findStudentByStudentNumber(studentNumber, Constants.EStudentRepository.eFalse.getCheck());
+        List<StudentCourse> studentCourses = em.createQuery(Constants.EStudentRepository.eFindStudentCourseByStudentQuery.getContent(), StudentCourse.class)
+                .setParameter(Constants.EStudentRepository.eStudent.getContent(), findStudent)
                 .getResultList();
 
         for (StudentCourse studentCourse : studentCourses) { em.remove(studentCourse); }
@@ -54,15 +56,18 @@ public class StudentRepository{
 
     public Student findStudentByStudentNumber(String studentNumber, Boolean checkForStudentAdd) throws NullDataException, DuplicateDataException, ExistingDataException {
 
-        List<Student> findStudentList = em.createQuery("select s from Student s where s.studentNumber = :studentNumber", Student.class)
-                .setParameter("studentNumber", studentNumber)
+        List<Student> findStudentList = em.createQuery(Constants.EStudentRepository.eFindStudentByStudentNumberQuery.getContent(), Student.class)
+                .setParameter(Constants.EStudentRepository.eStudent.getContent(), studentNumber)
                 .getResultList();
 
-        if (checkForStudentAdd == false && findStudentList.size() == 0) { throw new NullDataException("NO STUDENT DATA FOUND BY STUDENT_NUMBER"); }
-        else if (checkForStudentAdd == false && findStudentList.size() > 1) { throw new DuplicateDataException("THERE ARE SEVERAL STUDENTS WITH THE SAME STUDENT_NUMBER"); }
-        else if (checkForStudentAdd == true && findStudentList.size() >= 1) { throw new ExistingDataException("THIS STUDENT NUMBER ALREADY EXISTS.");}
-        else if(checkForStudentAdd == true && findStudentList.size() == 0) { return null;}
-        return findStudentList.get(0);
+        if (checkForStudentAdd == Constants.EStudentRepository.eFalse.getCheck() && findStudentList.size() == Constants.EStudentRepository.eZero.getNumber()) {
+            throw new NullDataException(Constants.EStudentRepository.eNoStudentDataByStudentNumberExceptionMessage.getContent()); }
+        else if (checkForStudentAdd == Constants.EStudentRepository.eFalse.getCheck() && findStudentList.size() > Constants.EStudentRepository.eOne.getNumber()) {
+            throw new DuplicateDataException(Constants.EStudentRepository.eManyStudentsDataByStudentNumberExceptionMessage.getContent()); }
+        else if (checkForStudentAdd == Constants.EStudentRepository.eTrue.getCheck() && findStudentList.size() >= Constants.EStudentRepository.eOne.getNumber()) {
+            throw new ExistingDataException(Constants.EStudentRepository.eAlreadyStudentNumberExceptionMessage.getContent());}
+        else if(checkForStudentAdd == Constants.EStudentRepository.eTrue.getCheck() && findStudentList.size() == Constants.EStudentRepository.eZero.getNumber()) { return null;}
+        return findStudentList.get(Constants.EStudentRepository.eZero.getNumber());
 
     }
 

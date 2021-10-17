@@ -1,6 +1,7 @@
 package service;
 
 import com.academic.stub.academic.*;
+import constant.Constants;
 import entity.Student;
 import entity.StudentCourse;
 import io.grpc.Status;
@@ -57,7 +58,7 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
             responseObserver.onNext(response);
             responseObserver.onCompleted();
         } catch (Exception e) {
-            logger.info(e.getClass().getSimpleName() + " : "+ e.getMessage());
+            logger.info(e.getClass().getSimpleName() + Constants.EStudentServiceImpl.eColon.getCheck() + e.getMessage());
             Status status = Status.NOT_FOUND.withDescription(e.getMessage());
             responseObserver.onError(status.asRuntimeException());
             return;
@@ -68,7 +69,7 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
     public void addStudentData(AddStudentRequest request, StreamObserver<IsCompletedResponse> responseObserver){
         try {
             validationStudent(request);
-            studentRepository.findStudentByStudentNumber(request.getStudentNumber(), true);
+            studentRepository.findStudentByStudentNumber(request.getStudentNumber(), Constants.EStudentServiceImpl.eTrue.getCheck());
             Student student = studentRepository.createStudent(request);
 
             IsCompletedResponse isCompleted = IsCompletedResponse.newBuilder()
@@ -77,7 +78,7 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
             responseObserver.onNext(isCompleted);
             responseObserver.onCompleted();
         } catch (Exception e) {
-            logger.info(e.getClass().getSimpleName() + " : "+ e.getMessage());
+            logger.info(e.getClass().getSimpleName() + Constants.EStudentServiceImpl.eColon.getContent() + e.getMessage());
             Status status = Status.FAILED_PRECONDITION.withDescription(e.getMessage());
             responseObserver.onError(status.asRuntimeException());
             return;
@@ -89,9 +90,9 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
 
         try {
             validationStudentNumber(request);
-            Student findStudent = studentRepository.findStudentByStudentNumber(request.getStudentNumber(), false);
+            Student findStudent = studentRepository.findStudentByStudentNumber(request.getStudentNumber(), Constants.EStudentServiceImpl.eFalse.getCheck());
             List<StudentCourse> findStudentCourses = studentCourseRepository.findStudentCourseByStudent(findStudent);
-            if (findStudentCourses.size() != 0) {
+            if (findStudentCourses.size() != Constants.EStudentServiceImpl.eZero.getNumber()) {
                 studentCourseRepository.deleteStudentCourse(findStudentCourses);
             }
             boolean isCompletedDelete = studentRepository.deleteStudentByStudentNumber(request.getStudentNumber());
@@ -101,7 +102,7 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
             responseObserver.onNext(isCompleted);
             responseObserver.onCompleted();
         } catch (Exception e) {
-            logger.info(e.getClass().getSimpleName() + " : "+ e.getMessage());
+            logger.info(e.getClass().getSimpleName() + Constants.EStudentServiceImpl.eColon.getContent() + e.getMessage());
             Status status = Status.FAILED_PRECONDITION.withDescription(e.getMessage());
             responseObserver.onError(status.asRuntimeException());
             return;
@@ -113,14 +114,16 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
      */
 
     private void validationStudent(AddStudentRequest request){
-        if (request.getStudentName().equals("") || request.getStudentNumber().equals("") || request.getMajor().equals("")) {
-            throw new IllegalArgumentException("THE STUDENT INPUT IS INVALID.");
+        if (request.getStudentName().equals(Constants.EStudentServiceImpl.eEmpty.getContent()) ||
+                request.getStudentNumber().equals(Constants.EStudentServiceImpl.eEmpty.getContent())
+                || request.getMajor().equals(Constants.EStudentServiceImpl.eEmpty.getContent())) {
+            throw new IllegalArgumentException(Constants.EStudentServiceImpl.eEmptyRequestStudentExceptionMessage.getContent());
         }
     }
 
     private void validationStudentNumber(DeleteStudentRequest request) {
-        if (request.getStudentNumber().equals("")) {
-            throw new IllegalArgumentException("THE STUDENT NUMBER IS INVALID.");
+        if (request.getStudentNumber().equals(Constants.EStudentServiceImpl.eEmpty.getContent())) {
+            throw new IllegalArgumentException(Constants.EStudentServiceImpl.eEmptyRequestStudentNumberExceptionMessage.getContent());
         }
     }
 

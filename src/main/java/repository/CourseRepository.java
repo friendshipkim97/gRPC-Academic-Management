@@ -2,6 +2,7 @@ package repository;
 
 import com.academic.stub.academic.AddCourseRequest;
 import com.google.protobuf.ProtocolStringList;
+import constant.Constants;
 import entity.Course;
 import entity.StudentCourse;
 import exception.DuplicateDataException;
@@ -28,19 +29,20 @@ public class CourseRepository{
     }
 
     public List<Course> findAll() throws NullDataException {
-        List<Course> resultList = em.createQuery("select c from Course c", Course.class).getResultList();
-        if (resultList.size() == 0) { throw new NullDataException("NO COURSE DATA FOUND"); }
+        List<Course> resultList = em.createQuery(Constants.ECourseRepository.eFindAllCourseQuery.getContent(), Course.class).getResultList();
+        if (resultList.size() == Constants.ECourseRepository.eZero.getNumber()) {
+            throw new NullDataException(Constants.ECourseRepository.eNoCourseDataExceptionMessage.getContent()); }
         return resultList;
     }
 
     public List<Course> findCoursesByCourseNumber(ProtocolStringList courseNumberList) throws NullDataException {
         List<Course> coursesResult = new ArrayList<>();
         for (String courseNumber : courseNumberList) {
-            Course singleResult = em.createQuery("select c from Course c where c.courseNumber = :courseNumber", Course.class)
-                    .setParameter("courseNumber", courseNumber)
+            Course singleResult = em.createQuery(Constants.ECourseRepository.eFindCourseByCourseNumberQuery.getContent(), Course.class)
+                    .setParameter(Constants.ECourseRepository.eCourseNumber.getContent(), courseNumber)
                     .getSingleResult();
             if(singleResult == null){
-                throw new NullDataException("NO COURSE DATA FOUND BY COURSE_NUMBER");
+                throw new NullDataException(Constants.ECourseRepository.eNoCourseDataByCourseNumberExceptionMessage.getContent());
             } coursesResult.add(singleResult); }
         return coursesResult;
     }
@@ -69,8 +71,8 @@ public class CourseRepository{
     private void deleteStudentCourseByCourse(List<StudentCourse> studentCourses) {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
-        if (studentCourses.size() != 0) {
-            logger.info("WARNING! DELETE STUDENT'S COURSE DATA");
+        if (studentCourses.size() != Constants.ECourseRepository.eZero.getNumber()) {
+            logger.info(Constants.ECourseRepository.eDeleteStudentCourseDataWarningMessage.getContent());
             for (StudentCourse studentCourse : studentCourses) {
                 em.remove(studentCourse);
             }
@@ -80,24 +82,24 @@ public class CourseRepository{
 
     private void deleteAdvancedCourseByCourse(Course findCourse) throws NullDataException {
         List<Course> courseList = findAll();
-        if(courseList.size() != 0){
-            logger.info("WARNING! DELETE COURSE'S ADVANCED_COURSE DATA");
-            for (Course course : courseList) {
-                course.removeAdvancedCourse(findCourse);
-            }
-        } if (findCourse.getAdvancedCourseList().size() != 0) {
+        if(courseList.size() != Constants.ECourseRepository.eZero.getNumber()){
+            logger.info(Constants.ECourseRepository.eDeleteAdvancedCourseDataWarningMessage.getContent());
+            for (Course course : courseList) { course.removeAdvancedCourse(findCourse); }
+        } if (findCourse.getAdvancedCourseList().size() != Constants.ECourseRepository.eZero.getNumber()) {
             findCourse.getAdvancedCourseList().clear();
         }
     }
 
     public Course findCourseByCourseNumber(String courseNumber) throws NullDataException {
-        List<Course> findCourseList = em.createQuery("select c from Course c where c.courseNumber = :courseNumber", Course.class)
-                .setParameter("courseNumber", courseNumber)
+        List<Course> findCourseList = em.createQuery(Constants.ECourseRepository.eFindCourseListByCourseNumberQuery.getContent(), Course.class)
+                .setParameter(Constants.ECourseRepository.eCourseNumber.getContent(), courseNumber)
                 .getResultList();
 
-        if (findCourseList.size() == 0) { throw new NullDataException("NO COURSE DATA FOUND BY COURSE_NUMBER"); }
-        if (findCourseList.size() > 1) { new DuplicateDataException("THERE ARE SEVERAL COURSES WITH THE SAME COURSE_NUMBER");}
-        return findCourseList.get(0);
+        if (findCourseList.size() == Constants.ECourseRepository.eZero.getNumber()) {
+            throw new NullDataException(Constants.ECourseRepository.eNoCourseDataByCourseNumberExceptionMessage.getContent()); }
+        if (findCourseList.size() > Constants.ECourseRepository.eOne.getNumber()) {
+            new DuplicateDataException(Constants.ECourseRepository.eManyCoursesByCourseNumberExceptionMessage.getContent());}
+        return findCourseList.get(Constants.ECourseRepository.eOne.getNumber());
     }
 
     public Course addCourseWithAdvancedCourse(AddCourseRequest request, List<Course> coursesResult) {

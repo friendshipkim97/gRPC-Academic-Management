@@ -1,6 +1,7 @@
 package entity;
 
 
+import constant.Constants;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +16,7 @@ public class Student {
 
     @Id
     @GeneratedValue
-    @Column(name = "student_id")
+    @Column(name = "course_id")
     private Long id;
 
     private String studentNumber;

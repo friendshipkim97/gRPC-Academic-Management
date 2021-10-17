@@ -1,5 +1,6 @@
 package server;
 
+import constant.Constants;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import repository.*;
@@ -23,19 +24,19 @@ class MainServer {
         StudentRepository studentRepository = new StudentRepository();
         CourseRepository courseRepository = new CourseRepository(studentCourseRepository);
 
-        Server server = ServerBuilder.forPort(50050)
+        Server server = ServerBuilder.forPort(Constants.EMainServer.ePortNumber.getNumber())
                 .addService(new StudentServiceImpl(studentRepository, courseRepository, studentCourseRepository))
                 .addService(new CourseServiceImpl(courseRepository))
                 .addService(new StudentCourseServiceImpl(studentRepository, courseRepository, studentCourseRepository))
                 .build();
         try {
             server.start();
-            logger.log(Level.INFO, "STUDENT REPOSITORY STARTED ON PORT 50050");
+            logger.log(Level.INFO, Constants.EMainServer.eServerStartSuccessMessage.getContent());
             server.awaitTermination();
         } catch (IOException e) {
-            logger.log(Level.SEVERE, "STUDENT REPOSITORY DID NOT START");
+            logger.log(Level.SEVERE, Constants.EMainServer.eServerStartErrorMessage.getContent());
         } catch (InterruptedException e) {
-            logger.log(Level.SEVERE, "STUDENT REPOSITORY SHUT DOWN ON INTERRUPTED");
+            logger.log(Level.SEVERE, Constants.EMainServer.eServerStartShutDownMessage.getContent());
         }
     }
 

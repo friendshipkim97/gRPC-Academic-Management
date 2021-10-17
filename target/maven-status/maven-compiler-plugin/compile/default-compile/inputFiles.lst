@@ -1,3 +1,4 @@
+C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\src\main\java\exception\DuplicateDataException.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\src\main\java\repository\CourseRepository.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\src\main\java\entity\Course.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\src\main\java\entity\Student.java
@@ -11,6 +12,8 @@ C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\src\main\java\repository\
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\src\main\java\service\StudentServiceImpl.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\target\generated-sources\protobuf\java\com\academic\stub\academic\AddStudentRequest.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\target\generated-sources\protobuf\java\com\academic\stub\academic\AddCourseRequestOrBuilder.java
+C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\src\main\java\constant\Constants.java
+C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\src\main\java\exception\AdvancedCourseException.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\target\generated-sources\protobuf\java\com\academic\stub\academic\DeleteCourseRequestOrBuilder.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\src\main\java\repository\StudentRepository.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\src\main\java\repository\MainRepository.java
@@ -30,5 +33,6 @@ C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\target\generated-sources\
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\target\generated-sources\protobuf\java\com\academic\stub\academic\IsCompletedResponseOrBuilder.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\src\main\java\entity\StudentCourse.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\target\generated-sources\protobuf\java\com\academic\stub\academic\DeleteCourseRequest.java
+C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\src\main\java\exception\ExistingDataException.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\target\generated-sources\protobuf\java\com\academic\stub\academic\DeleteStudentRequestOrBuilder.java
 C:\Users\KIMJUNGWOO\Desktop\Academic-Management-Server\target\generated-sources\protobuf\java\com\academic\stub\academic\DeleteStudentRequest.java

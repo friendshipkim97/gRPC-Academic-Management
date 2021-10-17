@@ -1,6 +1,7 @@
 package service;
 
 import com.academic.stub.academic.*;
+import constant.Constants;
 import entity.Course;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
@@ -49,7 +50,7 @@ public class CourseServiceImpl extends CourseServiceGrpc.CourseServiceImplBase {
             responseObserver.onNext(response);
             responseObserver.onCompleted();
         } catch (Exception e) {
-            logger.info(e.getClass().getSimpleName() + " : "+ e.getMessage());
+            logger.info(e.getClass().getSimpleName() + Constants.ECourseServiceImpl.eColon.getContent() + e.getMessage());
             Status status = Status.NOT_FOUND.withDescription(e.getMessage());
             responseObserver.onError(status.asRuntimeException());
             return;
@@ -62,7 +63,7 @@ public class CourseServiceImpl extends CourseServiceGrpc.CourseServiceImplBase {
             validationCourse(request);
             List<Course> coursesResult;
 
-            if(request.getAdvancedCourseNumberList().size() != 0) {
+            if(request.getAdvancedCourseNumberList().size() != Constants.ECourseServiceImpl.eZero.getNumber()) {
                 coursesResult = courseRepository.findCoursesByCourseNumber(request.getAdvancedCourseNumberList());
                 courseRepository.addCourseWithAdvancedCourse(request, coursesResult);
             } else{
@@ -70,13 +71,13 @@ public class CourseServiceImpl extends CourseServiceGrpc.CourseServiceImplBase {
             }
 
             IsCompletedResponse isCompleted = IsCompletedResponse.newBuilder()
-                    .setIsCompleted(true).build();
+                    .setIsCompleted(Constants.ECourseServiceImpl.eTrue.getCheck()).build();
 
             responseObserver.onNext(isCompleted);
             responseObserver.onCompleted();
         }
          catch(Exception e){
-                logger.info(e.getClass().getSimpleName() + " : " + e.getMessage());
+                logger.info(e.getClass().getSimpleName() + Constants.ECourseServiceImpl.eColon.getContent() + e.getMessage());
                 Status status = Status.FAILED_PRECONDITION.withDescription(e.getMessage());
                 responseObserver.onError(status.asRuntimeException());
                 return;
@@ -95,7 +96,7 @@ public class CourseServiceImpl extends CourseServiceGrpc.CourseServiceImplBase {
             responseObserver.onNext(isCompleted);
             responseObserver.onCompleted();
         } catch (Exception e) {
-            logger.info(e.getClass().getSimpleName() + " : "+ e.getMessage());
+            logger.info(e.getClass().getSimpleName() + Constants.ECourseServiceImpl.eColon.getContent() + e.getMessage());
             Status status = Status.FAILED_PRECONDITION.withDescription(e.getMessage());
             responseObserver.onError(status.asRuntimeException());
             return;
@@ -107,14 +108,16 @@ public class CourseServiceImpl extends CourseServiceGrpc.CourseServiceImplBase {
      */
 
     private void validationCourse(AddCourseRequest request) {
-        if (request.getCourseNumber().equals("") || request.getProfessorLastName().equals("") || request.getCourseName().equals("")) {
-            throw new IllegalArgumentException("THE COURSE INPUT IS INVALID.");
+        if (request.getCourseNumber().equals(Constants.ECourseServiceImpl.eEmpty.getContent()) ||
+                request.getProfessorLastName().equals(Constants.ECourseServiceImpl.eEmpty.getContent()) ||
+                request.getCourseName().equals(Constants.ECourseServiceImpl.eEmpty.getContent())) {
+            throw new IllegalArgumentException(Constants.ECourseServiceImpl.eEmptyRequestCourseExceptionMessage.getContent());
         }
     }
 
     private void validationCourseNumber(DeleteCourseRequest request) {
-        if (request.getCourseNumber().equals("")) {
-            throw new IllegalArgumentException("THE COURSE NUMBER IS INVALID.");
+        if (request.getCourseNumber().equals(Constants.ECourseServiceImpl.eEmpty.getContent())) {
+            throw new IllegalArgumentException(Constants.ECourseServiceImpl.eEmptyRequestCourseNumberExceptionMessage.getContent());
         }
     }
 

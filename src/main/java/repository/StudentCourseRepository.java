@@ -1,5 +1,6 @@
 package repository;
 
+import constant.Constants;
 import entity.Course;
 import entity.Student;
 import entity.StudentCourse;
@@ -29,8 +30,8 @@ public class StudentCourseRepository {
     }
 
     public List<StudentCourse> findStudentCourseByStudent(Student student) throws NullDataException {
-        List<StudentCourse> studentList = em.createQuery("select sc from StudentCourse sc where sc.student = :student", StudentCourse.class)
-                .setParameter("student", student)
+        List<StudentCourse> studentList = em.createQuery(Constants.EStudentCourseRepository.eFindStudentCourseByStudentQuery.getContent(), StudentCourse.class)
+                .setParameter(Constants.EStudentCourseRepository.eStudent.getContent(), student)
                 .getResultList();
         return studentList;
     }
@@ -45,8 +46,8 @@ public class StudentCourseRepository {
     }
 
     public List<StudentCourse> findStudentCourseByCourse(Course findCourse) {
-        List<StudentCourse> studentCourses = em.createQuery("select sc from StudentCourse sc where sc.course = :course", StudentCourse.class)
-                .setParameter("course", findCourse)
+        List<StudentCourse> studentCourses = em.createQuery(Constants.EStudentCourseRepository.eFindStudentCourseByCourseQuery.getContent(), StudentCourse.class)
+                .setParameter(Constants.EStudentCourseRepository.eCourse.getContent(), findCourse)
                 .getResultList();
         return studentCourses;
     }
