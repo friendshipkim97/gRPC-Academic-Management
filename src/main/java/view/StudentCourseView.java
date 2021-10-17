@@ -2,6 +2,7 @@ package view;
 
 import com.academic.stub.academic.ApplicationForCourseRequest;
 import com.academic.stub.academic.StudentCourseServiceGrpc;
+import constant.Constants;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,15 +18,15 @@ public class StudentCourseView {
     public void applicationForCourse(BufferedReader objReader) throws IOException {
         boolean isCompleted = this.studentCourseServiceBlockingStub
                 .applicationForCourse(receiveApplicationForCourseRequest(objReader)).getIsCompleted();
-        if(isCompleted) System.out.println("APPLICATION FOR COURSE SUCCESS");
-        else System.out.println("APPLICATION FOR COURSE FAIL");
+        if(isCompleted) System.out.println(Constants.EStudentCourseView.eApplicationForCourseSuccessMessage.getContent());
+        else System.out.println(Constants.EStudentCourseView.eApplicationForCourseFailMessage.getContent());
     }
 
     private ApplicationForCourseRequest receiveApplicationForCourseRequest(BufferedReader objReader) throws IOException {
-        System.out.println("***************************************************");
-        System.out.println("********************학번 입력하기****************");
-        System.out.println("학번을 입력하세요.");  String studentNumber = objReader.readLine().trim();
-        System.out.println("강좌번호를 입력하세요.");  String courseNumber = objReader.readLine().trim();
+        System.out.println(Constants.EStudentCourseView.eMenuStar.getContent());
+        System.out.println(Constants.EStudentCourseView.eMenuApplicationForCourseGuide.getContent());
+        System.out.println(Constants.EStudentCourseView.eMenuStudentNumberGuide.getContent());  String studentNumber = objReader.readLine().trim();
+        System.out.println(Constants.EStudentCourseView.eMenuCourseNumberGuide.getContent());  String courseNumber = objReader.readLine().trim();
         ApplicationForCourseRequest applicationForCourseRequest = ApplicationForCourseRequest.newBuilder()
                 .setStudentNumber(studentNumber)
                 .setCourseNumber(courseNumber)
