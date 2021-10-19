@@ -81,7 +81,8 @@ public class CourseRepository{
     }
 
     private void deleteAdvancedCourseByCourse(Course findCourse) throws NullDataException {
-        List<Course> courseList = findAll();
+
+        List<Course> courseList = findCourse.getCourseList();
         if(courseList.size() != Constants.ECourseRepository.eZero.getNumber()){
             logger.info(Constants.ECourseRepository.eDeleteAdvancedCourseDataWarningMessage.getContent());
             for (Course course : courseList) { course.removeAdvancedCourse(findCourse); }
@@ -99,7 +100,7 @@ public class CourseRepository{
             throw new NullDataException(Constants.ECourseRepository.eNoCourseDataByCourseNumberExceptionMessage.getContent()); }
         if (findCourseList.size() > Constants.ECourseRepository.eOne.getNumber()) {
             new DuplicateDataException(Constants.ECourseRepository.eManyCoursesByCourseNumberExceptionMessage.getContent());}
-        return findCourseList.get(Constants.ECourseRepository.eOne.getNumber());
+        return findCourseList.get(Constants.ECourseRepository.eZero.getNumber());
     }
 
     public Course addCourseWithAdvancedCourse(AddCourseRequest request, List<Course> coursesResult) {

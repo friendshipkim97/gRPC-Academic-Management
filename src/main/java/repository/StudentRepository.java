@@ -57,7 +57,7 @@ public class StudentRepository{
     public Student findStudentByStudentNumber(String studentNumber, Boolean checkForStudentAdd) throws NullDataException, DuplicateDataException, ExistingDataException {
 
         List<Student> findStudentList = em.createQuery(Constants.EStudentRepository.eFindStudentByStudentNumberQuery.getContent(), Student.class)
-                .setParameter(Constants.EStudentRepository.eStudent.getContent(), studentNumber)
+                .setParameter(Constants.EStudentRepository.eStudentNumber.getContent(), studentNumber)
                 .getResultList();
 
         if (checkForStudentAdd == Constants.EStudentRepository.eFalse.getCheck() && findStudentList.size() == Constants.EStudentRepository.eZero.getNumber()) {
