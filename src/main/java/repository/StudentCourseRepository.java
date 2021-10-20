@@ -1,6 +1,6 @@
 package repository;
 
-import constant.Constants;
+import constant.Constants.EStudentCourseRepository;
 import entity.Course;
 import entity.Student;
 import entity.StudentCourse;
@@ -30,8 +30,8 @@ public class StudentCourseRepository {
     }
 
     public List<StudentCourse> findStudentCourseByStudent(Student student) throws NullDataException {
-        List<StudentCourse> studentList = em.createQuery(Constants.EStudentCourseRepository.eFindStudentCourseByStudentQuery.getContent(), StudentCourse.class)
-                .setParameter(Constants.EStudentCourseRepository.eStudent.getContent(), student)
+        List<StudentCourse> studentList = em.createQuery(EStudentCourseRepository.eFindStudentCourseByStudentQuery.getContent(), StudentCourse.class)
+                .setParameter(EStudentCourseRepository.eStudent.getContent(), student)
                 .getResultList();
         return studentList;
     }
@@ -46,8 +46,8 @@ public class StudentCourseRepository {
     }
 
     public List<StudentCourse> findStudentCourseByCourse(Course findCourse) {
-        List<StudentCourse> studentCourses = em.createQuery(Constants.EStudentCourseRepository.eFindStudentCourseByCourseQuery.getContent(), StudentCourse.class)
-                .setParameter(Constants.EStudentCourseRepository.eCourse.getContent(), findCourse)
+        List<StudentCourse> studentCourses = em.createQuery(EStudentCourseRepository.eFindStudentCourseByCourseQuery.getContent(), StudentCourse.class)
+                .setParameter(EStudentCourseRepository.eCourse.getContent(), findCourse)
                 .getResultList();
         return studentCourses;
     }

@@ -1,6 +1,6 @@
 package repository;
 
-import constant.Constants;
+import constant.Constants.EMainRepository;
 import entity.Course;
 import entity.Student;
 import entity.StudentCourse;
@@ -20,7 +20,7 @@ public class MainRepository {
     public static EntityManager em;
 
     public MainRepository() {
-        this.emf = Persistence.createEntityManagerFactory(Constants.EMainRepository.eAcademic.getContent());
+        this.emf = Persistence.createEntityManagerFactory(EMainRepository.eAcademic.getContent());
         this.em = emf.createEntityManager();
         //initDB();
     }
