@@ -3,7 +3,7 @@ package main;
 import com.academic.stub.academic.CourseServiceGrpc;
 import com.academic.stub.academic.StudentCourseServiceGrpc;
 import com.academic.stub.academic.StudentServiceGrpc;
-import constant.Constants;
+import constant.Constants.EMainClient;
 import io.grpc.Channel;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -30,7 +30,7 @@ public class MainClient {
     }
 
     public static void main(String[] args) throws IOException {
-        String target = Constants.EMainClient.ePortNumber.getContent();
+        String target = EMainClient.ePortNumber.getContent();
         ManagedChannel channel = ManagedChannelBuilder.forTarget(target)
                 .usePlaintext()
                 .build();
@@ -45,7 +45,7 @@ public class MainClient {
                 BufferedReader objReader = new BufferedReader(new InputStreamReader(System.in));
                 printMenu();
 
-                Constants.EMainClient sChoice = Constants.EMainClient.valueOf(objReader.readLine().trim());
+                EMainClient sChoice = EMainClient.valueOf(objReader.readLine().trim());
                 switch (sChoice) {
                     case one: studentView.allStudentsDataResponse(); break;
                     case two: courseView.allCoursesDataResponse();break;
@@ -55,29 +55,29 @@ public class MainClient {
                     case six: courseView.deleteCourseDataResponse(objReader);break;
                     case seven: studentCourseView.applicationForCourse(objReader);break;
                     case eight: return;
-                    default: Constants.EMainClient.eSwitchChoiceFail.getContent();
+                    default: EMainClient.eSwitchChoiceFail.getContent();
                 }
 
             } catch (Exception e) {
-                logger.info(e.getClass().getSimpleName() + Constants.EMainClient.eColon + e.getMessage());
+                logger.info(e.getClass().getSimpleName() + EMainClient.eColon + e.getMessage());
             }
         }
 
     }
     private static void printMenu() {
         System.out.println();
-        System.out.println(Constants.EMainClient.eMenuStar.getContent());
-        System.out.println(Constants.EMainClient.eMenuTitle.getContent());
-        System.out.println(Constants.EMainClient.eMenuStar.getContent());
-        System.out.println(Constants.EMainClient.eMenuGuide.getContent());
-        System.out.println(Constants.EMainClient.eMenuOne.getContent());
-        System.out.println(Constants.EMainClient.eMenuTwo.getContent());
-        System.out.println(Constants.EMainClient.eMenuThree.getContent());
-        System.out.println(Constants.EMainClient.eMenuFour.getContent());
-        System.out.println(Constants.EMainClient.eMenuFive.getContent());
-        System.out.println(Constants.EMainClient.eMenuSix.getContent());
-        System.out.println(Constants.EMainClient.eMenuSeven.getContent());
-        System.out.println(Constants.EMainClient.eMenuEight.getContent());
+        System.out.println(EMainClient.eMenuStar.getContent());
+        System.out.println(EMainClient.eMenuTitle.getContent());
+        System.out.println(EMainClient.eMenuStar.getContent());
+        System.out.println(EMainClient.eMenuGuide.getContent());
+        System.out.println(EMainClient.eMenuOne.getContent());
+        System.out.println(EMainClient.eMenuTwo.getContent());
+        System.out.println(EMainClient.eMenuThree.getContent());
+        System.out.println(EMainClient.eMenuFour.getContent());
+        System.out.println(EMainClient.eMenuFive.getContent());
+        System.out.println(EMainClient.eMenuSix.getContent());
+        System.out.println(EMainClient.eMenuSeven.getContent());
+        System.out.println(EMainClient.eMenuEight.getContent());
     }
 
 }

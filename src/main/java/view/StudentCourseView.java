@@ -2,7 +2,7 @@ package view;
 
 import com.academic.stub.academic.ApplicationForCourseRequest;
 import com.academic.stub.academic.StudentCourseServiceGrpc;
-import constant.Constants;
+import constant.Constants.EStudentCourseView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,15 +18,15 @@ public class StudentCourseView {
     public void applicationForCourse(BufferedReader objReader) throws IOException {
         boolean isCompleted = this.studentCourseServiceBlockingStub
                 .applicationForCourse(receiveApplicationForCourseRequest(objReader)).getIsCompleted();
-        if(isCompleted) System.out.println(Constants.EStudentCourseView.eApplicationForCourseSuccessMessage.getContent());
-        else System.out.println(Constants.EStudentCourseView.eApplicationForCourseFailMessage.getContent());
+        if(isCompleted) System.out.println(EStudentCourseView.eApplicationForCourseSuccessMessage.getContent());
+        else System.out.println(EStudentCourseView.eApplicationForCourseFailMessage.getContent());
     }
 
     private ApplicationForCourseRequest receiveApplicationForCourseRequest(BufferedReader objReader) throws IOException {
-        System.out.println(Constants.EStudentCourseView.eMenuStar.getContent());
-        System.out.println(Constants.EStudentCourseView.eMenuApplicationForCourseGuide.getContent());
-        System.out.println(Constants.EStudentCourseView.eMenuStudentNumberGuide.getContent());  String studentNumber = objReader.readLine().trim();
-        System.out.println(Constants.EStudentCourseView.eMenuCourseNumberGuide.getContent());  String courseNumber = objReader.readLine().trim();
+        System.out.println(EStudentCourseView.eMenuStar.getContent());
+        System.out.println(EStudentCourseView.eMenuApplicationForCourseGuide.getContent());
+        System.out.println(EStudentCourseView.eMenuStudentNumberGuide.getContent());  String studentNumber = objReader.readLine().trim();
+        System.out.println(EStudentCourseView.eMenuCourseNumberGuide.getContent());  String courseNumber = objReader.readLine().trim();
         ApplicationForCourseRequest applicationForCourseRequest = ApplicationForCourseRequest.newBuilder()
                 .setStudentNumber(studentNumber)
                 .setCourseNumber(courseNumber)
