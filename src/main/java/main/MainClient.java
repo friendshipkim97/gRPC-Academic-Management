@@ -22,24 +22,32 @@ public class MainClient {
     private static StudentServiceGrpc.StudentServiceBlockingStub studentServerBlockingStub;
     private static CourseServiceGrpc.CourseServiceBlockingStub courseServerBlockingStub;
     private static StudentCourseServiceGrpc.StudentCourseServiceBlockingStub studentCourseServiceBlockingStub;
+    private StudentView studentView;
+    private CourseView courseView;
+    private  StudentCourseView studentCourseView;
 
-    public MainClient(Channel channel){
+    public static void main(String[] args) throws IOException {
+        MainClient mainClient = new MainClient();
+        mainClient.choiceMenu();
+    }
+
+    public MainClient(){
+        ManagedChannel channel = setConnection();
         studentServerBlockingStub = StudentServiceGrpc.newBlockingStub(channel);
         courseServerBlockingStub = CourseServiceGrpc.newBlockingStub(channel);
         studentCourseServiceBlockingStub = StudentCourseServiceGrpc.newBlockingStub(channel);
+        studentView = new StudentView(studentServerBlockingStub);
+        courseView = new CourseView(courseServerBlockingStub);
+        studentCourseView = new StudentCourseView(studentCourseServiceBlockingStub);
     }
 
-    public static void main(String[] args) throws IOException {
+    private ManagedChannel setConnection() {
         String target = EMainClient.ePortNumber.getContent();
-        ManagedChannel channel = ManagedChannelBuilder.forTarget(target)
+        return ManagedChannelBuilder.forTarget(target)
                 .usePlaintext()
                 .build();
-
-        new MainClient(channel);
-        StudentView studentView = new StudentView(studentServerBlockingStub);
-        CourseView courseView = new CourseView(courseServerBlockingStub);
-        StudentCourseView studentCourseView = new StudentCourseView(studentCourseServiceBlockingStub);
-
+    }
+    private void choiceMenu() {
         while (true) {
             try {
                 BufferedReader objReader = new BufferedReader(new InputStreamReader(System.in));
@@ -62,7 +70,6 @@ public class MainClient {
                 logger.info(e.getClass().getSimpleName() + EMainClient.eColon + e.getMessage());
             }
         }
-
     }
     private static void printMenu() {
         System.out.println();

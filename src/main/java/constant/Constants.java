@@ -7,14 +7,14 @@ public class Constants {
     @Getter
     public enum EMainClient{
         ePortNumber("localhost:50050"),
-        one("1"),
-        two("2"),
-        three("3"),
-        four("4"),
-        five("5"),
-        six("6"),
-        seven("7"),
-        eight("8"),
+        one(),
+        two(),
+        three(),
+        four(),
+        five(),
+        six(),
+        seven(),
+        eight(),
         eSwitchChoiceFail("올바르지 않은 선택입니다."),
         eColon( " : "),
         eMenuStar("***************************************************"),
@@ -32,6 +32,7 @@ public class Constants {
         private String content;
 
         EMainClient(String content) { this.content = content; }
+        EMainClient() {}
     }
 
     @Getter

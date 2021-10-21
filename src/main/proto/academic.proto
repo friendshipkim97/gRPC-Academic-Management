@@ -11,8 +11,9 @@ option java_multiple_files = true;
 
 
 // ----------------------message-----------------------------------------------------
-// ----------------------request --------------------------------------------------------
 
+
+// ----------------------request --------------------------------------------------------
 message EmptyRequest {
 }
 
@@ -71,7 +72,6 @@ message IsCompletedResponse {
 }
 
 // ----------------------service----------------------------------------------------
-
 service StudentService {
   rpc GetAllStudentsData (EmptyRequest) returns (AllStudentsDataResponse) {}
   rpc AddStudentData(AddStudentRequest) returns (IsCompletedResponse) {}
