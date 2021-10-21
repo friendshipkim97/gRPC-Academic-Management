@@ -4,7 +4,6 @@ import constant.Constants.EStudentCourseRepository;
 import entity.Course;
 import entity.Student;
 import entity.StudentCourse;
-import exception.NullDataException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -29,8 +28,9 @@ public class StudentCourseRepository {
         return studentCourse;
     }
 
-    public List<StudentCourse> findStudentCourseByStudent(Student student) throws NullDataException {
-        List<StudentCourse> studentList = em.createQuery(EStudentCourseRepository.eFindStudentCourseByStudentQuery.getContent(), StudentCourse.class)
+    public List<StudentCourse> findStudentCourseByStudent(Student student) {
+        List<StudentCourse> studentList = em.createQuery(EStudentCourseRepository.eFindStudentCourseByStudentQuery.getContent(),
+                StudentCourse.class)
                 .setParameter(EStudentCourseRepository.eStudent.getContent(), student)
                 .getResultList();
         return studentList;
@@ -39,14 +39,13 @@ public class StudentCourseRepository {
     public void deleteStudentCourse(List<StudentCourse> findStudentCourses) {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
-        for (StudentCourse findStudentCourse : findStudentCourses) {
-            em.remove(findStudentCourse);
-        }
+        for (StudentCourse findStudentCourse : findStudentCourses) { em.remove(findStudentCourse); }
         tx.commit();
     }
 
     public List<StudentCourse> findStudentCourseByCourse(Course findCourse) {
-        List<StudentCourse> studentCourses = em.createQuery(EStudentCourseRepository.eFindStudentCourseByCourseQuery.getContent(), StudentCourse.class)
+        List<StudentCourse> studentCourses = em.createQuery(EStudentCourseRepository.eFindStudentCourseByCourseQuery.getContent(),
+                StudentCourse.class)
                 .setParameter(EStudentCourseRepository.eCourse.getContent(), findCourse)
                 .getResultList();
         return studentCourses;

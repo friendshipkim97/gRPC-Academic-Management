@@ -15,15 +15,19 @@ import java.util.logging.Logger;
 class MainServer {
 
     private static final Logger logger = Logger.getLogger(MainServer.class.getName());
+    private MainRepository mainRepository;
+    private StudentCourseRepository studentCourseRepository;
+    private StudentRepository studentRepository;
+    private CourseRepository courseRepository;
 
-    public static void main(String[] args) {
+    public MainServer() {
+        mainRepository = new MainRepository();
+        studentCourseRepository = new StudentCourseRepository();
+        studentRepository = new StudentRepository();
+        courseRepository = new CourseRepository(studentCourseRepository);
+    }
 
-        new MainRepository();
-
-        StudentCourseRepository studentCourseRepository = new StudentCourseRepository();
-        StudentRepository studentRepository = new StudentRepository();
-        CourseRepository courseRepository = new CourseRepository(studentCourseRepository);
-
+    public void setConnection() {
         Server server = ServerBuilder.forPort(EMainServer.ePortNumber.getNumber())
                 .addService(new StudentServiceImpl(studentRepository, courseRepository, studentCourseRepository))
                 .addService(new CourseServiceImpl(courseRepository))
@@ -38,6 +42,11 @@ class MainServer {
         } catch (InterruptedException e) {
             logger.log(Level.SEVERE, EMainServer.eServerStartShutDownMessage.getContent());
         }
+    }
+
+    public static void main(String[] args) {
+        MainServer mainServer = new MainServer();
+        mainServer.setConnection();
     }
 
 }

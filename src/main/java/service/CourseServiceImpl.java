@@ -22,39 +22,38 @@ public class CourseServiceImpl extends CourseServiceGrpc.CourseServiceImplBase {
 
     @Override
     public void getAllCoursesData(EmptyRequest empty, StreamObserver<AllCoursesDataResponse> responseObserver) {
-        AllCoursesDataResponse response;
         try {
-
-            ArrayList<AllCoursesDataResponse.Course> courseResults = new ArrayList<>();
             List<Course> result = courseRepository.findAll();
-
-            for (Course course : result) {
-                ArrayList<String> advancedCourseNumbers = new ArrayList<>();
-                List<Course> advancedCourses = course.getAdvancedCourseList();
-                for (Course advancedCourse : advancedCourses) {
-                    advancedCourseNumbers.add(advancedCourse.getCourseNumber());
-                }
-                AllCoursesDataResponse.Course courseResult = AllCoursesDataResponse
-                        .Course
-                        .newBuilder()
-                        .setCourseNumber(course.getCourseNumber())
-                        .setProfessorLastName(course.getProfessorLastName())
-                        .setCourseName(course.getCourseName())
-                        .addAllAdvancedCourseNumber(advancedCourseNumbers).build();
-                courseResults.add(courseResult);
-            }
-
-            response = AllCoursesDataResponse.newBuilder()
-                    .addAllCourses(courseResults).build();
-
+            AllCoursesDataResponse response = setAllCoursesDataResponse(result);
             responseObserver.onNext(response);
             responseObserver.onCompleted();
         } catch (Exception e) {
             logger.info(e.getClass().getSimpleName() + ECourseServiceImpl.eColon.getContent() + e.getMessage());
-            Status status = Status.NOT_FOUND.withDescription(e.getMessage());
+            Status status = Status.INTERNAL.withDescription(e.getMessage());
             responseObserver.onError(status.asRuntimeException());
             return;
         }
+    }
+
+    private AllCoursesDataResponse setAllCoursesDataResponse(List<Course> result) {
+        ArrayList<AllCoursesDataResponse.Course> courseResults = new ArrayList<>();
+        for (Course course : result) {
+            ArrayList<String> advancedCourseNumbers = new ArrayList<>();
+            List<Course> advancedCourses = course.getAdvancedCourseList();
+            for (Course advancedCourse : advancedCourses) {
+                advancedCourseNumbers.add(advancedCourse.getCourseNumber());
+            }
+            AllCoursesDataResponse.Course courseResult = AllCoursesDataResponse
+                    .Course
+                    .newBuilder()
+                    .setCourseNumber(course.getCourseNumber())
+                    .setProfessorLastName(course.getProfessorLastName())
+                    .setCourseName(course.getCourseName())
+                    .addAllAdvancedCourseNumber(advancedCourseNumbers).build();
+            courseResults.add(courseResult);
+        }
+        return AllCoursesDataResponse.newBuilder()
+                .addAllCourses(courseResults).build();
     }
 
     @Override
@@ -62,13 +61,10 @@ public class CourseServiceImpl extends CourseServiceGrpc.CourseServiceImplBase {
         try {
             validationCourse(request);
             List<Course> coursesResult;
-
             if(request.getAdvancedCourseNumberList().size() != ECourseServiceImpl.eZero.getNumber()) {
                 coursesResult = courseRepository.findCoursesByCourseNumber(request.getAdvancedCourseNumberList());
                 courseRepository.addCourseWithAdvancedCourse(request, coursesResult);
-            } else{
-                courseRepository.createCourse(request);
-            }
+            } else{ courseRepository.createCourse(request); }
 
             IsCompletedResponse isCompleted = IsCompletedResponse.newBuilder()
                     .setIsCompleted(ECourseServiceImpl.eTrue.getCheck()).build();
@@ -78,11 +74,9 @@ public class CourseServiceImpl extends CourseServiceGrpc.CourseServiceImplBase {
         }
          catch(Exception e){
                 logger.info(e.getClass().getSimpleName() + ECourseServiceImpl.eColon.getContent() + e.getMessage());
-                Status status = Status.FAILED_PRECONDITION.withDescription(e.getMessage());
+                Status status = Status.INTERNAL.withDescription(e.getMessage());
                 responseObserver.onError(status.asRuntimeException());
-                return;
-            }
-        }
+                return; } }
 
 
     @Override
@@ -92,12 +86,11 @@ public class CourseServiceImpl extends CourseServiceGrpc.CourseServiceImplBase {
             boolean isCompletedDelete = courseRepository.deleteCourseByCourseNumber(request.getCourseNumber());
             IsCompletedResponse isCompleted = IsCompletedResponse.newBuilder()
                     .setIsCompleted(isCompletedDelete).build();
-
             responseObserver.onNext(isCompleted);
             responseObserver.onCompleted();
         } catch (Exception e) {
             logger.info(e.getClass().getSimpleName() + ECourseServiceImpl.eColon.getContent() + e.getMessage());
-            Status status = Status.FAILED_PRECONDITION.withDescription(e.getMessage());
+            Status status = Status.INTERNAL.withDescription(e.getMessage());
             responseObserver.onError(status.asRuntimeException());
             return;
         }

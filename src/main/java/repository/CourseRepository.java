@@ -5,13 +5,14 @@ import com.google.protobuf.ProtocolStringList;
 import constant.Constants.ECourseRepository;
 import entity.Course;
 import entity.StudentCourse;
-import exception.DuplicateDataException;
+import exception.ExistingDataException;
 import exception.NullDataException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -35,15 +36,13 @@ public class CourseRepository{
         return resultList;
     }
 
-    public List<Course> findCoursesByCourseNumber(ProtocolStringList courseNumberList) throws NullDataException {
+    public List<Course> findCoursesByCourseNumber(ProtocolStringList courseNumberList){
         List<Course> coursesResult = new ArrayList<>();
         for (String courseNumber : courseNumberList) {
             Course singleResult = em.createQuery(ECourseRepository.eFindCourseByCourseNumberQuery.getContent(), Course.class)
                     .setParameter(ECourseRepository.eCourseNumber.getContent(), courseNumber)
                     .getSingleResult();
-            if(singleResult == null){
-                throw new NullDataException(ECourseRepository.eNoCourseDataByCourseNumberExceptionMessage.getContent());
-            } coursesResult.add(singleResult); }
+            coursesResult.add(singleResult); }
         return coursesResult;
     }
 
@@ -54,12 +53,13 @@ public class CourseRepository{
         return course;
     }
 
-    public boolean deleteCourseByCourseNumber(String courseNumber) throws NullDataException {
+    public boolean deleteCourseByCourseNumber(String courseNumber) throws NullDataException, ExistingDataException {
 
         Course findCourse = findCourseByCourseNumber(courseNumber);
         List<StudentCourse> studentCourses = this.studentCourseRepository.findStudentCourseByCourse(findCourse);
-        deleteStudentCourseByCourse(studentCourses);
+
         deleteAdvancedCourseByCourse(findCourse);
+        deleteStudentCourseByCourse(studentCourses);
 
         EntityTransaction tx = em.getTransaction();
         tx.begin();
@@ -69,44 +69,50 @@ public class CourseRepository{
     }
 
     private void deleteStudentCourseByCourse(List<StudentCourse> studentCourses) {
-        EntityTransaction tx = em.getTransaction();
-        tx.begin();
         if (studentCourses.size() != ECourseRepository.eZero.getNumber()) {
+            EntityTransaction tx = em.getTransaction();
+            tx.begin();
             logger.info(ECourseRepository.eDeleteStudentCourseDataWarningMessage.getContent());
             for (StudentCourse studentCourse : studentCourses) {
                 em.remove(studentCourse);
             }
-        }
-        tx.commit();
-    }
-
-    private void deleteAdvancedCourseByCourse(Course findCourse) throws NullDataException {
-
-        List<Course> courseList = findCourse.getCourseList();
-        if(courseList.size() != ECourseRepository.eZero.getNumber()){
-            logger.info(ECourseRepository.eDeleteAdvancedCourseDataWarningMessage.getContent());
-            for (Course course : courseList) { course.removeAdvancedCourse(findCourse); }
-        } if (findCourse.getAdvancedCourseList().size() != ECourseRepository.eZero.getNumber()) {
-            findCourse.getAdvancedCourseList().clear();
+            tx.commit();
         }
     }
 
-    public Course findCourseByCourseNumber(String courseNumber) throws NullDataException {
-        List<Course> findCourseList = em.createQuery(ECourseRepository.eFindCourseListByCourseNumberQuery.getContent(), Course.class)
+    private void deleteAdvancedCourseByCourse(Course findCourse){
+
+        List<Course> allCourseList = findAllNoException();
+        for(Iterator<Course> itr = allCourseList.iterator(); itr.hasNext();){
+            Course courseTemp = itr.next();
+            if (courseTemp.removeAdvancedCourse(findCourse)) {
+                logger.info(ECourseRepository.eDeleteAdvancedCourseDataWarningMessage.getContent());
+            }
+        }
+    }
+
+    public List<Course> findAllNoException(){
+        List<Course> resultList = em.createQuery(ECourseRepository.eFindAllCourseQuery.getContent(), Course.class).getResultList();
+        return resultList;
+    }
+
+    public Course findCourseByCourseNumber(String courseNumber) throws NullDataException, ExistingDataException {
+        List<Course> findCourseList = em.createQuery(ECourseRepository.eFindCourseListByCourseNumberQuery.getContent(),
+                Course.class)
                 .setParameter(ECourseRepository.eCourseNumber.getContent(), courseNumber)
                 .getResultList();
-
         if (findCourseList.size() == ECourseRepository.eZero.getNumber()) {
             throw new NullDataException(ECourseRepository.eNoCourseDataByCourseNumberExceptionMessage.getContent()); }
-        if (findCourseList.size() > ECourseRepository.eOne.getNumber()) {
-            new DuplicateDataException(ECourseRepository.eManyCoursesByCourseNumberExceptionMessage.getContent());}
+        else if (findCourseList.size() > ECourseRepository.eOne.getNumber()) {
+            throw new ExistingDataException(ECourseRepository.eManyCoursesByCourseNumberExceptionMessage.getContent());}
         return findCourseList.get(ECourseRepository.eZero.getNumber());
     }
 
     public Course addCourseWithAdvancedCourse(AddCourseRequest request, List<Course> coursesResult) {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
-        Course createdCourse = Course.createCourse(request.getCourseNumber(), request.getProfessorLastName(), request.getCourseName(), coursesResult);
+        Course createdCourse = Course.createCourse(request.getCourseNumber(), request.getProfessorLastName(),
+                request.getCourseName(), coursesResult);
         em.persist(createdCourse);
         tx.commit();
         return createdCourse;

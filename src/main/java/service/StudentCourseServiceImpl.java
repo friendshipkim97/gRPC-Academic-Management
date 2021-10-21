@@ -41,7 +41,8 @@ public class StudentCourseServiceImpl extends StudentCourseServiceGrpc.StudentCo
                     EStudentCourseServiceImpl.eFalse.getCheck());
             Course findCourse = courseRepository.findCourseByCourseNumber(request.getCourseNumber());
             List<StudentCourse> studentCourses = studentCourseRepository.findStudentCourseByStudent(findStudent);
-            if(studentCourses.size() != EStudentCourseServiceImpl.eZero.getNumber()){ validationExistingCourse(findCourse, studentCourses); }
+            if(studentCourses.size() != EStudentCourseServiceImpl.eZero.getNumber()){
+                validationExistingCourse(findCourse, studentCourses); }
             validationAdvancedCourse(findCourse, studentCourses);
 
             StudentCourse studentCourse = studentCourseRepository.createStudentCourse(findCourse);
@@ -54,7 +55,7 @@ public class StudentCourseServiceImpl extends StudentCourseServiceGrpc.StudentCo
             responseObserver.onCompleted();
         } catch (Exception e) {
             logger.info(e.getClass().getSimpleName() + EStudentCourseServiceImpl.eColon.getContent() + e.getMessage());
-            Status status = Status.FAILED_PRECONDITION.withDescription(e.getMessage());
+            Status status = Status.INTERNAL.withDescription(e.getMessage());
             responseObserver.onError(status.asRuntimeException());
             return ;
         }
@@ -69,7 +70,6 @@ public class StudentCourseServiceImpl extends StudentCourseServiceGrpc.StudentCo
             throw new IllegalArgumentException(EStudentCourseServiceImpl.eEmptyRequestCourseIdExceptionMessage.getContent());
         }
     }
-
     private void validationStudentId(ApplicationForCourseRequest request) {
         if (request.getStudentNumber().equals(EStudentCourseServiceImpl.eEmpty.getContent())) {
             throw new IllegalArgumentException(EStudentCourseServiceImpl.eEmptyRequestStudentIdExceptionMessage.getContent());
@@ -83,14 +83,15 @@ public class StudentCourseServiceImpl extends StudentCourseServiceGrpc.StudentCo
             }
         }
     }
-
     private void validationAdvancedCourse(Course findCourse, List<StudentCourse> studentCourses) throws AdvancedCourseException {
         boolean advancedCourseCheck = EStudentCourseServiceImpl.eFalse.getCheck();
-        for (Course course : findCourse.getAdvancedCourseList()) {
-            for (StudentCourse studentCourse : studentCourses) { if (studentCourse.getCourse().getId() == course.getId()) {
-                advancedCourseCheck = EStudentCourseServiceImpl.eTrue.getCheck(); } }
-        } if (advancedCourseCheck == EStudentCourseServiceImpl.eFalse.getCheck()) {
-            throw new AdvancedCourseException(EStudentCourseServiceImpl.eTakeAdvancedCourseExceptionMessage.getContent()); }
+        if (findCourse.getAdvancedCourseList().size() != 0) {
+            for (Course course : findCourse.getAdvancedCourseList()) {
+                for (StudentCourse studentCourse : studentCourses) { if (studentCourse.getCourse().getId() == course.getId()) {
+                    advancedCourseCheck = EStudentCourseServiceImpl.eTrue.getCheck(); } }
+            } if (advancedCourseCheck == EStudentCourseServiceImpl.eFalse.getCheck()) {
+                throw new AdvancedCourseException(EStudentCourseServiceImpl.eTakeAdvancedCourseExceptionMessage.getContent()); }
+        }
     }
 
 }

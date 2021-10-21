@@ -30,39 +30,37 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
 
     @Override
     public void getAllStudentsData(EmptyRequest empty, StreamObserver<AllStudentsDataResponse> responseObserver) {
-        AllStudentsDataResponse response;
         try {
-
-            ArrayList<AllStudentsDataResponse.Student> studentResults = new ArrayList<>();
             List<Student> result = studentRepository.findAll();
-
-            for (Student student : result) {
-                ArrayList<String> courseNumbers = new ArrayList<>();
-                List<StudentCourse> studentCourses = student.getStudentCourse();
-                for (StudentCourse studentCourse : studentCourses) {
-                    courseNumbers.add(studentCourse.getCourse().getCourseNumber());
-                }
-                AllStudentsDataResponse.Student studentResult = AllStudentsDataResponse
-                        .Student
-                        .newBuilder()
-                        .setStudentName(student.getStudentName())
-                        .setStudentNumber(student.getStudentNumber())
-                        .setMajor(student.getMajor())
-                        .addAllCourseNumber(courseNumbers).build();
-                studentResults.add(studentResult);
-            }
-
-            response = AllStudentsDataResponse.newBuilder()
-                    .addAllStudents(studentResults).build();
-
+            AllStudentsDataResponse response = setAllStudentsDataResponse(result);
             responseObserver.onNext(response);
             responseObserver.onCompleted();
         } catch (Exception e) {
-            logger.info(e.getClass().getSimpleName() + EStudentServiceImpl.eColon.getCheck() + e.getMessage());
-            Status status = Status.NOT_FOUND.withDescription(e.getMessage());
+            logger.info(e.getClass().getSimpleName() + EStudentServiceImpl.eColon.getContent() + e.getMessage());
+            Status status = Status.INTERNAL.withDescription(e.getMessage());
             responseObserver.onError(status.asRuntimeException());
-            return;
         }
+    }
+
+    private AllStudentsDataResponse setAllStudentsDataResponse(List<Student> result) {
+        ArrayList<AllStudentsDataResponse.Student> studentResults = new ArrayList<>();
+        for (Student student : result) {
+            ArrayList<String> courseNumbers = new ArrayList<>();
+            List<StudentCourse> studentCourses = student.getStudentCourse();
+            for (StudentCourse studentCourse : studentCourses) {
+                courseNumbers.add(studentCourse.getCourse().getCourseNumber());
+            }
+            AllStudentsDataResponse.Student studentResult = AllStudentsDataResponse
+                    .Student
+                    .newBuilder()
+                    .setStudentName(student.getStudentName())
+                    .setStudentNumber(student.getStudentNumber())
+                    .setMajor(student.getMajor())
+                    .addAllCourseNumber(courseNumbers).build();
+            studentResults.add(studentResult);
+        }
+        return AllStudentsDataResponse.newBuilder()
+                .addAllStudents(studentResults).build();
     }
 
     @Override
@@ -71,7 +69,6 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
             validationStudent(request);
             studentRepository.findStudentByStudentNumber(request.getStudentNumber(), EStudentServiceImpl.eTrue.getCheck());
             Student student = studentRepository.createStudent(request);
-
             IsCompletedResponse isCompleted = IsCompletedResponse.newBuilder()
                     .setIsCompleted(studentRepository.save(student)).build();
 
@@ -79,7 +76,7 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
             responseObserver.onCompleted();
         } catch (Exception e) {
             logger.info(e.getClass().getSimpleName() + EStudentServiceImpl.eColon.getContent() + e.getMessage());
-            Status status = Status.FAILED_PRECONDITION.withDescription(e.getMessage());
+            Status status = Status.INTERNAL.withDescription(e.getMessage());
             responseObserver.onError(status.asRuntimeException());
             return;
         }
@@ -87,15 +84,15 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
 
     @Override
     public void deleteStudentData(DeleteStudentRequest request, StreamObserver<IsCompletedResponse> responseObserver) {
-
         try {
             validationStudentNumber(request);
-            Student findStudent = studentRepository.findStudentByStudentNumber(request.getStudentNumber(), EStudentServiceImpl.eFalse.getCheck());
+            Student findStudent = studentRepository.findStudentByStudentNumber(request.getStudentNumber(),
+                    EStudentServiceImpl.eFalse.getCheck());
             List<StudentCourse> findStudentCourses = studentCourseRepository.findStudentCourseByStudent(findStudent);
             if (findStudentCourses.size() != EStudentServiceImpl.eZero.getNumber()) {
-                studentCourseRepository.deleteStudentCourse(findStudentCourses);
-            }
-            boolean isCompletedDelete = studentRepository.deleteStudentByStudentNumber(request.getStudentNumber());
+                studentCourseRepository.deleteStudentCourse(findStudentCourses); }
+            boolean isCompletedDelete = studentRepository.deleteStudentByFindStudent(findStudent);
+
             IsCompletedResponse isCompleted = IsCompletedResponse.newBuilder()
                     .setIsCompleted(isCompletedDelete).build();
 
@@ -103,7 +100,7 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
             responseObserver.onCompleted();
         } catch (Exception e) {
             logger.info(e.getClass().getSimpleName() + EStudentServiceImpl.eColon.getContent() + e.getMessage());
-            Status status = Status.FAILED_PRECONDITION.withDescription(e.getMessage());
+            Status status = Status.INTERNAL.withDescription(e.getMessage());
             responseObserver.onError(status.asRuntimeException());
             return;
         }
@@ -117,15 +114,12 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
         if (request.getStudentName().equals(EStudentServiceImpl.eEmpty.getContent()) ||
                 request.getStudentNumber().equals(EStudentServiceImpl.eEmpty.getContent())
                 || request.getMajor().equals(EStudentServiceImpl.eEmpty.getContent())) {
-            throw new IllegalArgumentException(EStudentServiceImpl.eEmptyRequestStudentExceptionMessage.getContent());
-        }
+            throw new IllegalArgumentException(EStudentServiceImpl.eEmptyRequestStudentExceptionMessage.getContent()); }
     }
 
     private void validationStudentNumber(DeleteStudentRequest request) {
         if (request.getStudentNumber().equals(EStudentServiceImpl.eEmpty.getContent())) {
-            throw new IllegalArgumentException(EStudentServiceImpl.eEmptyRequestStudentNumberExceptionMessage.getContent());
-        }
-    }
+            throw new IllegalArgumentException(EStudentServiceImpl.eEmptyRequestStudentNumberExceptionMessage.getContent()); } }
 
 }
 

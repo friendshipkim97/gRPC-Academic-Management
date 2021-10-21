@@ -1,6 +1,5 @@
 package constant;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 public class Constants {
@@ -89,8 +88,8 @@ public class Constants {
     @Getter
     public enum ECourseServiceImpl{
 
-        eEmptyRequestCourseExceptionMessage("THE COURSE INPUT IS INVALID."),
-        eEmptyRequestCourseNumberExceptionMessage("THE COURSE NUMBER IS INVALID."),
+        eEmptyRequestCourseExceptionMessage("THE COURSE INPUT IS A EMPTY VALUE."),
+        eEmptyRequestCourseNumberExceptionMessage("THE COURSE NUMBER IS A EMPTY VALUE."),
         eEmpty(""),
         eColon(" : "),
         eZero(0),
@@ -107,8 +106,8 @@ public class Constants {
     @Getter
     public enum EStudentCourseServiceImpl{
 
-        eEmptyRequestCourseIdExceptionMessage("THE COURSE ID'S INPUT IS INVALID."),
-        eEmptyRequestStudentIdExceptionMessage("THE STUDENT ID'S INPUT IS INVALID."),
+        eEmptyRequestCourseIdExceptionMessage("THE COURSE ID'S INPUT IS A EMPTY VALUE."),
+        eEmptyRequestStudentIdExceptionMessage("THE STUDENT ID'S INPUT IS A EMPTY VALUE."),
         eAlreadyTakingCourseExceptionMessage("THIS IS A COURSE YOU ARE ALREADY TAKING"),
         eTakeAdvancedCourseExceptionMessage( "YOU DIDN'T TAKE THE ADVANCED COURSE"),
         eEmpty(""),
@@ -128,8 +127,8 @@ public class Constants {
     @Getter
     public enum EStudentServiceImpl{
 
-        eEmptyRequestStudentExceptionMessage("THE STUDENT INPUT IS INVALID."),
-        eEmptyRequestStudentNumberExceptionMessage("THE STUDENT NUMBER IS INVALID."),
+        eEmptyRequestStudentExceptionMessage("THE STUDENT INPUT IS A EMPTY VALUE."),
+        eEmptyRequestStudentNumberExceptionMessage("THE STUDENT NUMBER IS A EMPTY VALUE."),
         eEmpty(""),
         eColon(" : "),
         eZero(0),

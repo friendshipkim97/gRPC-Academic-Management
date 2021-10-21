@@ -1,12 +1,14 @@
 package entity;
 
+import com.mysql.cj.log.Log;
 import constant.Constants;
 import lombok.Getter;
 import lombok.Setter;
+import service.StudentServiceImpl;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.logging.Logger;
 
 @Entity
 @Getter
@@ -34,6 +36,8 @@ public class Course {
     @ManyToMany(mappedBy="advancedCourseList")
     private List<Course> courseList = new ArrayList<>();
 
+    private static final Logger logger = Logger.getLogger(StudentServiceImpl.class.getName());
+
     // 연관관계 메서드
     public void addStudentCourse(StudentCourse studentCourse) {
         this.studentCourseEntities.add(studentCourse);
@@ -43,15 +47,20 @@ public class Course {
     // 연관관계 메서드
     public void addAdvancedCourse(Course child){
         advancedCourseList.add(child);
-        courseList.add(this);
+        //courseList.add(this);
     }
 
     // 연관관계 삭제 메서드
-    public void removeAdvancedCourse(Course course) {
-        for (int i=0; i<advancedCourseList.size(); i++) {
-            if(advancedCourseList.get(i).equals(course)){
-                advancedCourseList.remove(i); }
+    public Boolean removeAdvancedCourse(Course course) {
+        Boolean deleteCheck = false;
+        for(Iterator<Course> itr = advancedCourseList.iterator(); itr.hasNext();){
+            Course courseTemp = itr.next();
+            if(courseTemp.equals(course)) {
+                deleteCheck = true;
+                itr.remove(); 
+            }
         }
+        return deleteCheck;
     }
 
     // 생성 메서드

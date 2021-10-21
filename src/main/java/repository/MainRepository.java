@@ -22,7 +22,7 @@ public class MainRepository {
     public MainRepository() {
         this.emf = Persistence.createEntityManagerFactory(EMainRepository.eAcademic.getContent());
         this.em = emf.createEntityManager();
-        //initDB();
+        initDB();
     }
 
     /**

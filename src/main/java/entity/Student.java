@@ -16,7 +16,7 @@ public class Student {
 
     @Id
     @GeneratedValue
-    @Column(name = "course_id")
+    @Column(name = "student_id")
     private Long id;
 
     private String studentNumber;
