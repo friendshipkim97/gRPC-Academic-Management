@@ -55,7 +55,13 @@ public class Constants {
         eX("x"),
         eSpacing("\n"),
         eNull(null),
-        eZero(0);
+        eZero(0),
+        eMatchContainNumber(".*[0-9].*"),
+        eMatchOnlyNumber("[0-9]+"),
+        eCourseNumberMatchMessage("강좌번호에 숫자만 포함되어야 합니다."),
+        eProfessorLastNameMatchMessage("교수 성에 숫자가 포함되서는 안됩니다."),
+        eCourseNameMatchMessage("강좌 이름에 숫자가 포함되서는 안됩니다."),
+        eAdvancedCourseNumberMatchMessage("선이수 강좌번호에 숫자만 포함되어야 합니다.");
 
         private String content;
         private int number;
@@ -71,7 +77,11 @@ public class Constants {
         eMenuStar("***************************************************"),
         eMenuApplicationForCourseGuide("********************수강신청 정보 입력하기****************"),
         eMenuStudentNumberGuide("학번을 입력하세요."),
-        eMenuCourseNumberGuide("강좌번호를 입력하세요.");
+        eMenuCourseNumberGuide("강좌번호를 입력하세요."),
+        eMatchContainNumber(".*[0-9].*"),
+        eMatchOnlyNumber("[0-9]+"),
+        eStudentNumberMatchMessage("학생번호에 숫자만 포함할 수 있습니다."),
+        eCourseNumberMatchMessage("강좌번호에 숫자만 포함되어야 합니다.");
 
         private String content;
 
@@ -96,7 +106,12 @@ public class Constants {
         eMenuDeleteStudentGuide("********************지울 학생 정보 입력하기****************"),
         eSpacing("\n"),
         eNull(null),
-        eZero(0);
+        eZero(0),
+        eMatchContainNumber(".*[0-9].*"),
+        eMatchOnlyNumber("[0-9]+"),
+        eStudentNameMatchMessage("학생이름에 숫자를 포함할 수 없습니다."),
+        eStudentNumberMatchMessage("학생번호에 숫자만 포함할 수 있습니다."),
+        eMajorMatchMessage("전공에 숫자를 포함할 수 없습니다.");
 
         private String content;
         private int number;

@@ -4,7 +4,6 @@ import com.academic.stub.academic.CourseServiceGrpc;
 import com.academic.stub.academic.StudentCourseServiceGrpc;
 import com.academic.stub.academic.StudentServiceGrpc;
 import constant.Constants.EMainClient;
-import io.grpc.Channel;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import view.CourseView;
@@ -65,9 +64,8 @@ public class MainClient {
                     case eight: return;
                     default: EMainClient.eSwitchChoiceFail.getContent();
                 }
-
             } catch (Exception e) {
-                logger.info(e.getClass().getSimpleName() + EMainClient.eColon + e.getMessage());
+                logger.info(e.getClass().getSimpleName() + EMainClient.eColon.getContent() + e.getMessage());
             }
         }
     }

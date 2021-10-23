@@ -21,17 +21,29 @@ public class StudentCourseView {
         if(isCompleted) System.out.println(EStudentCourseView.eApplicationForCourseSuccessMessage.getContent());
         else System.out.println(EStudentCourseView.eApplicationForCourseFailMessage.getContent());
     }
-
     private ApplicationForCourseRequest receiveApplicationForCourseRequest(BufferedReader objReader) throws IOException {
         System.out.println(EStudentCourseView.eMenuStar.getContent());
         System.out.println(EStudentCourseView.eMenuApplicationForCourseGuide.getContent());
         System.out.println(EStudentCourseView.eMenuStudentNumberGuide.getContent());  String studentNumber = objReader.readLine().trim();
         System.out.println(EStudentCourseView.eMenuCourseNumberGuide.getContent());  String courseNumber = objReader.readLine().trim();
+        validationApplicationForCourseData(studentNumber, courseNumber);
         ApplicationForCourseRequest applicationForCourseRequest = ApplicationForCourseRequest.newBuilder()
                 .setStudentNumber(studentNumber)
                 .setCourseNumber(courseNumber)
                 .build();
         return applicationForCourseRequest;
-
     }
+
+    /**
+     * validation
+     */
+    private void validationApplicationForCourseData(String studentNumber, String courseNumber) {
+        validationStudentNumber(studentNumber);
+        validationCourseNumber(courseNumber); }
+    private void validationStudentNumber(String studentNumber) {
+        if(studentNumber.matches(EStudentCourseView.eMatchOnlyNumber.getContent()) == false){
+            throw new IllegalArgumentException(EStudentCourseView.eStudentNumberMatchMessage.getContent()); } }
+    private void validationCourseNumber(String courseNumber) {
+        if(courseNumber.matches(EStudentCourseView.eMatchOnlyNumber.getContent()) == false){
+            throw new IllegalArgumentException(EStudentCourseView.eCourseNumberMatchMessage.getContent()); } }
 }
