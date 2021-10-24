@@ -10,12 +10,21 @@ import java.util.List;
 
 public class CourseView {
 
+    /**
+     * variable
+     */
     private CourseServiceGrpc.CourseServiceBlockingStub courseServerBlockingStub;
 
+    /**
+     * constructor
+     */
     public CourseView(CourseServiceGrpc.CourseServiceBlockingStub courseServerBlockingStub) {
         this.courseServerBlockingStub = courseServerBlockingStub;
     }
 
+    /**
+     * method
+     */
     public void allCoursesDataResponse(){
         showAllCourses(courseServerBlockingStub.getAllCoursesData(null).getCoursesList());
     }
@@ -92,20 +101,16 @@ public class CourseView {
 
     private void validationCourseNumber(String courseNumber) {
         if(courseNumber.matches(ECourseView.eMatchOnlyNumber.getContent()) == false){
-            throw new IllegalArgumentException(ECourseView.eCourseNumberMatchMessage.getContent()); }
-    }
+            throw new IllegalArgumentException(ECourseView.eCourseNumberMatchMessage.getContent()); } }
     private void validationProfessorLastName(String professorLastName) {
         if(professorLastName.matches(ECourseView.eMatchContainNumber.getContent())){
-            throw new IllegalArgumentException(ECourseView.eProfessorLastNameMatchMessage.getContent()); }
-    }
+            throw new IllegalArgumentException(ECourseView.eProfessorLastNameMatchMessage.getContent()); } }
     private void validationCourseName(String courseName) {
         if(courseName.matches(ECourseView.eMatchContainNumber.getContent())){
-            throw new IllegalArgumentException(ECourseView.eCourseNameMatchMessage.getContent()); }
-    }
+            throw new IllegalArgumentException(ECourseView.eCourseNameMatchMessage.getContent()); } }
     private void validationAdvancedCourseNumbers(List<String> advancedCourseNumbers) {
         for (String advancedCourseNumber : advancedCourseNumbers) {
             if(advancedCourseNumber.matches(ECourseView.eMatchOnlyNumber.getContent()) == false){
-                throw new IllegalArgumentException(ECourseView.eAdvancedCourseNumberMatchMessage.getContent()); } }
-    }
+                throw new IllegalArgumentException(ECourseView.eAdvancedCourseNumberMatchMessage.getContent()); } } }
 
 }

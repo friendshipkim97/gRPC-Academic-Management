@@ -9,12 +9,21 @@ import java.io.IOException;
 
 public class StudentCourseView {
 
+    /**
+     * variable
+     */
     private static StudentCourseServiceGrpc.StudentCourseServiceBlockingStub studentCourseServiceBlockingStub;
 
+    /**
+     * constructor
+     */
     public StudentCourseView(StudentCourseServiceGrpc.StudentCourseServiceBlockingStub studentCourseServiceBlockingStub) {
         this.studentCourseServiceBlockingStub = studentCourseServiceBlockingStub;
     }
 
+    /**
+     * method
+     */
     public void applicationForCourse(BufferedReader objReader) throws IOException {
         boolean isCompleted = this.studentCourseServiceBlockingStub
                 .applicationForCourse(receiveApplicationForCourseRequest(objReader)).getIsCompleted();

@@ -12,12 +12,21 @@ import java.util.List;
 
 public class StudentView {
 
+    /**
+     * variable
+     */
     private StudentServiceGrpc.StudentServiceBlockingStub studentServerBlockingStub;
 
+    /**
+     * constructor
+     */
     public StudentView(StudentServiceGrpc.StudentServiceBlockingStub studentServerBlockingStub) {
         this.studentServerBlockingStub = studentServerBlockingStub;
     }
 
+    /**
+     * method
+     */
     public void allStudentsDataResponse(){
         showAllStudents(this.studentServerBlockingStub.getAllStudentsData(null).getStudentsList());
     }
@@ -82,19 +91,14 @@ public class StudentView {
     private void validationAddStudentData(String studentName, String studentNumber, String studentMajor) {
         validationStudentName(studentName);
         validationStudentNumber(studentNumber);
-        validationStudentMajor(studentMajor);
-    }
-
+        validationStudentMajor(studentMajor); }
     private void validationStudentName(String studentName) {
         if(studentName.matches(EStudentView.eMatchContainNumber.getContent())){
-            throw new IllegalArgumentException(EStudentView.eStudentNameMatchMessage.getContent()); }
-    }
+            throw new IllegalArgumentException(EStudentView.eStudentNameMatchMessage.getContent()); } }
     private void validationStudentNumber(String studentNumber) {
         if(studentNumber.matches(EStudentView.eMatchOnlyNumber.getContent()) == false){
-            throw new IllegalArgumentException(EStudentView.eStudentNumberMatchMessage.getContent()); }
-    }
+            throw new IllegalArgumentException(EStudentView.eStudentNumberMatchMessage.getContent()); } }
     private void validationStudentMajor(String studentMajor) {
         if(studentMajor.matches(EStudentView.eMatchContainNumber.getContent())){
-            throw new IllegalArgumentException(EStudentView.eMajorMatchMessage.getContent()); }
-    }
+            throw new IllegalArgumentException(EStudentView.eMajorMatchMessage.getContent()); } }
 }
