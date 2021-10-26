@@ -1,7 +1,6 @@
 package entity;
 
 
-import constant.Constants;
 import lombok.Getter;
 import lombok.Setter;
 

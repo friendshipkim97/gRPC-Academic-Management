@@ -114,9 +114,7 @@ public class StudentServiceImpl extends StudentServiceGrpc.StudentServiceImplBas
         if (request.getStudentName().equals(EStudentServiceImpl.eEmpty.getContent()) ||
                 request.getStudentNumber().equals(EStudentServiceImpl.eEmpty.getContent())
                 || request.getMajor().equals(EStudentServiceImpl.eEmpty.getContent())) {
-            throw new IllegalArgumentException(EStudentServiceImpl.eEmptyRequestStudentExceptionMessage.getContent()); }
-    }
-
+            throw new IllegalArgumentException(EStudentServiceImpl.eEmptyRequestStudentExceptionMessage.getContent()); } }
     private void validationStudentNumber(DeleteStudentRequest request) {
         if (request.getStudentNumber().equals(EStudentServiceImpl.eEmpty.getContent())) {
             throw new IllegalArgumentException(EStudentServiceImpl.eEmptyRequestStudentNumberExceptionMessage.getContent()); } }

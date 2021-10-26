@@ -1,13 +1,13 @@
 package entity;
 
-import com.mysql.cj.log.Log;
-import constant.Constants;
 import lombok.Getter;
 import lombok.Setter;
 import service.StudentServiceImpl;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Logger;
 
 @Entity

@@ -15,13 +15,12 @@ import java.util.logging.Logger;
 class MainServer {
 
     private static final Logger logger = Logger.getLogger(MainServer.class.getName());
-    private MainRepository mainRepository;
     private StudentCourseRepository studentCourseRepository;
     private StudentRepository studentRepository;
     private CourseRepository courseRepository;
 
     public MainServer() {
-        mainRepository = new MainRepository();
+        new MainRepository();
         studentCourseRepository = new StudentCourseRepository();
         studentRepository = new StudentRepository();
         courseRepository = new CourseRepository(studentCourseRepository);
@@ -46,7 +45,6 @@ class MainServer {
 
     public static void main(String[] args) {
         MainServer mainServer = new MainServer();
-        mainServer.setConnection();
-    }
+        mainServer.setConnection(); }
 
 }

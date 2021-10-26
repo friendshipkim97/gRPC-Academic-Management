@@ -104,14 +104,9 @@ public class CourseServiceImpl extends CourseServiceGrpc.CourseServiceImplBase {
         if (request.getCourseNumber().equals(ECourseServiceImpl.eEmpty.getContent()) ||
                 request.getProfessorLastName().equals(ECourseServiceImpl.eEmpty.getContent()) ||
                 request.getCourseName().equals(ECourseServiceImpl.eEmpty.getContent())) {
-            throw new IllegalArgumentException(ECourseServiceImpl.eEmptyRequestCourseExceptionMessage.getContent());
-        }
-    }
-
+            throw new IllegalArgumentException(ECourseServiceImpl.eEmptyRequestCourseExceptionMessage.getContent()); } }
     private void validationCourseNumber(DeleteCourseRequest request) {
         if (request.getCourseNumber().equals(ECourseServiceImpl.eEmpty.getContent())) {
-            throw new IllegalArgumentException(ECourseServiceImpl.eEmptyRequestCourseNumberExceptionMessage.getContent());
-        }
-    }
+            throw new IllegalArgumentException(ECourseServiceImpl.eEmptyRequestCourseNumberExceptionMessage.getContent()); } }
 
 }

@@ -67,22 +67,14 @@ public class StudentCourseServiceImpl extends StudentCourseServiceGrpc.StudentCo
 
     private void validationCourseId(ApplicationForCourseRequest request) {
         if (request.getCourseNumber().equals(EStudentCourseServiceImpl.eEmpty.getContent())) {
-            throw new IllegalArgumentException(EStudentCourseServiceImpl.eEmptyRequestCourseIdExceptionMessage.getContent());
-        }
-    }
+            throw new IllegalArgumentException(EStudentCourseServiceImpl.eEmptyRequestCourseIdExceptionMessage.getContent()); } }
     private void validationStudentId(ApplicationForCourseRequest request) {
         if (request.getStudentNumber().equals(EStudentCourseServiceImpl.eEmpty.getContent())) {
-            throw new IllegalArgumentException(EStudentCourseServiceImpl.eEmptyRequestStudentIdExceptionMessage.getContent());
-        }
-    }
-
+            throw new IllegalArgumentException(EStudentCourseServiceImpl.eEmptyRequestStudentIdExceptionMessage.getContent()); } }
     private void validationExistingCourse(Course findCourse, List<StudentCourse> studentCourses) throws ExistingDataException {
         for (StudentCourse studentCourse : studentCourses) {
             if (studentCourse.getCourse().getId() == findCourse.getId()) {
-                throw new ExistingDataException(EStudentCourseServiceImpl.eAlreadyTakingCourseExceptionMessage.getContent());
-            }
-        }
-    }
+                throw new ExistingDataException(EStudentCourseServiceImpl.eAlreadyTakingCourseExceptionMessage.getContent()); } } }
     private void validationAdvancedCourse(Course findCourse, List<StudentCourse> studentCourses) throws AdvancedCourseException {
         boolean advancedCourseCheck = EStudentCourseServiceImpl.eFalse.getCheck();
         if (findCourse.getAdvancedCourseList().size() != 0) {
@@ -90,8 +82,6 @@ public class StudentCourseServiceImpl extends StudentCourseServiceGrpc.StudentCo
                 for (StudentCourse studentCourse : studentCourses) { if (studentCourse.getCourse().getId() == course.getId()) {
                     advancedCourseCheck = EStudentCourseServiceImpl.eTrue.getCheck(); } }
             } if (advancedCourseCheck == EStudentCourseServiceImpl.eFalse.getCheck()) {
-                throw new AdvancedCourseException(EStudentCourseServiceImpl.eTakeAdvancedCourseExceptionMessage.getContent()); }
-        }
-    }
+                throw new AdvancedCourseException(EStudentCourseServiceImpl.eTakeAdvancedCourseExceptionMessage.getContent()); } } }
 
 }
