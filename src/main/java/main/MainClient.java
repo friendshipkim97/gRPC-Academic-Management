@@ -52,23 +52,27 @@ public class MainClient {
                 BufferedReader objReader = new BufferedReader(new InputStreamReader(System.in));
                 printMenu();
 
-                EMainClient sChoice = EMainClient.valueOf(objReader.readLine().trim());
-                switch (sChoice) {
-                    case one: studentView.allStudentsDataResponse(); break;
-                    case two: courseView.allCoursesDataResponse();break;
-                    case three: studentView.addStudentDataResponse(objReader);break;
-                    case four: studentView.deleteStudentDataResponse(objReader);break;
-                    case five: courseView.addCourseDataResponse(objReader);break;
-                    case six: courseView.deleteCourseDataResponse(objReader);break;
-                    case seven: studentCourseView.applicationForCourse(objReader);break;
-                    case eight: return;
-                    default: EMainClient.eSwitchChoiceFail.getContent();
+                String inputMenu = objReader.readLine().trim();
+                if(validationCorrectMenuInput(inputMenu) != EMainClient.eFalse.getCheck()){
+                    EMainClient sChoice = EMainClient.valueOf(inputMenu);
+                    switch (sChoice) {
+                        case one: studentView.allStudentsDataResponse(); break;
+                        case two: courseView.allCoursesDataResponse();break;
+                        case three: studentView.addStudentDataResponse(objReader);break;
+                        case four: studentView.deleteStudentDataResponse(objReader);break;
+                        case five: courseView.addCourseDataResponse(objReader);break;
+                        case six: courseView.deleteCourseDataResponse(objReader);break;
+                        case seven: studentCourseView.applicationForCourse(objReader);break;
+                        case eight: return;
+                        default: EMainClient.eSwitchChoiceFail.getContent();
+                    }
                 }
             } catch (Exception e) {
                 logger.info(e.getClass().getSimpleName() + EMainClient.eColon.getContent() + e.getMessage());
             }
         }
     }
+
     private static void printMenu() {
         System.out.println();
         System.out.println(EMainClient.eMenuStar.getContent());
@@ -85,4 +89,16 @@ public class MainClient {
         System.out.println(EMainClient.eMenuEight.getContent());
     }
 
+    /**
+     * validation
+     */
+    private boolean validationCorrectMenuInput(String inputMenu) {
+        if(inputMenu.equals(EMainClient.one.getContent()) || inputMenu.equals(EMainClient.two.getContent())
+                || inputMenu.equals(EMainClient.three.getContent()) || inputMenu.equals(EMainClient.four.getContent())
+                || inputMenu.equals(EMainClient.five.getContent()) || inputMenu.equals(EMainClient.six.getContent())
+                || inputMenu.equals(EMainClient.seven.getContent()) || (inputMenu.equals(EMainClient.eight.getContent()))){
+            return true;
+        } else{ System.out.println(EMainClient.eEnterTheMenuAgain.getContent());
+            return false;
+        } }
 }

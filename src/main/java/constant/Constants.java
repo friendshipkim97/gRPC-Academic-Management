@@ -7,14 +7,14 @@ public class Constants {
     @Getter
     public enum EMainClient{
         ePortNumber("localhost:50050"),
-        one(),
-        two(),
-        three(),
-        four(),
-        five(),
-        six(),
-        seven(),
-        eight(),
+        one("one"),
+        two("two"),
+        three("three"),
+        four("four"),
+        five("five"),
+        six("six"),
+        seven("seven"),
+        eight("eight"),
         eSwitchChoiceFail("올바르지 않은 선택입니다."),
         eColon( " : "),
         eMenuStar("***************************************************"),
@@ -27,12 +27,16 @@ public class Constants {
         eMenuFive("************(five) : 과목 등록하기***********************"),
         eMenuSix("************(six) : 과목 지우기************************"),
         eMenuSeven("************(seven) : 수강 신청************************"),
-        eMenuEight("************(eight) : 나가기****************************");
+        eMenuEight("************(eight) : 나가기****************************"),
+        eEnterTheMenuAgain("메뉴 입력이 잘못되었습니다. 메뉴를 다시 입력해 주세요."),
+        eFalse(false);
 
         private String content;
+        private Boolean check;
 
         EMainClient(String content) { this.content = content; }
-        EMainClient() {}
+        EMainClient(Boolean check) { this.check = check; }
+
     }
 
     @Getter
