@@ -47,7 +47,7 @@ public class Course {
     // 연관관계 메서드
     public void addAdvancedCourse(Course child){
         advancedCourseList.add(child);
-        //courseList.add(this);
+        courseList.add(this);
     }
 
     // 연관관계 삭제 메서드
@@ -56,12 +56,26 @@ public class Course {
         for(Iterator<Course> itr = advancedCourseList.iterator(); itr.hasNext();){
             Course courseTemp = itr.next();
             if(courseTemp.equals(course)) {
+                System.out.println("course = " + course.getCourseName());
                 deleteCheck = true;
                 itr.remove(); 
             }
         }
         return deleteCheck;
     }
+
+    // 연관관계 삭제 메서드
+//    public boolean removeCourseList(Course course) {
+//        Boolean deleteCheck = false;
+//        for(Iterator<Course> itr = courseList.iterator(); itr.hasNext();){
+//            Course courseTemp = itr.next();
+//            if(courseTemp.equals(course)) {
+//                deleteCheck = true;
+//                itr.remove();
+//            }
+//        }
+//        return deleteCheck;
+//    }
 
     // 생성 메서드
     public static Course createCourse(String courseNumber, String professorLastName, String courseName, Course... advancedCourses) {
@@ -85,4 +99,5 @@ public class Course {
         }
         return createdCourse;
     }
+
 }

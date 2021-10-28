@@ -56,6 +56,7 @@ public class CourseRepository{
     public boolean deleteCourseByCourseNumber(String courseNumber) throws NullDataException, ExistingDataException {
 
         Course findCourse = findCourseByCourseNumber(courseNumber);
+
         List<StudentCourse> studentCourses = this.studentCourseRepository.findStudentCourseByCourse(findCourse);
 
         deleteAdvancedCourseByCourse(findCourse);
@@ -80,10 +81,13 @@ public class CourseRepository{
         }
     }
 
-    private void deleteAdvancedCourseByCourse(Course findCourse){
+    private void deleteAdvancedCourseByCourse(Course findCourse) {
 
         List<Course> allCourseList = findAllNoException();
-        for(Iterator<Course> itr = allCourseList.iterator(); itr.hasNext();){
+
+        findCourse.getAdvancedCourseList().clear();
+
+        for (Iterator<Course> itr = allCourseList.iterator(); itr.hasNext(); ) {
             Course courseTemp = itr.next();
             if (courseTemp.removeAdvancedCourse(findCourse)) {
                 logger.info(ECourseRepository.eDeleteAdvancedCourseDataWarningMessage.getContent());
